@@ -1,0 +1,273 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Playfair+Display:wght@400;500;600;700&family=Roboto:wght@100;200;300;400;500;700&display=swap");
+
+.nav-bar {
+  padding: 3% 13%;
+}
+.container-fluid {
+  padding: 0% 13%;
+}
+
+/* APP BAR */
+.nav-link {
+  background-color: white;
+  border: none;
+  color: #303031;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.login {
+  color: #54c06e;
+  font-weight: 600;
+}
+
+.nav-link:hover {
+  background-color: #eeeeee;
+}
+
+/* SECTION TITLE */
+.brand {
+  font-family: "Playfair Display", serif;
+  color: #303031;
+  font-size: 45px;
+  font-weight: 500;
+}
+.brand-verse {
+  font-family: "Roboto", sans-serif;
+  color: #303031;
+  font-weight: 300;
+  margin-top: -20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.brand-left {
+  padding-top: 9%;
+}
+.button-register {
+  margin-top: 10px;
+  background-color: #54c06e;
+  border: none;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 7px;
+}
+.button-register:hover{
+  background-color: #4cb365;
+}
+
+.brand-right {
+  text-align: right;
+}
+.brand-image {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* SECTION VALUE */
+.value {
+  margin-top: 50px;
+}
+.value-title {
+  font-family: "Playfair Display", serif;
+  color: #303031;
+  font-size: 30px;
+  font-weight: 300;
+  text-align: center;
+  padding-top: 6%;
+}
+.value-verse {
+  font-family: "Roboto", sans-serif;
+  color: #303031;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.value-card {
+  padding: 2% 0%;
+}
+.value-card-content {
+  text-align: center;
+}
+.value-card-image {
+  margin-top: 20px;
+}
+.value-text {
+  font-family: "Roboto", sans-serif;
+  color: #303031;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* SECTION FEATURES */
+.features {
+  margin-top: 120px;
+}
+.features-left {
+  padding-top: 9%;
+  padding-right: 5%;
+}
+.features-icon {
+  margin-bottom: auto;
+}
+.features-title {
+  font-family: "Playfair Display", serif;
+  color: #303031;
+  font-size: 27px;
+  font-weight: 500;
+  padding-bottom: 2%;
+}
+
+.divider {
+  text-align: center;
+  padding: 5% 0%;
+}
+
+/* SECTION TESTIMONY */
+.avatar {
+  border-radius: 50%;
+}
+.testimony-name {
+  font-family: "Roboto", sans-serif;
+  color: #303031;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.testimony-occ {
+  margin-top: -10px;
+  padding-bottom: 10%;
+  font-family: "Roboto", sans-serif;
+  color: #303031;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.chip-container {
+  padding-top: 5%;
+}
+.chip-button {
+  text-align: left;
+}
+.chip-date {
+  text-align: right;
+  margin: 0%;
+}
+.date {
+  font-family: "Roboto", sans-serif;
+  color: #303031;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 3% 0%;
+}
+.mk {
+  background-color: #ffc739;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 15px;
+}
+.pk {
+  background-color: #9d26ca;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 15px;
+}
+.hk {
+  background-color: #54c06e;
+  border: none;
+  color: white;
+  padding: 8px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 15px;
+}
+
+/* SECTION INVITATION */
+.invitation-title {
+  font-family: "Playfair Display", serif;
+  color: #303031;
+  font-size: 27px;
+  font-weight: 500;
+  padding-bottom: 2%;
+}
+.button-register-mk {
+  margin-top: 10px;
+  background-color: #ffc739;
+  border: none;
+  color: white;
+  padding: 15px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 7px;
+}
+.button-register-mk:hover{
+  background-color: #eab735;
+}
+
+/* SECTION DOCS */
+.docs-brand {
+  font-family: "Playfair Display", serif;
+  color: #4f4f4f;
+  font-size: 20px;
+  font-weight: 500;
+  padding-bottom: 2%;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 25px 0px;
+}
+.docs-nav {
+  font-family: "Roboto", sans-serif;
+  color: #4f4f4f;
+  float: right;
+  display: inline;
+  padding: 0px 10px;
+}
+li:hover {
+  color: #54c06e;
+}
+a {
+  text-decoration: none;
+  color: #4f4f4f;
+}
+.docs-link{
+  font-weight: 400;
+}
+.docs-link:hover {
+  color: #54c06e;
+}
