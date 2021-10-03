@@ -1,55 +1,38 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
+// import { makeStyles } from "@material-ui/core/styles";
+// import Grid from "@material-ui/core/Grid";
+// import Button from "@material-ui/core/Button";
+// import Paper from "@material-ui/core/Paper";
 
-import "assets/styleLandingPage.css";
+import style from "components/LandingPage/LandingPageRoot.module.css";
+import NavBar from "components/LandingPage/NavBar/NavBar.js";
+import Title from "components/LandingPage/Title/Title.js";
+import Value from "components/LandingPage/Value/Value.js";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
-  palette:{
-    primary: "green"
-  }
-}));
+// const useStyles = makeStyles((theme) => ({
+//   root: {
+//     flexGrow: 1,
+//   },
+//   paper: {
+//     padding: theme.spacing(2),
+//     textAlign: "center",
+//     color: theme.palette.text.secondary,
+//   },
+//   palette: {
+//     primary: "green",
+//   },
+// }));
 
 export default function LandingPage() {
-  const classes = useStyles();
+  // const classes = useStyles();
   return (
     <>
-      <div className="nav-bar">
-        <Grid container direction="row-reverse" justifyContent="center" alignItems="center" spacing={0}>
-          <Grid item>
-            <Button class="nav-link login" color="inherit" href="/sign-in">
-              Sign In
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button class="nav-link" color="inherit">
-              Pertumbuhan Rohani
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button class="nav-link" color="inherit">
-              Kelas Pengajaran
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button class="nav-link" color="inherit">
-              Konseling
-            </Button>
-          </Grid>
-        </Grid>
+      <div className={style.containerFluid}>
+        <NavBar />
+        <Title />
+        <Value />
       </div>
-
-      <section id="title">
+      {/* <section id="title">
         <div class="container-fluid">
           <Grid container>
             <Grid item xs={12} sm={6}>
@@ -397,7 +380,7 @@ export default function LandingPage() {
             </Grid>
           </Grid>
         </div>
-      </section>
+      </section> */}
     </>
   );
 }

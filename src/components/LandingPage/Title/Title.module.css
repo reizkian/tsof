@@ -1,0 +1,102 @@
+/* FOR DISPLAY > 990px */
+@media (min-width: 990px) {
+    .Title{
+        margin-top: 0%;
+    }
+  .containerFluidTitle {
+    padding: 5% 0%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  .brandTitle {
+    float: left;
+    color: #303031;
+  }
+  .brandTitle .titleTSOF {
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    font-size: 3rem;
+    margin-top: 14%;
+  }
+  .brandTitle .titleVerse {
+    font-family: "Roboto", sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    padding-right: 15%;
+    text-align: justify;
+    text-justify: inter-word;
+    margin-top: -5%;
+    line-height: 1.5;
+  }
+  .brandTitle .buttonRegister {
+    margin-top: 10px;
+    background-color: #54c06e;
+    border: none;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 7px;
+  }
+  .brandImage {
+    float: right;
+  }
+}
+
+/* FOR DISPLAY < 990px */
+@media (max-width: 990px) {
+  .containerFluidTitle {
+    padding: 8% 0%;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  /* title */
+  .brandTitle {
+    text-align: center;
+    color: #303031;
+  }
+  .brandTitle .titleTSOF {
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-top: 4%;
+  }
+  .brandTitle .titleVerse {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 0.8rem;
+    margin-top: -4%;
+    padding: 0% 8%;
+    line-height: 1.3;
+  }
+  .brandTitle .buttonRegister {
+    margin-top: 10px;
+    background-color: #54c06e;
+    border: none;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 75px;
+  }
+
+  /* image */
+  .brandImage {
+    text-align: center;
+  }
+  .brandImage .logoTSOF {
+    width: 50%;
+    height: auto;
+    margin-top: 5%;
+    margin-bottom: 0%;
+  }
+}

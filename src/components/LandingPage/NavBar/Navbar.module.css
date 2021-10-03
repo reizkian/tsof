@@ -1,0 +1,121 @@
+
+
+.NavBar nav ul li {
+  display: inline-block;
+  margin: 0.5vw;
+  font-family: "Roboto", sans-serif;
+}
+
+.NavBar nav ul li a {
+  text-decoration: none;
+  color: #303031;
+}
+
+.PseudoButton {
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.PseudoButton:hover {
+  border-radius: 20px;
+
+  padding: 10px;
+}
+
+.NavBar .MobileNavigation {
+  display: none;
+}
+
+/* FOR DISPLAY > 990px */
+@media(min-width: 990px){
+  .NavBar{
+    height: 5%;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  .NavBar nav ul li {
+    margin: -10px 0px;
+  }
+
+  .PseudoButton {
+    border-radius: 5px;
+    padding: 10px 30px;
+    font-size: 0.9rem;
+  }
+  
+  .PseudoButton:hover {
+    border-radius: 20px;
+    background: #eeeeee;
+    padding: 10px 30px;
+  }
+
+  .PseudoButton .SignIn{
+    font-weight: 600;
+    color: #54c06e;
+  }
+}
+
+/* FOR DISPLAY < 990px */
+@media (max-width: 990px) {
+  .NavBar .Navigation {
+    display: none;
+  }
+
+  .NavBar .MobileNavigation {
+    display: flex;
+    align-items: center;
+    z-index: 1;
+  }
+
+  .NavBar {
+    height: 5%;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background: #54c06e;
+    z-index: 1;
+  }
+  .NavBar .MobileNavigation .Hamburger {
+    position: absolute;
+    right: 5%;
+    top: 20%;
+    z-index: 1;
+  }
+
+  nav ul {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 55%;
+    right: 0;
+    width: 100%;
+    background: white;
+    padding-top: 0%;
+    padding-bottom: 5%;
+    background: #54c06e;
+    font-weight: 500;
+      }
+
+  .NavBar nav ul li {
+    padding-left: 5%;
+    padding-right: 45%;
+  }
+
+  li {
+    padding-top: 3%;
+  }
+
+  .PseudoButton {
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  .PseudoButton:hover {
+    border-radius: 20px;
+    padding: 10px;
+  }
+}

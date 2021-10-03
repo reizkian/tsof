@@ -6,7 +6,7 @@ const global = {
   },
   palette: {
     primary: {
-      light: '##71d689',
+      light: '#71d689',
       main: '#54c06e;',
       dark: '#4cb365',
       contrastText: '#fff',

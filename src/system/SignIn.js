@@ -12,7 +12,6 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Button from "@material-ui/core/Button";
 
-import "assets/styleSignIn.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
