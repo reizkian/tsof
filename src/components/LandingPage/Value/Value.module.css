@@ -1,4 +1,104 @@
 /* FOR DISPLAY > 990px */
-@media (min-width: 990px) {}
+@media (min-width: 990px) {
+  .containerFluidValue {
+    padding: 2% 0%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .valueTitle {
+    font-family: "Playfair Display", serif;
+    color: #303031;
+    font-size: 30px;
+    font-weight: 300;
+    text-align: center;
+  }
+  .valueVerse {
+    font-family: "Roboto", sans-serif;
+    color: #303031;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .valueCardContainer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 3%;
+    align-items: center;
+    justify-content: center;
+  }
+  .valueCard {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    padding: 2% 2%;
+    margin: 0% 1%;
+    border-radius: 10px;
+    text-align: center;
+    height: 350px;
+    width: 30%;
+  }
+  .valueCardImage {
+    margin-top: 20px;
+    border-radius: 50%;
+  }
+  .valueCardText {
+    font-family: "Roboto", sans-serif;
+    color: #303031;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}
 /* FOR DISPLAY < 990px */
-@media (max-width: 990px) {}
+@media (max-width: 990px) {
+    .containerFluidValue {
+        padding: 0% 0%;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+      .valueTitle {
+        font-family: "Playfair Display", serif;
+        color: #303031;
+        font-size: 20px;
+        font-weight: 300;
+        text-align: center;
+      }
+      .valueVerse {
+        font-family: "Roboto", sans-serif;
+        color: #303031;
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 1.5;
+        padding: 0% 4%;
+      }
+      .valueCardContainer {
+        display: flex;
+        flex-direction: column;
+        margin-top: 3%;
+        align-items: center;
+        justify-content: center;
+      }
+      .valueCard {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s; 
+        padding: 2% 2%;
+        margin: 3% 0%;
+        border-radius: 10px;
+        text-align: center;
+        height: 420px;
+        width: 75%;
+      }
+      .valueCardImage {
+        margin-top: 20px;
+        border-radius: 50%;
+      }
+      .valueCardText {
+        font-family: "Roboto", sans-serif;
+        color: #303031;
+        font-weight: 300;
+        font-size: 12px;
+        line-height: 1.5;
+        padding: 0% 6%;
+      }
+}

@@ -1,0 +1,90 @@
+/* FOR DISPLAY > 990px */
+@media (min-width: 990px) {
+  .containerFluidFeatures {
+    padding: 10% 0%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+  .containerFeaturesTitle {
+    padding-top: 15%;
+    padding-right: 5%;
+    width: 65%;
+  }
+  .featuresTitle {
+    font-family: "Playfair Display", serif;
+    color: #303031;
+    font-size: 22px;
+    font-weight: 500;
+    padding-bottom: 2%;
+  }
+  .featuresSubTitle {
+    font-family: "Roboto", sans-serif;
+    color: #303031;
+    font-weight: 300;
+    margin-top: -20px;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .featuresIcon {
+    margin-bottom: auto;
+    width: 10%;
+    height: auto;
+  }
+  .containerFeaturesImage {
+    margin-top: 5%;
+  }
+  .featuresImage{
+    width: 100%;
+    height: auto;
+  }
+}
+/* FOR DISPLAY < 990px */
+@media (max-width: 990px) {
+  .containerFluidFeatures {
+    padding: 10% 0%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .containerFeaturesTitle {
+    padding-top: 9%;
+    padding-left: 5%;
+    padding-right: 5%;
+    text-align: center;
+  }
+  .featuresTitle {
+    font-family: "Playfair Display", serif;
+    color: #303031;
+    font-size: 22px;
+    font-weight: 500;
+    padding-bottom: 2%;
+    margin-top: 1%;
+  }
+  .featuresSubTitle {
+    font-family: "Roboto", sans-serif;
+    color: #303031;
+    font-weight: 300;
+    margin-top: -15px;
+    font-size: 11px;
+    line-height: 1.5;
+    padding: 0% 2%;
+  }
+  .featuresIcon {
+    margin-bottom: auto;
+    width: 10%;
+    height: auto;
+  }
+  .containerFeaturesImage {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    padding: 0% 7%;
+  }
+  .featuresImage{
+    width: 100%;
+    height: auto;
+  }
+}

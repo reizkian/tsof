@@ -62,10 +62,9 @@
   font-weight: 600;
   border-radius: 7px;
 }
-.button-register:hover{
+.button-register:hover {
   background-color: #4cb365;
 }
-
 .brand-right {
   text-align: right;
 }
@@ -234,7 +233,7 @@
   font-weight: 600;
   border-radius: 7px;
 }
-.button-register-mk:hover{
+.button-register-mk:hover {
   background-color: #eab735;
 }
 
@@ -265,7 +264,7 @@ a {
   text-decoration: none;
   color: #4f4f4f;
 }
-.docs-link{
+.docs-link {
   font-weight: 400;
 }
 .docs-link:hover {

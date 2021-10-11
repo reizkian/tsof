@@ -1,6 +1,31 @@
 /* FOR DISPLAY > 990px */
 @media (min-width: 990px) {
-.containerFluid {
+  .containerFluid {
     padding: 2% 13%;
+  }
+  .dividerContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .divider {
+    text-align: center;
+    width: 120%;
+    height: auto;
+  }
+}
+
+/* FOR DISPLAY < 990px */
+@media (max-width: 990px) {
+  .dividerContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10% 0%;
+  }
+  .divider {
+    text-align: center;
+    width: 100%;
+    height: auto;
   }
 }

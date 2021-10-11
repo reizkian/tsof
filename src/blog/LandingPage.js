@@ -8,6 +8,10 @@ import style from "components/LandingPage/LandingPageRoot.module.css";
 import NavBar from "components/LandingPage/NavBar/NavBar.js";
 import Title from "components/LandingPage/Title/Title.js";
 import Value from "components/LandingPage/Value/Value.js";
+import Features from "components/LandingPage/Features/Features.js";
+import Testimony from "components/LandingPage/Testimony/Testimony.js";
+import Invitation from "components/LandingPage/Invitation/Invitation.js";
+import Footer from "components/LandingPage/Footer/Footer.js";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
@@ -31,6 +35,17 @@ export default function LandingPage() {
         <NavBar />
         <Title />
         <Value />
+        <Features />
+        <div class={style.dividerContainer}>
+          <img
+            className={style.divider}
+            src={require("assets/img/divider.png").default}
+            alt="https://drive.google.com/uc?export=view&id=1rSaqlm1Cx8b3XswSFp3y53xYG_oCuNog"
+          />
+        </div>
+        <Testimony />
+        <Invitation />
+        <Footer />
       </div>
       {/* <section id="title">
         <div class="container-fluid">

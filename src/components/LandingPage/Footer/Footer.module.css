@@ -1,0 +1,98 @@
+/* FOR DISPLAY > 990px */
+@media (min-width: 990px) {
+  .containerFluid {
+    padding: 0% 0%;
+    display: flex;
+    flex-direction: row;
+  }
+  .docsBrandContainer {
+    display: flex;
+    justify-content: flex-start;
+    width: 50%
+  }
+  .docsNavContainer {
+    display: flex;
+    justify-content: flex-end;
+    width: 50%
+  }
+  .docsBrand {
+    font-family: "Playfair Display", serif;
+    color: #4f4f4f;
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 8%;
+  }
+  ul {
+    list-style-type: none;
+    margin-top: 9%;
+  }
+  .docsNav {
+    font-family: "Roboto", sans-serif;
+    color: #4f4f4f;
+    float: right;
+    display: inline;
+    padding: 0px 10px;
+  }
+  li:hover {
+    color: #54c06e;
+  }
+  a {
+    text-decoration: none;
+    color: #4f4f4f;
+  }
+  .docsLink {
+    font-weight: 400;
+  }
+  .docsLink:hover {
+    color: #54c06e;
+  }
+}
+/* FOR DISPLAY < 990px */
+@media (max-width: 990px) {
+    .containerFluid {
+        padding: 0% 5%;
+        display: flex;
+        flex-direction: column;
+      }
+      .docsBrandContainer {
+        display: flex;
+        justify-content: center;
+      }
+      .docsNavContainer {
+        display: flex;
+        justify-content: center;
+      }
+      .docsBrand {
+        font-family: "Playfair Display", serif;
+        color: #4f4f4f;
+        font-size: 15px;
+        font-weight: 500;
+        margin-top: 8%;
+      }
+      ul {
+        list-style-type: none;
+        margin-top: -3%;
+        padding: 0% 0%;
+      }
+      .docsNav {
+        font-family: "Roboto", sans-serif;
+        color: #4f4f4f;
+        float: right;
+        display: inline;
+        padding: 0px 10px;
+      }
+      li:hover {
+        color: #54c06e;
+      }
+      a {
+        text-decoration: none;
+        color: #4f4f4f;
+        font-size: 10px;
+      }
+      .docsLink {
+        font-weight: 400;
+      }
+      .docsLink:hover {
+        color: #54c06e;
+      }
+}

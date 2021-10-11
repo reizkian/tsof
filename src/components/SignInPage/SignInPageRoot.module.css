@@ -1,0 +1,152 @@
+/* FOR DISPLAY > 990px */
+@media (min-width: 990px) {
+  .containerFluid {
+    padding: 2% 13%;
+  }
+  .contentSignIn {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5%;
+  }
+  .SignInImgContainer {
+    text-align: center;
+    width: 50%;
+  }
+  .SignInFormContainer {
+    text-align: center;
+    width: 50%;
+    margin-top: 4%;
+  }
+  .brandText {
+    font-family: "Playfair Display", serif;
+    color: #303031;
+    font-size: 35px;
+    font-weight: 500;
+    margin: 3% 0%;
+  }
+  .buttonSignIn {
+    margin-top: 10px;
+    background-color: #54c06e;
+    border: none;
+    color: white;
+    padding: 10px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 25px;
+  }
+  .buttonSignIn:hover {
+    background-color: #4cb365;
+  }
+  .footer {
+    display: flex;
+    justify-content: center;
+  }
+  .ul {
+    display: flex;
+    justify-content: center;
+  }
+  .nav {
+    font-family: "Roboto", sans-serif;
+    color: #4f4f4f;
+    display: inline;
+    padding: 0px 10px;
+  }
+  .docsNav {
+    font-family: "Roboto", sans-serif;
+    color: #4f4f4f;
+    display: inline;
+    padding: 0px 15px;
+  }
+  .docsLink {
+    font-weight: 400;
+  }
+  .docsLink:hover {
+    color: #54c06e;
+  }
+}
+
+/* FOR DISPLAY < 990px */
+@media (max-width: 990px) {
+  .containerFluid {
+    padding: 10% 0%;
+  }
+  .contentSignIn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 3%;
+  }
+  .SignInImgContainer {
+    display: none;
+    text-align: center;
+  }
+  .SignInFormContainer {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 0%;
+  }
+
+  .brandText {
+    font-family: "Playfair Display", serif;
+    color: #303031;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: -1%;
+    margin-bottom: 7%;
+  }
+  .form {
+    text-align: center;
+    padding: 0% 0%;
+    font-weight: 5px;
+  }
+  .buttonSignIn {
+    margin-top: 10px;
+    background-color: #54c06e;
+    border: none;
+    color: white;
+    padding: 10px 40px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 25px;
+  }
+  .buttonSignIn:hover {
+    background-color: #4cb365;
+  }
+  .footer {
+    display: none;
+    justify-content: center;
+  }
+  .ul {
+    display: none;
+    justify-content: center;
+  }
+  .nav {
+    font-family: "Roboto", sans-serif;
+    color: #4f4f4f;
+    display: inline;
+    padding: 0px 10px;
+  }
+  .docsNav {
+    font-family: "Roboto", sans-serif;
+    color: #4f4f4f;
+    display: inline;
+    padding: 0px 15px;
+  }
+  .docsLink {
+    font-weight: 400;
+  }
+  .docsLink:hover {
+    color: #54c06e;
+  }
+}
