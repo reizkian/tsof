@@ -1,5 +1,4 @@
 import style from "components/LandingPage/Footer/Footer.module.css";
-import Grid from "@material-ui/core/Grid";
 
 export default function Footer() {
   return (

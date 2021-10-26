@@ -1,7 +1,7 @@
 /* FOR DISPLAY > 990px */
 @media (min-width: 990px) {
   .containerFluid {
-    padding: 2% 13%;
+    padding: 1% 13%;
   }
   .dividerContainer{
     display: flex;

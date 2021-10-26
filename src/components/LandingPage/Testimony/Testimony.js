@@ -1,7 +1,5 @@
 import style from "components/LandingPage/Value/Value.module.css";
 import styleCustom from "components/LandingPage/Testimony/Testimony.module.css";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 
 export default function Value() {
   return (
@@ -35,10 +33,10 @@ export default function Value() {
               </p>
               <div className={styleCustom.chipContainer}>
                 <div className={styleCustom.chipButton}>
-                  <a className={styleCustom.mk}>Murid Kristus</a>
+                  <p className={styleCustom.mk} >Murd Kristus</p>
                 </div>
                 <div className={styleCustom.chipDate}>
-                  <a className={styleCustom.date}>18 Mei 2020</a>
+                  <p className={styleCustom.date}>18 Mei 2020</p>
                 </div>
               </div>
             </div>
@@ -61,10 +59,10 @@ export default function Value() {
               </p>
               <div className={styleCustom.chipContainer}>
                 <div className={styleCustom.chipButton}>
-                  <a className={styleCustom.pk}>Pekerja Kristus</a>
+                  <p className={styleCustom.pk}>Pekerja Kristus</p>
                 </div>
                 <div className={styleCustom.chipDate}>
-                  <a className={styleCustom.date}>18 Mei 2020</a>
+                  <p className={styleCustom.date}>18 Mei 2020</p>
                 </div>
               </div>
             </div>
@@ -87,10 +85,10 @@ export default function Value() {
               </p>
               <div className={styleCustom.chipContainer}>
                 <div className={styleCustom.chipButton}>
-                  <a className={styleCustom.hk}>Hamba Kristus</a>
+                  <p className={styleCustom.hk}>Hamba Kristus</p>
                 </div>
                 <div className={styleCustom.chipDate}>
-                  <a className={styleCustom.date}>18 Mei 2020</a>
+                  <p className={styleCustom.date}>18 Mei 2020</p>
                 </div>
               </div>
             </div>

@@ -10,7 +10,7 @@
     align-items: center;
     justify-content: center;
   }
-  .occ{
+  .occ {
     margin-top: -15px;
     font-family: "Roboto", sans-serif;
     color: #303031;
@@ -19,13 +19,20 @@
     line-height: 1.5;
   }
   .chipContainer {
-    margin-top: 12%;
+    margin-top: 0%;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    left: 8%;
+    right: 1%;
+    flex-direction: row;
+    justify-content: center;
+    width: 80%;
+    position: absolute;
+    bottom: 10px;
   }
   .chipButton {
-    display: flex;
+    margin: 0% 0%;
     width: 50%;
   }
   .chipDate {
@@ -49,6 +56,7 @@
     text-align: center;
     height: 300px;
     width: 30%;
+    position: relative;
   }
   .mk {
     background-color: #ffc739;
@@ -57,11 +65,11 @@
     padding: 8px 15px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-family: "Roboto", sans-serif;
     font-size: 12px;
     font-weight: 500;
     border-radius: 15px;
+    float: left;
   }
   .pk {
     background-color: #9d26ca;
@@ -70,11 +78,11 @@
     padding: 8px 15px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-family: "Roboto", sans-serif;
     font-size: 12px;
     font-weight: 500;
     border-radius: 15px;
+    float: left;
   }
   .hk {
     background-color: #54c06e;
@@ -83,17 +91,17 @@
     padding: 8px 15px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-family: "Roboto", sans-serif;
     font-size: 12px;
     font-weight: 500;
     border-radius: 15px;
+    float: left;
   }
 }
 
 /* FOR DISPLAY < 990px */
 @media (max-width: 990px) {
-  .occ{
+  .occ {
     margin-top: -12px;
     font-family: "Roboto", sans-serif;
     color: #303031;
@@ -102,7 +110,7 @@
     line-height: 1.5;
   }
   .chipContainer {
-    margin-top: 12%;
+    margin-top: 0%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -128,13 +136,14 @@
   }
   .valueCard {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    transition: 0.3s; 
+    transition: 0.3s;
     padding: 2% 2%;
     margin: 3% 0%;
     border-radius: 10px;
     text-align: center;
     height: 305px;
     width: 75%;
+    position: relative;
   }
   .mk {
     background-color: #ffc739;
@@ -143,11 +152,11 @@
     padding: 8px 15px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-family: "Roboto", sans-serif;
     font-size: 12px;
     font-weight: 500;
     border-radius: 15px;
+    float: left;
   }
   .pk {
     background-color: #9d26ca;
@@ -156,11 +165,11 @@
     padding: 8px 15px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-family: "Roboto", sans-serif;
     font-size: 12px;
     font-weight: 500;
     border-radius: 15px;
+    float: left;
   }
   .hk {
     background-color: #54c06e;
@@ -169,10 +178,10 @@
     padding: 8px 15px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-family: "Roboto", sans-serif;
     font-size: 12px;
     font-weight: 500;
     border-radius: 15px;
+    float: left;
   }
 }

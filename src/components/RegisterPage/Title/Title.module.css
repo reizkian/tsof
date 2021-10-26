@@ -1,0 +1,41 @@
+/* FOR DISPLAY > 990px */
+@media (min-width: 990px) {
+  .brandTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    text-align: center;
+    color: #303031;
+  }
+  .titleTSOF {
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    font-size: 50px;
+    color: #303031;
+    margin-top: 1%;
+    text-align: center;
+  }
+  
+}
+
+/* FOR DISPLAY < 990px */
+@media (max-width: 990px) {
+  .brandTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    text-align: center;
+    color: #303031;
+  }
+  .titleTSOF {
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    font-size: 40px;
+    color: #303031;
+    margin-top: 15%;
+    text-align: center;
+  }
+  }
+  

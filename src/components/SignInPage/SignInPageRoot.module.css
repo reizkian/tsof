@@ -44,9 +44,11 @@
   .footer {
     display: flex;
     justify-content: center;
+    margin-top: -5px;
   }
   .ul {
     display: flex;
+    
     justify-content: center;
   }
   .nav {

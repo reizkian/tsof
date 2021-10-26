@@ -24,7 +24,7 @@ const NavLinks = () => {
       </motion.li>
       <motion.li initial={animateFrom} animate={animateTo} transition={{delay:0.35}}>
       <div className={classes.PseudoButton}>
-        <a className={clsx(classes.SignIn, classes.navLinkText)} href="/sign-in">Sign In</a>
+        <a className={clsx(classes.SignIn, classes.navLinkText)} href="/">Home</a>
         </div>
       </motion.li>
     </ul>

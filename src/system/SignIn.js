@@ -1,7 +1,7 @@
 import React from "react";
 import style from "components/SignInPage/SignInPageRoot.module.css";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
@@ -11,7 +11,6 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,6 +52,19 @@ export default function SignIn() {
     event.preventDefault();
   };
 
+  function signInButton() {
+    console.log("clicked signin button")
+    axios
+      .get("http://180.243.47.250:3030/usercount", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(() => {
+        console.log("execute sign in buton");
+      });
+  }
+
   return (
     <>
       <div className={style.containerFluid}>
@@ -78,23 +90,11 @@ export default function SignIn() {
               <h1 className={style.brandText}>The School of Fire</h1>
             </div>
             <div className={style.form}>
-              <FormControl
-                className={clsx(classes.margin, classes.textField)}
-                variant="outlined"
-              >
-                <TextField
-                  id="outlined-basic"
-                  label="Email"
-                  variant="outlined"
-                />
+              <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                <TextField id="outlined-basic" label="Email" variant="outlined" />
               </FormControl>
-              <FormControl
-                className={clsx(classes.margin, classes.textField)}
-                variant="outlined"
-              >
-                <InputLabel htmlFor="outlined-adornment-password">
-                  Password
-                </InputLabel>
+              <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-password"
                   type={values.showPassword ? "text" : "password"}
@@ -108,11 +108,7 @@ export default function SignIn() {
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
-                        {values.showPassword ? (
-                          <Visibility />
-                        ) : (
-                          <VisibilityOff />
-                        )}
+                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   }
@@ -120,28 +116,18 @@ export default function SignIn() {
                 />
               </FormControl>
               <div>
-                <a className={style.buttonSignIn} href="/">
+                <button className={style.buttonSignIn} onClick={signInButton}>
                   Sign In
-                </a>
+                </button>
               </div>
             </div>
           </div>
         </div>
-        <div className={style.footer} />
-        <ul className={style.ul}>
-            <li className={style.docsNav}>
-              <a
-                className={style.docsLink}
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Konseling
-              </a>
-            </li >
+        <div className={style.footer}>
+          <ul className={style.ul}>
             <li className={style.docsNav}>
               <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
-                
+                Konseling
               </a>
             </li>
             <li className={style.docsNav}>
@@ -155,7 +141,7 @@ export default function SignIn() {
               </a>
             </li>
           </ul>
-        
+        </div>
       </div>
     </>
   );
