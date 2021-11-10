@@ -1,5 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
+import jwt from "jsonwebtoken";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
@@ -9,9 +11,9 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
+// import AdapterDateFns from "@mui/lab/AdapterDateFns";
+// import LocalizationProvider from "@mui/lab/LocalizationProvider";
+// import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
@@ -45,7 +47,9 @@ export default function Register() {
     email: "",
     password: "",
     confirmPassword: "",
-    birthdate: "",
+    name: "",
+    sex: "",
+    birthdate: "mm/dd/yyyy",
     phone: "",
     city: "",
     address: "",
@@ -58,9 +62,8 @@ export default function Register() {
   function handleFormChange(event) {
     setFormState((prevState) => ({
       ...prevState,
-      [event.target.name]: event.target.value,
+      [event.target.id]: event.target.value,
     }));
-    console.log(formState)
   }
   // HANDLE: show password & confirm password
   const handleClickShowPassword = () => {
@@ -68,7 +71,6 @@ export default function Register() {
   };
   const handleClickShowConfirmPassword = () => {
     setFormState({ ...formState, showConfirmPassword: !formState.showConfirmPassword });
-    console.log(formState.showConfirmPassword);
   };
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -77,30 +79,46 @@ export default function Register() {
     event.preventDefault();
   };
 
-  const [values, setValues] = React.useState({
-    amount: "",
-    password: "",
-    weight: "",
-    weightRange: "",
-    showPassword: false,
-  });
-  // Date
-  const [value, setValue] = React.useState(new Date("2017-09-19T21:11:54"));
-  const handleChange = (newValue) => {
-    setValue(newValue);
-  };
-
-  const [sex, setSex] = React.useState("");
-
-  const handleChangeSex = (event) => {
-    setSex(event.target.value);
-  };
-
-
+  // METHOD: register button
   function registerButton() {
-    setFormState({ ...formState, loading: !formState.loading });
-    console.log(formState);
-    setFormState({ ...formState, loading: !formState.loading });
+    const payloadData = {
+      email: formState.email,
+      password: formState.password,
+      confirmPassword: formState.confirmPassword,
+      name: formState.name,
+      birthdate: formState.birthDate,
+      phone: formState.phone,
+      city: formState.city,
+      address: formState.address,
+    };
+
+    /*
+      ~ npm jsonwebtoken
+      documentation:
+        https://www.npmjs.com/package/jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
+      usage: 
+        jwt.sign(payload, secretOrPrivateKey, [options, callback])
+        jwt.verify(token, secretOrPublicKey, [options, callback])
+    */
+
+    // secretOrPrivateKey located in .env file
+    const encodedPayloadData = { 
+      token: jwt.sign(
+        payloadData, 
+        process.env.REACT_APP_JWT_KEY, 
+        { algorithm: "HS256" }) 
+    };
+
+    // POST request encodedPayloadData to "/signup" route 
+    axios
+      .post("/signup", encodedPayloadData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((result) => {
+        console.log(result.data);
+      });
   }
   return (
     <>
@@ -121,13 +139,7 @@ export default function Register() {
           {/* INPUT: email */}
           <div className={style.formElemet}>
             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <TextField
-                name="email"
-                onChange={handleFormChange}
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
-              />
+              <TextField name="email" onChange={handleFormChange} id="email" label="Email" variant="outlined" />
             </FormControl>
           </div>
 
@@ -137,7 +149,7 @@ export default function Register() {
               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput
                 name="password"
-                id="outlined-adornment-password"
+                id="password"
                 type={formState.showPassword ? "text" : "password"}
                 value={formState.password}
                 onChange={handleFormChange}
@@ -163,7 +175,7 @@ export default function Register() {
             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
               <InputLabel htmlFor="outlined-adornment-password">Konfirmasi Password</InputLabel>
               <OutlinedInput
-                id="outlined-adornment-password"
+                id="confirmPassword"
                 name="confirmPassword"
                 label="Konfirmasi Password"
                 type={formState.showConfirmPassword ? "text" : "password"}
@@ -189,7 +201,7 @@ export default function Register() {
           {/* INPUT: name */}
           <div className={style.formElemet}>
             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <TextField id="outlined-basic" label="Nama Lengkap" variant="outlined" />
+              <TextField id="name" name="name" onChange={handleFormChange} label="Nama Lengkap" variant="outlined" />
             </FormControl>
           </div>
           {/* INPUT: sex */}
@@ -198,10 +210,10 @@ export default function Register() {
               <InputLabel id="demo-simple-select-label">Jenis Kelamin</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={sex}
+                id="sex"
+                name="sex"
                 label="Jenis Kelamin"
-                onChange={handleChangeSex}
+                onChange={handleFormChange}
               >
                 <MenuItem value={"Male"}>Pria</MenuItem>
                 <MenuItem value={"Female"}>Wanita</MenuItem>
@@ -223,12 +235,12 @@ export default function Register() {
             </LocalizationProvider> */}
             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
               <TextField
-                id="date"
+                id="birthdate"
                 name="birthdate"
                 variant="outlined"
                 label="Tanggal Lahir (Bulan / Tanggal / Tahun)"
                 type="date"
-                defaultValue="1996-09-19"
+                defaultValue="yyy-MM-dd"
                 onChange={handleFormChange}
                 sx={{ width: 220 }}
                 InputLabelProps={{
@@ -240,19 +252,37 @@ export default function Register() {
           {/* INPUT: city */}
           <div className={style.formElemet}>
             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <TextField id="outlined-basic" name="city" onChange={handleFormChange} label="Kota / Kabupaten" variant="outlined" />
+              <TextField
+                id="city"
+                name="city"
+                onChange={handleFormChange}
+                label="Kota / Kabupaten"
+                variant="outlined"
+              />
             </FormControl>
           </div>
           {/* INPUT: address */}
           <div className={style.formElemet}>
             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <TextField id="outlined-basic" name="address" onChange={handleFormChange} label="Alamat Domisili" variant="outlined" />
+              <TextField
+                id="address"
+                name="address"
+                onChange={handleFormChange}
+                label="Alamat Domisili"
+                variant="outlined"
+              />
             </FormControl>
           </div>
           {/* INPUT: phone */}
           <div className={style.formElemet}>
             <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <TextField id="outlined-basic" name="phone" onChange={handleFormChange} label="No. Whatsapp / HP" variant="outlined" />
+              <TextField
+                id="phone"
+                name="phone"
+                onChange={handleFormChange}
+                label="No. Whatsapp / HP"
+                variant="outlined"
+              />
             </FormControl>
           </div>
           <button className={style.buttonRegister} onClick={registerButton}>

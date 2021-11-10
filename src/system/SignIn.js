@@ -1,8 +1,11 @@
 import React from "react";
 import style from "components/SignInPage/SignInPageRoot.module.css";
-import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
+import jwt from "jsonwebtoken";
 import clsx from "clsx";
+import { useDispatch } from "react-redux";
+import { setFirebaseAuth } from "system/redux/reducer/auth";
 import IconButton from "@material-ui/core/IconButton";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -29,40 +32,69 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function SignIn(props) {
+  // REDUX: variable
+  const dispatch = useDispatch();
+
   const classes = useStyles();
-
-  const [values, setValues] = React.useState({
-    amount: "",
+  const [formState, setFormState] = React.useState({
+    email: "",
     password: "",
-    weight: "",
-    weightRange: "",
+    loading: false,
     showPassword: false,
+    errors: {},
   });
+  // HANDLE: form state
+  function handleFormChange(event) {
+    setFormState((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
+  }
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
+  // HANDLE: show password
   const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
+    setFormState({ ...formState, showPassword: !formState.showPassword });
   };
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
+  // METHOD: sign in
   function signInButton() {
-    console.log("clicked signin button")
+    const payloadData = {
+      email: formState.email,
+      password: formState.password,
+    };
+    /*
+      ~ npm jsonwebtoken
+      documentation:
+        https://www.npmjs.com/package/jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
+      usage: 
+        jwt.sign(payload, secretOrPrivateKey, [options, callback])
+        jwt.verify(token, secretOrPublicKey, [options, callback])
+    */
+
+    // secretOrPrivateKey located in .env file
+    const encodedPayloadData = {
+      token: jwt.sign(payloadData, process.env.REACT_APP_JWT_KEY, { algorithm: "HS256" }),
+    };
+    // POST request encodedPayloadData to "/signup" route
     axios
-      .get("http://180.243.47.250:3030/usercount", {
+      .post("/signin", encodedPayloadData, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-      .then(() => {
-        console.log("execute sign in buton");
-      });
+      .then((result) => {
+        // ~ console log encrypted firebase user credentials
+        console.log(result.data);
+        const decodedFirebaseUserCredential = jwt.verify(result.data.token, process.env.REACT_APP_JWT_KEY, {
+          algorithms: "HS256",
+        });
+        dispatch(setFirebaseAuth(decodedFirebaseUserCredential))
+      })
+      .then(()=>{props.history.push("/dashboard")})
   }
 
   return (
@@ -91,15 +123,22 @@ export default function SignIn() {
             </div>
             <div className={style.form}>
               <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                <TextField id="outlined-basic" label="Email" variant="outlined" />
+                <TextField
+                  id="outlined-basic"
+                  name="email"
+                  onChange={handleFormChange}
+                  label="Email"
+                  variant="outlined"
+                />
               </FormControl>
               <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-password"
-                  type={values.showPassword ? "text" : "password"}
-                  value={values.password}
-                  onChange={handleChange("password")}
+                  name="password"
+                  type={formState.showPassword ? "text" : "password"}
+                  value={formState.password}
+                  onChange={handleFormChange}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -108,7 +147,7 @@ export default function SignIn() {
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
-                        {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                        {formState.showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>
                     </InputAdornment>
                   }
