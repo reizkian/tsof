@@ -3,11 +3,13 @@ import { BrowserRouter, BrowserRouter as Router, Route, Switch } from "react-rou
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import axios from "axios";
 
-import {global} from "assets/theme.js"
+import { global } from "assets/theme.js";
 import LandingPage from "blog/LandingPage.js";
-import SignIn from "system/SignIn.js"
-import Register from "system/Register.js"
-import Dashboard from "system/dashboard/Dashboard.js"
+import SignIn from "system/SignIn.js";
+import Register from "system/Register.js";
+import Dashboard from "system/dashboard/Dashboard.js";
+import { SignInRoute, AuthenticatedRoute } from "system/util/ProtectedRoute.js";
+import { authenticatedSession } from "system/util/session.js";
 
 axios.defaults.baseURL = "http://localhost:5001/the-school-of-fire/us-central1/app";
 
@@ -23,9 +25,9 @@ class App extends Component {
             <Router>
               <Switch>
                 <Route exact path="/" component={LandingPage} />
-                <Route exact path="/sign-in" component={SignIn} />
+                <SignInRoute exact path="/sign-in" component={SignIn} authenticated={authenticatedSession()}/>
                 <Route exact path="/register" component={Register} />
-                <Route exact path="/dashboard" component={Dashboard}/>
+                <AuthenticatedRoute exact path="/dashboard" component={Dashboard} authenticated={authenticatedSession()}/>
               </Switch>
             </Router>
           </BrowserRouter>

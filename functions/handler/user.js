@@ -62,6 +62,8 @@ exports.signin = function(req, res) {
           var token;
           // ~ assign role to authentication token if user has role
           req.decodedToken.role = role.val();
+          // ~ assign exp for authenticated session
+          req.decodedToken.exp = req.decodedToken.iat + 30
           token = req.decodedToken;
           console.log(token);
           token = jwt.sign(token, privateKeyJWT, { algorithm: "HS256" });
@@ -70,7 +72,7 @@ exports.signin = function(req, res) {
     })
     .catch((err) => {
       console.log(err);
-      return res.status(500).json({ General: "user and password not found" });
+      return res.status(500).json({ general: "user and password not found" });
     });
 
   /*
@@ -142,7 +144,7 @@ exports.signup = function(req, res) {
           created: getCurrentTime(),
         };
         // ~ console log user data
-        console.log("signup reques user data: ", user);
+        console.log("signup request user data: ", user);
         return user;
       })
       .then((user) => {
@@ -150,6 +152,16 @@ exports.signup = function(req, res) {
         // ~ delete password and confirm password
         delete user.password;
         delete user.confirmPassword;
+        // ~ update user displayName
+        if (firebase.auth().currentUser != null){
+          firebase.auth().currentUser.updateProfile({
+            displayName: user.name
+          }).then(()=>{
+            console.log("update user displayName:", user.name)
+          }).catch((err)=>{
+            console.log(err)
+          })
+        }
         // ~ write user personal data to database
         realTimeDataBase
           .ref("users/" + user._id)

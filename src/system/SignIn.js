@@ -15,6 +15,10 @@ import TextField from "@material-ui/core/TextField";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -36,6 +40,7 @@ export default function SignIn(props) {
   // REDUX: variable
   const dispatch = useDispatch();
 
+  // REACT HOOK STATE
   const classes = useStyles();
   const [formState, setFormState] = React.useState({
     email: "",
@@ -60,8 +65,21 @@ export default function SignIn(props) {
     event.preventDefault();
   };
 
+  // HANDLE: error notification
+  const [openErrorSnackBar, setOpenErrorSnackBar] = React.useState(false);
+  function handleOpenErrorSnackBar() {
+    setOpenErrorSnackBar(true);
+  }
+  function handleCloseErrorSnackBar(event, reason) {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenErrorSnackBar(false);
+  }
+
   // METHOD: sign in
-  function signInButton() {
+  function signInButton(event) {
+    event.preventDefault();
     const payloadData = {
       email: formState.email,
       password: formState.password,
@@ -89,12 +107,31 @@ export default function SignIn(props) {
       .then((result) => {
         // ~ console log encrypted firebase user credentials
         console.log(result.data);
+        // ~ set encrypted firebaseUserCredential to localStorage
+        localStorage.setItem("firebaseUserCredential", `${result.data.token}`);
         const decodedFirebaseUserCredential = jwt.verify(result.data.token, process.env.REACT_APP_JWT_KEY, {
           algorithms: "HS256",
         });
-        dispatch(setFirebaseAuth(decodedFirebaseUserCredential))
+        console.log("EXE 1");
+        return decodedFirebaseUserCredential;
       })
-      .then(()=>{props.history.push("/dashboard")})
+      .then((decodedFirebaseUserCredential) => {
+        console.log(decodedFirebaseUserCredential);
+        dispatch(setFirebaseAuth(decodedFirebaseUserCredential));
+      })
+      .then(() => {
+        props.history.push("/sign-in");
+      })
+      .catch((err) => {
+        if(err){
+          handleOpenErrorSnackBar()
+        }
+        setFormState((prevState) => ({
+          ...prevState,
+          errors: err.response,
+          loading: false,
+        }));
+      });
   }
 
   return (
@@ -111,55 +148,66 @@ export default function SignIn(props) {
             />
           </div>
           <div className={style.SignInFormContainer}>
-            <div className={style.brandContainer}>
-              <img
-                className={style.brandImage}
-                width="70"
-                height="75"
-                src={require("assets/img/logo_sof.png").default}
-                alt="https://drive.google.com/uc?export=view&id=1rSaqlm1Cx8b3XswSFp3y53xYG_oCuNog"
-              />
-              <h1 className={style.brandText}>The School of Fire</h1>
-            </div>
-            <div className={style.form}>
-              <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                <TextField
-                  id="outlined-basic"
-                  name="email"
-                  onChange={handleFormChange}
-                  label="Email"
-                  variant="outlined"
+            <form onSubmit={signInButton}>
+              <div className={style.brandContainer}>
+                <img
+                  className={style.brandImage}
+                  width="70"
+                  height="75"
+                  src={require("assets/img/logo_sof.png").default}
+                  alt="https://drive.google.com/uc?export=view&id=1rSaqlm1Cx8b3XswSFp3y53xYG_oCuNog"
                 />
-              </FormControl>
-              <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-                <OutlinedInput
-                  id="outlined-adornment-password"
-                  name="password"
-                  type={formState.showPassword ? "text" : "password"}
-                  value={formState.password}
-                  onChange={handleFormChange}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {formState.showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  labelWidth={70}
-                />
-              </FormControl>
-              <div>
-                <button className={style.buttonSignIn} onClick={signInButton}>
-                  Sign In
-                </button>
+                <h1 className={style.brandText}>The School of Fire</h1>
               </div>
-            </div>
+              <div className={style.form}>
+                <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                  <TextField
+                    id="outlined-basic"
+                    name="email"
+                    onChange={handleFormChange}
+                    label="Email"
+                    variant="outlined"
+                  />
+                </FormControl>
+                <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                  <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                  <OutlinedInput
+                    id="outlined-adornment-password"
+                    name="password"
+                    type={formState.showPassword ? "text" : "password"}
+                    value={formState.password}
+                    onChange={handleFormChange}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {formState.showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    labelWidth={70}
+                  />
+                </FormControl>
+                <div>
+                  <button type="submit" className={style.buttonSignIn}>
+                    Sign In
+                  </button>
+                  <Snackbar 
+                    open={openErrorSnackBar} 
+                    anchorOrigin={{ vertical:"top", horizontal:"center" }}
+                    key={"topcenter"}
+                    autoHideDuration={6000} 
+                    onClose={handleCloseErrorSnackBar} 
+                    message="I love it">
+                      <Alert onClose={handleCloseErrorSnackBar} severity="warning">user and password tidak ditemukan</Alert>
+                  </Snackbar>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
         <div className={style.footer}>
