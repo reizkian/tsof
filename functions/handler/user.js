@@ -185,14 +185,14 @@ exports.signup = function(req, res) {
     [v] consult what data need to be collected
     ---------------------------------------------
 {
-  "email": "reizkianyesaya@gmail.com",
-  "password": "0universe0",
-  "confirmPassword": "0universe0",
-  "name": "Reizkian Yesaya Radityatama",
-  "birthdate": "10/03/1996",
-  "phone": "085157236637",
-  "city": "Tangerang",
-  "address": "Jl. Kelapa Gading Selatan Blok SG2 no 16, Pakulonan Barat, Kec. Klp. Dua, Tangerang, Banten 15810",
+  "email": "reizkianyesaya@gmail.com"
+  "password": "********"
+  "confirmPassword": "********"
+  "name": "Reizkian Yesaya Radityatama"
+  "phone": "085157236637"
+  "birthdate": "2021-11-05"
+  "city": "Tangerang"
+  "address: "Jl. Kelapa Gading Selatan Blok SG2 no 16, Pakulonan Bar., Kec. Klp. Dua, Tangerang, Banten 15810"
 }
   */
 };

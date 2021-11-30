@@ -20,6 +20,8 @@ import Select from "@material-ui/core/Select";
 import style from "components/RegisterPage/RegisterPageRoot.module.css";
 import NavBar from "components/RegisterPage/NavBar/NavBar.js";
 import Title from "components/RegisterPage/Title/Title.js";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +64,7 @@ export default function Register() {
   function handleFormChange(event) {
     setFormState((prevState) => ({
       ...prevState,
-      [event.target.id]: event.target.value,
+      [event.target.name]: event.target.value,
     }));
   }
   // HANDLE: show password & confirm password
@@ -79,6 +81,27 @@ export default function Register() {
     event.preventDefault();
   };
 
+  // HANDLE: empty form error
+  const [snackBarEmptyError, setSnackBarEmptyError] = React.useState({
+    open: false,
+    message: "",
+  });
+  function handleOpenErrorSnackBar() {
+    setSnackBarEmptyError((prevState) => ({
+      ...prevState,
+      open: true,
+    }));
+  }
+  function handleCloseErrorSnackBar(event, reason) {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackBarEmptyError((prevState) => ({
+      ...prevState,
+      open: false,
+    }));
+  }
+
   // METHOD: register button
   function registerButton() {
     const payloadData = {
@@ -86,11 +109,105 @@ export default function Register() {
       password: formState.password,
       confirmPassword: formState.confirmPassword,
       name: formState.name,
-      birthdate: formState.birthDate,
+      sex: formState.sex,
+      birthdate: formState.birthdate,
       phone: formState.phone,
       city: formState.city,
       address: formState.address,
     };
+
+
+    // check for empty form
+    if (payloadData.email === "") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Email tidak boleh kosong",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
+    if (payloadData.password === "") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Password tidak boleh kosong",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
+    if (payloadData.confirmPassword === "") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Konfirmasi password tidak boleh kosong",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
+    if (payloadData.confirmPassword !== payloadData.password) {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Password & Konfirmasi password tidak sesuai",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
+    if (payloadData.name === "") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Nama tidak boleh kosong",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
+    if (payloadData.sex === "") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Anda belum memilih jenis kelamin",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
+    if (payloadData.birthdate === "mm/dd/yyyy") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Tanggal lahir tidak boleh kosong",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
+    if (payloadData.phone === "") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "No. Whatsapp / HP tidak boleh kosong",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
+    if (payloadData.city === "") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Kota / Kabupaten tidak boleh kosong",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
+    if (payloadData.address === "") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Alamat tidak boleh kosong",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
 
     /*
       ~ npm jsonwebtoken
@@ -102,14 +219,14 @@ export default function Register() {
     */
 
     // secretOrPrivateKey located in .env file
-    const encodedPayloadData = { 
+    const encodedPayloadData = {
       token: jwt.sign(
-        payloadData, 
-        process.env.REACT_APP_JWT_KEY, 
-        { algorithm: "HS256" }) 
+        payloadData,
+        process.env.REACT_APP_JWT_KEY,
+        { algorithm: "HS256" })
     };
 
-    // POST request encodedPayloadData to "/signup" route 
+    // POST request encodedPayloadData to "/signup" route
     axios
       .post("/signup", encodedPayloadData, {
         headers: {
@@ -120,6 +237,7 @@ export default function Register() {
         console.log(result.data);
       });
   }
+
   return (
     <>
       {/* H E A D E R */}
@@ -215,8 +333,12 @@ export default function Register() {
                 label="Jenis Kelamin"
                 onChange={handleFormChange}
               >
-                <MenuItem value={"Male"}>Pria</MenuItem>
-                <MenuItem value={"Female"}>Wanita</MenuItem>
+                <MenuItem id="sex" value={"Male"}>
+                  Pria
+                </MenuItem>
+                <MenuItem id="sex" value={"Female"}>
+                  Wanita
+                </MenuItem>
               </Select>
             </FormControl>
           </div>
@@ -288,6 +410,18 @@ export default function Register() {
           <button className={style.buttonRegister} onClick={registerButton}>
             daftar
           </button>
+          <Snackbar
+            open={snackBarEmptyError.open}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            key={"bottomcenter"}
+            autoHideDuration={6000}
+            onClose={handleCloseErrorSnackBar}
+            message="I love it"
+          >
+            <Alert onClose={handleCloseErrorSnackBar} severity="error">
+              {snackBarEmptyError.message}
+            </Alert>
+          </Snackbar>
         </div>
       </div>
     </>

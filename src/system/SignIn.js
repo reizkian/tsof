@@ -112,7 +112,6 @@ export default function SignIn(props) {
         const decodedFirebaseUserCredential = jwt.verify(result.data.token, process.env.REACT_APP_JWT_KEY, {
           algorithms: "HS256",
         });
-        console.log("EXE 1");
         return decodedFirebaseUserCredential;
       })
       .then((decodedFirebaseUserCredential) => {
@@ -120,7 +119,7 @@ export default function SignIn(props) {
         dispatch(setFirebaseAuth(decodedFirebaseUserCredential));
       })
       .then(() => {
-        props.history.push("/sign-in");
+        window.location.reload();
       })
       .catch((err) => {
         if(err){

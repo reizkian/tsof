@@ -7,7 +7,7 @@ export const authSlice = createSlice({
   },
   reducers: {
     setFirebaseAuth: (state, action) => {
-      console.log("REDUX: execute setFirebaseAuth() method")
+      console.log("REDUX: executed setFirebaseAuth() method")
       state.firebaseAuth = action.payload;
       console.log("REDUX PAYLOAD: ", action.payload)
     },
