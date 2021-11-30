@@ -9,7 +9,8 @@ export default function Dashboard() {
 
   return (
     <>
-      <h1>Dashboard</h1>
+      <p>Dashboard still under development, please wait for further notice.</p>
+      <p>sofgkkdjogja@gmail.com</p>
     </>
   );
 }

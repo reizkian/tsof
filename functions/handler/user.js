@@ -6,6 +6,7 @@ const { realTimeDataBase } = require("../util/admin");
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 const { getCurrentTime } = require("../util/method");
+const {sendEmailWelcome} = require("../util/mailer");
 
 firebase.initializeApp(config);
 
@@ -145,6 +146,8 @@ exports.signup = function(req, res) {
         };
         // ~ console log user data
         console.log("signup request user data: ", user);
+        // ~ send email welcome
+        sendEmailWelcome(user.email, user.name)
         return user;
       })
       .then((user) => {
