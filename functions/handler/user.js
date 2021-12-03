@@ -6,6 +6,7 @@ const { realTimeDataBase } = require("../util/admin");
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 const { getCurrentTime } = require("../util/method");
+const {logActivity} = require("../handler/activity");
 const {sendEmailWelcome} = require("../util/mailer");
 
 firebase.initializeApp(config);
@@ -51,8 +52,8 @@ exports.signin = function(req, res) {
       return userID;
     })
     .then((userID) => {
-      // ~ update _authentication login timestamp
-      realTimeDataBase.ref("users/" + userID + "/_authentication/login").set(getCurrentTime());
+      // ~ logActivity: signin
+      logActivity(userID, getCurrentTime(), "signin")
       // ~ check and get user role from realtime database
       console.log(`sign in request: ${user.email} ${userID}`);
       return realTimeDataBase
@@ -140,10 +141,8 @@ exports.signup = function(req, res) {
         let userID = userCredentials.user.uid;
         // ~ add user object
         user._id = userID;
-        user._authentication = {
-          login: getCurrentTime(),
-          created: getCurrentTime(),
-        };
+        // ~ logActivity: signup
+        logActivity(userID, getCurrentTime(), "signup")
         // ~ console log user data
         console.log("signup request user data: ", user);
         // ~ send email welcome

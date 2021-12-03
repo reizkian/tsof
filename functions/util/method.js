@@ -16,8 +16,8 @@ exports.getCurrentTime = function() {
   return datetime;
 };
 
-exports.getCompoundID = function(userID, type){
-  var currendate = new Date();
-  const compoundID = userID + "_" + type + "_" + currendate;
+exports.getCompoundID = function(object, userID ){
+  const time = new Date().valueOf()
+  const compoundID = time+ "_" + object + "_" +userID;
   return compoundID;
 };
