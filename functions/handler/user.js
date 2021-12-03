@@ -6,8 +6,9 @@ const { realTimeDataBase } = require("../util/admin");
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 const { getCurrentTime } = require("../util/method");
-const {logActivity} = require("../handler/activity");
-const {sendEmailWelcome} = require("../util/mailer");
+const { logActivity } = require("../handler/activity");
+const { sendEmailWelcome } = require("../util/mailer");
+const { getAddressGeoLocation } = require("../util/geolocation");
 
 firebase.initializeApp(config);
 
@@ -53,7 +54,7 @@ exports.signin = function(req, res) {
     })
     .then((userID) => {
       // ~ logActivity: signin
-      logActivity(userID, getCurrentTime(), "signin")
+      logActivity(userID, getCurrentTime(), "signin");
       // ~ check and get user role from realtime database
       console.log(`sign in request: ${user.email} ${userID}`);
       return realTimeDataBase
@@ -65,7 +66,7 @@ exports.signin = function(req, res) {
           // ~ assign role to authentication token if user has role
           req.decodedToken.role = role.val();
           // ~ assign exp for authenticated session (added number in seconds) set for 1 month
-          req.decodedToken.exp = req.decodedToken.iat + (60 * 60 * 24 * 30 * 1)
+          req.decodedToken.exp = req.decodedToken.iat + 60 * 60 * 24 * 30 * 1;
           token = req.decodedToken;
           console.log(token);
           token = jwt.sign(token, privateKeyJWT, { algorithm: "HS256" });
@@ -142,11 +143,9 @@ exports.signup = function(req, res) {
         // ~ add user object
         user._id = userID;
         // ~ logActivity: signup
-        logActivity(userID, getCurrentTime(), "signup")
-        // ~ console log user data
-        console.log("signup request user data: ", user);
+        logActivity(userID, getCurrentTime(), "signup");
         // ~ send email welcome
-        sendEmailWelcome(user.email, user.name)
+        sendEmailWelcome(user.email, user.name);
         return user;
       })
       .then((user) => {
@@ -155,28 +154,39 @@ exports.signup = function(req, res) {
         delete user.password;
         delete user.confirmPassword;
         // ~ update user displayName
-        if (firebase.auth().currentUser != null){
-          firebase.auth().currentUser.updateProfile({
-            displayName: user.name
-          }).then(()=>{
-            console.log("update user displayName:", user.name)
-          }).catch((err)=>{
-            console.log(err)
-          })
+        if (firebase.auth().currentUser != null) {
+          firebase
+            .auth()
+            .currentUser.updateProfile({
+              displayName: user.name,
+            })
+            .then(() => {
+              console.log("update user displayName:", user.name);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         }
-        // ~ write user personal data to database
-        realTimeDataBase
-          .ref("users/" + user._id)
-          .set(user)
-          .then(() => {
-            return res.status(201).json({ message: `user signed up successfully`, _id: req.user._id });
+        // ~ get addressGeoLocation
+        getAddressGeoLocation(user.address)
+          .then((addressGeoLocation) => {
+            user.addressGeoLocation = addressGeoLocation;
+            // ~ console log user data
+            console.log("signup request user data: ", user);
+            // ~ write user personal data to database
+            realTimeDataBase
+              .ref("users/" + user._id)
+              .set(user)
+              .then(() => {
+                return res.status(201).json({ message: `user signed up successfully`, _id: req.user._id });
+              })
+              .catch((err) => {
+                return res.status(500).json({ error: err });
+              });
           })
           .catch((err) => {
             return res.status(500).json({ error: err });
           });
-      })
-      .catch((err) => {
-        return res.status(500).json({ error: err });
       });
   }
 
