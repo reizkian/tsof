@@ -63,8 +63,8 @@ exports.signin = function(req, res) {
           var token;
           // ~ assign role to authentication token if user has role
           req.decodedToken.role = role.val();
-          // ~ assign exp for authenticated session
-          req.decodedToken.exp = req.decodedToken.iat + 30
+          // ~ assign exp for authenticated session (added number in seconds) set for 1 month
+          req.decodedToken.exp = req.decodedToken.iat + (60 * 60 * 24 * 30 * 1)
           token = req.decodedToken;
           console.log(token);
           token = jwt.sign(token, privateKeyJWT, { algorithm: "HS256" });

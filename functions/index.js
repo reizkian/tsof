@@ -5,11 +5,13 @@ const express = require("express");
 const app = express();
 
 const { signin, signup } = require("./handler/user")
+const { createCourse } = require ("./handler/course")
 app.use(cors());
 
 /* R O U T E */
 app.post("/signin", signin);
 app.post("/signup", signup);
+app.post("/create-course", createCourse)
 
 /* E X P O R T S */
 exports.app = functions.https.onRequest(app)

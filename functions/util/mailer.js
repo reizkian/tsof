@@ -9,9 +9,8 @@ const emailPassword = functions.config().tsof.email_password;
 const privateKeyJWT = functions.config().tsof;
 
 exports.sendEmailWelcome = (recieverEmail, recieverName) => {
-  console.log("pass: ", emailPassword);
-  console.log("jwt: ", privateKeyJWT);
   console.log("send email confirmation to: " + recieverEmail);
+  console.log(emailPassword)
   // ~ create transporter object to send email
   const transporter = nodemailer.createTransport({
     service: "Gmail",

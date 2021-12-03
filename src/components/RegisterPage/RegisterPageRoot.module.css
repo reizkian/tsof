@@ -38,6 +38,9 @@
     font-weight: 500;
     border-radius: 25px;
   }
+  .buttonRegister:hover {
+    background-color: #4cb365;
+  }
   .formSectionTitle{
     font-family: "Roboto", sans-serif;
     font-size: 20px;

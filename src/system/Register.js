@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Register() {
+export default function Register(props) {
   const classes = useStyles();
 
   // Form state
@@ -103,7 +103,8 @@ export default function Register() {
   }
 
   // METHOD: register button
-  function registerButton() {
+  function registerButton(event) {
+    event.preventDefault();
     const payloadData = {
       email: formState.email,
       password: formState.password,
@@ -235,6 +236,7 @@ export default function Register() {
       })
       .then((result) => {
         console.log(result.data);
+        props.history.push("/sign-in")
       });
   }
 

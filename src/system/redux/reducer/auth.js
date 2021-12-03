@@ -4,15 +4,17 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     firebaseAuth: {},
+    test:"test",
   },
   reducers: {
     setFirebaseAuth: (state, action) => {
-      console.log("REDUX: executed setFirebaseAuth() method")
       state.firebaseAuth = action.payload;
-      console.log("REDUX PAYLOAD: ", action.payload)
+    },
+    setTest: (state, action) => {
+      state.test = action.payload;
     },
   },
 });
 
-export const { setFirebaseAuth } = authSlice.actions;
+export const { setFirebaseAuth, setTest } = authSlice.actions;
 export default authSlice.reducer;

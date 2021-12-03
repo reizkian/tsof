@@ -7,7 +7,6 @@
 function authenticatedSession() {
   // local storage
   const encryptedUserCredential = localStorage.getItem("firebaseUserCredential");
-  console.log(encryptedUserCredential)
   let authenticatedUser;
 
   if (encryptedUserCredential) {

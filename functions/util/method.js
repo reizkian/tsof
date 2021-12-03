@@ -15,3 +15,9 @@ exports.getCurrentTime = function() {
     ":GMT+07";
   return datetime;
 };
+
+exports.getCompoundID = function(userID, type){
+  var currendate = new Date();
+  const compoundID = userID + "_" + type + "_" + currendate;
+  return compoundID;
+};

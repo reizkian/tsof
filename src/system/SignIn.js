@@ -1,11 +1,10 @@
 import React from "react";
 import style from "components/SignInPage/SignInPageRoot.module.css";
 import { makeStyles } from "@material-ui/core/styles";
+import { motion } from "framer-motion";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import clsx from "clsx";
-import { useDispatch } from "react-redux";
-import { setFirebaseAuth } from "system/redux/reducer/auth";
 import IconButton from "@material-ui/core/IconButton";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -15,9 +14,8 @@ import TextField from "@material-ui/core/TextField";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,9 +35,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn(props) {
-  // REDUX: variable
-  const dispatch = useDispatch();
-
   // REACT HOOK STATE
   const classes = useStyles();
   const [formState, setFormState] = React.useState({
@@ -49,6 +44,11 @@ export default function SignIn(props) {
     showPassword: false,
     errors: {},
   });
+
+  // framer motion const
+  const animateFrom = { opacity: 0, y: -40 };
+  const animateTo = { opacity: 1, y: 0 };
+
   // HANDLE: form state
   function handleFormChange(event) {
     setFormState((prevState) => ({
@@ -109,21 +109,16 @@ export default function SignIn(props) {
         console.log(result.data);
         // ~ set encrypted firebaseUserCredential to localStorage
         localStorage.setItem("firebaseUserCredential", `${result.data.token}`);
-        const decodedFirebaseUserCredential = jwt.verify(result.data.token, process.env.REACT_APP_JWT_KEY, {
-          algorithms: "HS256",
-        });
-        return decodedFirebaseUserCredential;
+        // ~ set authenticationStatus to local storage
+        localStorage.setItem("authenticationStatus", true);
+        return result.data;
       })
       .then((decodedFirebaseUserCredential) => {
-        console.log(decodedFirebaseUserCredential);
-        dispatch(setFirebaseAuth(decodedFirebaseUserCredential));
-      })
-      .then(() => {
         window.location.reload();
       })
       .catch((err) => {
-        if(err){
-          handleOpenErrorSnackBar()
+        if (err) {
+          handleOpenErrorSnackBar();
         }
         setFormState((prevState) => ({
           ...prevState,
@@ -138,8 +133,11 @@ export default function SignIn(props) {
       <div className={style.containerFluid}>
         <div className={style.contentSignIn}>
           <div className={style.SignInImgContainer}>
-            <img
+            <motion.img
               className={style.SignInImg}
+              initial={{ opacity: 0, y: -70 }}
+              animate={animateTo}
+              transition={{ delay: 0.05 }}
               width="445"
               height="455"
               src={require("assets/img/signin.png").default}
@@ -195,14 +193,17 @@ export default function SignIn(props) {
                   <button type="submit" className={style.buttonSignIn}>
                     Sign In
                   </button>
-                  <Snackbar 
-                    open={openErrorSnackBar} 
-                    anchorOrigin={{ vertical:"top", horizontal:"center" }}
+                  <Snackbar
+                    open={openErrorSnackBar}
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
                     key={"topcenter"}
-                    autoHideDuration={6000} 
-                    onClose={handleCloseErrorSnackBar} 
-                    message="I love it">
-                      <Alert onClose={handleCloseErrorSnackBar} severity="warning">user and password tidak ditemukan</Alert>
+                    autoHideDuration={6000}
+                    onClose={handleCloseErrorSnackBar}
+                    message="I love it"
+                  >
+                    <Alert onClose={handleCloseErrorSnackBar} severity="warning">
+                      user and password tidak ditemukan
+                    </Alert>
                   </Snackbar>
                 </div>
               </div>
@@ -211,21 +212,21 @@ export default function SignIn(props) {
         </div>
         <div className={style.footer}>
           <ul className={style.ul}>
-            <li className={style.docsNav}>
+            <motion.li initial={animateFrom} animate={animateTo} transition={{ delay: 0.05 }} className={style.docsNav}>
               <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
                 Konseling
               </a>
-            </li>
-            <li className={style.docsNav}>
+            </motion.li>
+            <motion.li initial={animateFrom} animate={animateTo} transition={{ delay: 0.15 }} className={style.docsNav}>
               <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
                 Kelas Pengajaran
               </a>
-            </li>
-            <li className={style.docsNav}>
+            </motion.li>
+            <motion.li initial={animateFrom} animate={animateTo} transition={{ delay: 0.25 }} className={style.docsNav}>
               <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
                 Pertumbuhan Rohani
               </a>
-            </li>
+            </motion.li>
           </ul>
         </div>
       </div>
