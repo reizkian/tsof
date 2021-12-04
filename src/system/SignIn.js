@@ -56,6 +56,9 @@ export default function SignIn(props) {
       [event.target.name]: event.target.value,
     }));
   }
+  function handleCloseLoadingAlert(event) {
+    setFormState({ ...formState, loading: false });
+  }
 
   // HANDLE: show password
   const handleClickShowPassword = () => {
@@ -97,6 +100,8 @@ export default function SignIn(props) {
     const encodedPayloadData = {
       token: jwt.sign(payloadData, process.env.REACT_APP_JWT_KEY, { algorithm: "HS256" }),
     };
+    // set loading TRUE
+    setFormState({ ...formState, loading: !formState.loading });
     // POST request encodedPayloadData to "/signup" route
     axios
       .post("/signin", encodedPayloadData, {
@@ -117,6 +122,13 @@ export default function SignIn(props) {
         window.location.reload();
       })
       .catch((err) => {
+        // close loading alert
+        setFormState((prevState) => ({
+          ...prevState,
+          errors: err.response,
+          loading: false,
+        }));
+        // open error alert
         if (err) {
           handleOpenErrorSnackBar();
         }
@@ -193,6 +205,7 @@ export default function SignIn(props) {
                   <button type="submit" className={style.buttonSignIn}>
                     Sign In
                   </button>
+                  {/* WARNING Snackbar */}
                   <Snackbar
                     open={openErrorSnackBar}
                     anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -203,6 +216,19 @@ export default function SignIn(props) {
                   >
                     <Alert onClose={handleCloseErrorSnackBar} severity="warning">
                       user and password tidak ditemukan
+                    </Alert>
+                  </Snackbar>
+                  {/* LOADING Snackbar */}
+                  <Snackbar
+                    open={formState.loading}
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                    key={"bottomcenter"}
+                    autoHideDuration={20000}
+                    onClose={handleCloseErrorSnackBar}
+                    message="I love it"
+                  >
+                    <Alert onClose={handleCloseLoadingAlert} severity="success">
+                      {"Mohon tunggu koneksi server"}
                     </Alert>
                   </Snackbar>
                 </div>

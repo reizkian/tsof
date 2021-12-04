@@ -67,6 +67,10 @@ export default function Register(props) {
       [event.target.name]: event.target.value,
     }));
   }
+  function handleCloseLoadingAlert(event) {
+    setFormState({ ...formState, loading: false });
+  }
+
   // HANDLE: show password & confirm password
   const handleClickShowPassword = () => {
     setFormState({ ...formState, showPassword: !formState.showPassword });
@@ -116,7 +120,6 @@ export default function Register(props) {
       city: formState.city,
       address: formState.address,
     };
-
 
     // check for empty form
     if (payloadData.email === "") {
@@ -221,13 +224,13 @@ export default function Register(props) {
 
     // secretOrPrivateKey located in .env file
     const encodedPayloadData = {
-      token: jwt.sign(
-        payloadData,
-        process.env.REACT_APP_JWT_KEY,
-        { algorithm: "HS256" })
+      token: jwt.sign(payloadData, process.env.REACT_APP_JWT_KEY, { algorithm: "HS256" }),
     };
 
-    // POST request encodedPayloadData to "/signup" route
+    // set loading TRUE
+    setFormState({ ...formState, loading: !formState.loading });
+
+    // POST request encodedPayloadData to "/signup" route  
     axios
       .post("/signup", encodedPayloadData, {
         headers: {
@@ -236,7 +239,24 @@ export default function Register(props) {
       })
       .then((result) => {
         console.log(result.data);
-        props.history.push("/sign-in")
+        setFormState({ ...formState, loading: !formState.loading });
+        props.history.push("/sign-in");
+      })
+      .catch((err) => {
+        console.log(err)
+        // close loading alert
+        setFormState((prevState) => ({
+          ...prevState,
+          errors: err.response,
+          loading: false,
+        }));
+        // open error alert
+        setSnackBarEmptyError((prevState) => ({
+          ...prevState,
+          open: true,
+          message: "Koneksi ke server gagal",
+        }));
+        handleOpenErrorSnackBar();
       });
   }
 
@@ -412,6 +432,7 @@ export default function Register(props) {
           <button className={style.buttonRegister} onClick={registerButton}>
             daftar
           </button>
+          {/* ERROR Snackbar */}
           <Snackbar
             open={snackBarEmptyError.open}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
@@ -422,6 +443,19 @@ export default function Register(props) {
           >
             <Alert onClose={handleCloseErrorSnackBar} severity="error">
               {snackBarEmptyError.message}
+            </Alert>
+          </Snackbar>
+          {/* LOADING Snackbar */}
+          <Snackbar
+            open={formState.loading}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            key={"bottomcenter"}
+            autoHideDuration={20000}
+            onClose={handleCloseErrorSnackBar}
+            message="I love it"
+          >
+            <Alert onClose={handleCloseLoadingAlert} severity="success">
+              {"Mohon tunggu koneksi server"}
             </Alert>
           </Snackbar>
         </div>
