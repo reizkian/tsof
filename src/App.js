@@ -11,8 +11,8 @@ import Dashboard from "system/dashboard/Dashboard.js";
 import { SignInRoute, AuthenticatedRoute } from "system/util/ProtectedRoute.js";
 import { authenticatedSession } from "system/util/session.js";
 
-axios.defaults.baseURL = "http://localhost:5001/the-school-of-fire/us-central1/app";
-// axios.defaults.baseURL = "https://us-central1-the-school-of-fire.cloudfunctions.net/app";
+// axios.defaults.baseURL = "http://localhost:5001/the-school-of-fire/us-central1/app";
+axios.defaults.baseURL = "https://us-central1-the-school-of-fire.cloudfunctions.net/app";
 
 const themeGlobal = createMuiTheme(global);
 
