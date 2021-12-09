@@ -1,8 +1,5 @@
 const axios = require("axios");
-const functions = require("firebase-functions");
-
-// get googlemap API key from firebase environment variable
-const googleMapApiKey = functions.config().tsof.gmap_api_key;
+const {googleMapApiKey} = require("./admin")
 
 exports.getAddressGeoLocation = function(stringAddress){
     // 1. target URL for GET request to google map

@@ -1,6 +1,7 @@
 module.exports ={
     apiKey: "AIzaSyB7xOJJKiC3gKCFjMxdK3pDfEHPwSrs25U",
     authDomain: "the-school-of-fire.firebaseapp.com",
+    databaseURL: "https://the-school-of-fire.firebaseio.com/",
     projectId: "the-school-of-fire",
     storageBucket: "the-school-of-fire.appspot.com",
     messagingSenderId: "724925511029",

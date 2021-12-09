@@ -2,7 +2,7 @@ const firebase = require("firebase");
 const config = require("../util/config");
 const functions = require("firebase-functions");
 const { admin } = require("../util/admin");
-const { realTimeDataBase } = require("../util/admin");
+const { firebaseDatabase } = require("../util/admin");
 const jwt = require("jsonwebtoken");
 
 // get JWT key from firebase environment variable
@@ -23,7 +23,7 @@ exports.createCourse = function(req, res) {
   }
 
   // 3. READ and check user role
-  return realTimeDataBase
+  return firebaseDatabase
     .ref("users/" + decodedPayloadData.userID)
     .child("role")
     .get()
@@ -36,7 +36,7 @@ exports.createCourse = function(req, res) {
     })
 		.then(() => {
       // 4. WRITE course data to database
-      realTimeDataBase
+      firebaseDatabase
         .ref("courses")
         .set(decodedPayloadData.data)
         .then(() => {

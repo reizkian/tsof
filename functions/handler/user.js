@@ -1,19 +1,11 @@
-const firebase = require("firebase");
-const config = require("../util/config");
-const functions = require("firebase-functions");
-const { admin } = require("../util/admin");
-const { realTimeDataBase } = require("../util/admin");
+const { firebaseDatabase, firebaseAuthentication } = require("../util/admin");
 const jwt = require("jsonwebtoken");
 const jwtDecode = require("jwt-decode");
 const { getCurrentTime } = require("../util/method");
 const { logActivity } = require("../handler/activity");
 const { sendEmailWelcome } = require("../util/mailer");
 const { getAddressGeoLocation } = require("../util/geolocation");
-
-firebase.initializeApp(config);
-
-// get JWT key from firebase environment variable
-const privateKeyJWT = functions.config().tsof.jwt_key;
+const {privateKeyJWT} = require("../util/admin")
 
 exports.signin = function(req, res) {
   /*
@@ -39,8 +31,7 @@ exports.signin = function(req, res) {
   }
 
   // ~ firebase authentication
-  firebase
-    .auth()
+  firebaseAuthentication
     .signInWithEmailAndPassword(user.email, user.password)
     .then((userCredentials) => {
       // ~ return id token
@@ -57,7 +48,7 @@ exports.signin = function(req, res) {
       logActivity(userID, getCurrentTime(), "signin");
       // ~ check and get user role from realtime database
       console.log(`sign in request: ${user.email} ${userID}`);
-      return realTimeDataBase
+      return firebaseDatabase
         .ref("users/" + userID)
         .child("role")
         .get()
@@ -135,8 +126,7 @@ exports.signup = function(req, res) {
     res.status(400).json({ error: errors });
   } else {
     // ~ else proceede to create user
-    firebase
-      .auth()
+    firebaseAuthentication
       .createUserWithEmailAndPassword(user.email, user.password)
       .then((userCredentials) => {
         let userID = userCredentials.user.uid;
@@ -154,9 +144,8 @@ exports.signup = function(req, res) {
         delete user.password;
         delete user.confirmPassword;
         // ~ update user displayName
-        if (firebase.auth().currentUser != null) {
-          firebase
-            .auth()
+        if (firebaseAuthentication.currentUser != null) {
+          firebaseAuthentication
             .currentUser.updateProfile({
               displayName: user.name,
             })
@@ -174,7 +163,7 @@ exports.signup = function(req, res) {
             // ~ console log user data
             console.log("signup request user data: ", user);
             // ~ write user personal data to database
-            realTimeDataBase
+            firebaseDatabase
               .ref("users/" + user._id)
               .set(user)
               .then(() => {
