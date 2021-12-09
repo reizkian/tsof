@@ -1,4 +1,4 @@
-import style from "components/LandingPage/Invitation/Invitation.module.css";
+import style from "./Invitation.module.css";
 import { motion } from "framer-motion";
 
 export default function Title() {

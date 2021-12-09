@@ -1,5 +1,5 @@
-import style from "components/LandingPage/Value/Value.module.css";
-import styleCustom from "components/LandingPage/Testimony/Testimony.module.css";
+import style from "../Value/Value.module.css";
+import styleCustom from "./Testimony.module.css";
 
 export default function Value() {
   return (

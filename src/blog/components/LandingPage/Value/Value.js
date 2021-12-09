@@ -1,4 +1,4 @@
-import style from "components/LandingPage/Value/Value.module.css";
+import style from "./Value.module.css";
 
 export default function Value() {
   return (

@@ -1,4 +1,4 @@
-import style from "components/LandingPage/Title/Title.module.css";
+import style from "./Title.module.css";
 import { motion } from "framer-motion";
 
 export default function Title() {

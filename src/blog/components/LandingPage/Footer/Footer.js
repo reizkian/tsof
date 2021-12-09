@@ -1,4 +1,4 @@
-import style from "components/LandingPage/Footer/Footer.module.css";
+import style from "./Footer.module.css";
 
 export default function Footer() {
   return (

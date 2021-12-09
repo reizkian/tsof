@@ -7,7 +7,7 @@ import { global } from "assets/theme.js";
 import LandingPage from "blog/LandingPage.js";
 import SignIn from "system/SignIn.js";
 import Register from "system/Register.js";
-import Dashboard from "system/dashboard/Dashboard.js";
+import Dashboard from "system/Dashboard.js";
 import { SignInRoute, AuthenticatedRoute } from "system/util/ProtectedRoute.js";
 import { authenticatedSession } from "system/util/session.js";
 

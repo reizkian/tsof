@@ -1,4 +1,4 @@
-import style from "components/LandingPage/Features/Features.module.css";
+import style from "./Features.module.css";
 
 export default function Title() {
   return (
