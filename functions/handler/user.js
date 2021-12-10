@@ -4,8 +4,9 @@ const jwtDecode = require("jwt-decode");
 const { getCurrentTime } = require("../util/method");
 const { logActivity } = require("../handler/activity");
 const { sendEmailWelcome } = require("../util/mailer");
+const { useEmulators } = require("../util/admin");
 const { getAddressGeoLocation } = require("../util/geolocation");
-const {privateKeyJWT} = require("../util/admin")
+const { privateKeyJWT } = require("../util/admin");
 
 exports.signin = function(req, res) {
   /*
@@ -135,7 +136,9 @@ exports.signup = function(req, res) {
         // ~ logActivity: signup
         logActivity(userID, getCurrentTime(), "signup");
         // ~ send email welcome
-        sendEmailWelcome(user.email, user.name);
+        if (!useEmulators) {
+          sendEmailWelcome(user.email, user.name);
+        }
         return user;
       })
       .then((user) => {
@@ -145,8 +148,8 @@ exports.signup = function(req, res) {
         delete user.confirmPassword;
         // ~ update user displayName
         if (firebaseAuthentication.currentUser != null) {
-          firebaseAuthentication
-            .currentUser.updateProfile({
+          firebaseAuthentication.currentUser
+            .updateProfile({
               displayName: user.name,
             })
             .then(() => {
@@ -157,7 +160,7 @@ exports.signup = function(req, res) {
             });
         }
         // ~ get addressGeoLocation
-        getAddressGeoLocation(user.address)
+        getAddressGeoLocation(`${user.address} ${user.city}`)
           .then((addressGeoLocation) => {
             user.addressGeoLocation = addressGeoLocation;
             // ~ console log user data

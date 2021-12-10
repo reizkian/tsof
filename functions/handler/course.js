@@ -1,12 +1,5 @@
-const firebase = require("firebase");
-const config = require("../util/config");
-const functions = require("firebase-functions");
-const { admin } = require("../util/admin");
-const { firebaseDatabase } = require("../util/admin");
+const { firebaseDatabase, privateKeyJWT } = require("../util/admin");
 const jwt = require("jsonwebtoken");
-
-// get JWT key from firebase environment variable
-const privateKeyJWT = functions.config().tsof.jwt_key;
 
 exports.createCourse = function(req, res) {
   // 1. get payload data

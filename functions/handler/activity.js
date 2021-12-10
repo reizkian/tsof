@@ -1,10 +1,5 @@
-const firebase = require("firebase");
-const config = require("../util/config");
-const functions = require("firebase-functions");
-const { admin } = require("../util/admin");
 const { firebaseDatabase } = require("../util/admin");
 const { getCompoundID} = require("../util/method");
-const jwt = require("jsonwebtoken");
 
 exports.logActivity = function(userID, timeStamp, method){
     // 1. generate logActivity id for each activity
