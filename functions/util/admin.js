@@ -20,10 +20,8 @@ var firebaseDatabase = firebase.database();
 
 // ~ emulators
 var useEmulators = false;
-console.log("Operating System hostname: ", operatingSystem.hostname());
 if (operatingSystem.hostname() === "AMD64") {
   useEmulators = true;
-  console.log("Firebase App Emulators:", useEmulators);
   firebaseAuthentication.useEmulator("http://localhost:9099");
   firebaseDatabase.useEmulator("localhost", 9000);;
 }
