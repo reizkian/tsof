@@ -17,9 +17,9 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
-import style from "./components/RegisterPage/RegisterPageRoot.module.css";
-import NavBar from "./components/RegisterPage/NavBar/NavBar.js";
-import Title from "./components/RegisterPage/Title/Title.js";
+import style from "./views/RegisterPage/RegisterPageRoot.module.css";
+import NavBar from "./views/RegisterPage/NavBar/NavBar.js";
+import Title from "./views/RegisterPage/Title/Title.js";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 

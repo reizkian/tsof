@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./components/SignInPage/SignInPageRoot.module.css";
+import style from "./views/SignInPage/SignInPageRoot.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { motion } from "framer-motion";
 import axios from "axios";

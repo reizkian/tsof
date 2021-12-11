@@ -4,14 +4,14 @@ import React from "react";
 // import Button from "@material-ui/core/Button";
 // import Paper from "@material-ui/core/Paper";
 
-import style from "blog/components/LandingPage/LandingPageRoot.module.css";
-import NavBar from "blog/components/LandingPage/NavBar/NavBar.js";
-import Title from "blog/components/LandingPage/Title/Title.js";
-import Value from "blog/components/LandingPage/Value/Value.js";
-import Features from "blog/components/LandingPage/Features/Features.js";
-import Testimony from "blog/components/LandingPage/Testimony/Testimony.js";
-import Invitation from "blog/components/LandingPage/Invitation/Invitation.js";
-import Footer from "blog/components/LandingPage/Footer/Footer.js";
+import style from "./views/LandingPage/LandingPageRoot.module.css";
+import NavBar from "./views/LandingPage/NavBar/NavBar.js";
+import Title from "./views/LandingPage/Title/Title.js";
+import Value from "./views/LandingPage/Value/Value.js";
+import Features from "./views/LandingPage/Features/Features.js";
+import Testimony from "./views/LandingPage/Testimony/Testimony.js";
+import Invitation from "./views/LandingPage/Invitation/Invitation.js";
+import Footer from "./views/LandingPage/Footer/Footer.js";
 
 // const useStyles = makeStyles((theme) => ({
 //   root: {
