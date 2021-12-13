@@ -12,16 +12,13 @@ exports.signin = function(req, res) {
   /*
     take user email and password, pass it to firebase authentication
   */
-
   const payloadData = {
     token: req.body.token,
   };
-
   // get user data by decode jwt token
   const user = jwt.verify(payloadData.token, privateKeyJWT, { algorithm: "HS256" });
   const currentDateTime = new Date();
   delete user.iat;
-
   // ~ error handling
   let errors = {};
   if (user.email === "") {
@@ -30,7 +27,6 @@ exports.signin = function(req, res) {
   if (user.password === "") {
     errors.email = "password cannot be empty";
   }
-
   // ~ firebase authentication
   firebaseAuthentication
     .signInWithEmailAndPassword(user.email, user.password)
@@ -47,18 +43,18 @@ exports.signin = function(req, res) {
     .then((userID) => {
       // ~ logActivity: signin
       logActivity(userID, getCurrentTime(), "signin");
-      // ~ check and get user role from realtime database
+      // ~ check and get user personal data
       console.log(`sign in request: ${user.email} ${userID}`);
       return firebaseDatabase
-        .ref("users/" + userID)
-        .child("role")
+        .ref("users/")
+        .child(userID)
         .get()
-        .then((role) => {
+        .then((personalData) => {
           var token;
           // ~ assign role to authentication token if user has role
-          req.decodedToken.role = role.val();
-          // ~ assign exp for authenticated session (added number in seconds) set for 1 month
-          req.decodedToken.exp = req.decodedToken.iat + 60 * 60 * 24 * 30 * 1;
+          req.decodedToken.personalData = personalData.val();
+          // ~ assign exp for authenticated session (added number in seconds) set for 3 days
+          req.decodedToken.exp = req.decodedToken.iat + 60 * 60 * 24 * 3;
           token = req.decodedToken;
           console.log(token);
           token = jwt.sign(token, privateKeyJWT, { algorithm: "HS256" });
@@ -69,7 +65,6 @@ exports.signin = function(req, res) {
       console.log(err);
       return res.status(500).json({ general: "user and password not found" });
     });
-
   /*
     TO DO:
       [v] firebase authentication
