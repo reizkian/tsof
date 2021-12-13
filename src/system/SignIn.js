@@ -1,5 +1,6 @@
 import React from "react";
 import style from "./views/SignInPage/SignInPageRoot.module.css";
+import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -35,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn(props) {
+  console.log(props);
+  const navigateRoute = useNavigate();
   // REACT HOOK STATE
   const classes = useStyles();
   const [formState, setFormState] = React.useState({
@@ -116,12 +119,17 @@ export default function SignIn(props) {
         localStorage.setItem("firebaseUserCredential", `${result.data.token}`);
         // ~ set authenticationStatus to local storage
         localStorage.setItem("authenticationStatus", true);
-        return result.data;
+        return result.data.token;
       })
-      .then((decodedFirebaseUserCredential) => {
-        window.location.reload();
+      .then((firebaseUserCredential) => {
+        console.log(firebaseUserCredential);
+        navigateRoute("/dashboard/home", {
+          state: { encodedUserCredential: firebaseUserCredential },
+          replace: true,
+        });
       })
       .catch((err) => {
+        console.log(err);
         // close loading alert
         setFormState((prevState) => ({
           ...prevState,

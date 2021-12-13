@@ -5,13 +5,12 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Box, Link, Drawer, Typography, Avatar } from '@mui/material';
 // components
-import Logo from '../../components/Logo';
+import LogoText from '../../components/LogoText';
 import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 import { MHidden } from '../../components/@material-extend';
 //
 import sidebarConfig from './SidebarConfig';
-import account from '../../_mocks_/account';
 
 // ----------------------------------------------------------------------
 
@@ -37,11 +36,12 @@ const AccountStyle = styled('div')(({ theme }) => ({
 DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
   onCloseSidebar: PropTypes.func
-};
+}; 
 
-export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
+export default function DashboardSidebar({account, isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
-
+  console.log(account)
+  
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
@@ -57,8 +57,8 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       }}
     >
       <Box sx={{ px: 2.5, py: 3 }}>
-        <Box component={RouterLink} to="/" sx={{ display: 'inline-flex' }}>
-          <Logo />
+        <Box component={RouterLink} to="/dashboard/home" sx={{ display: 'inline-flex' }}>
+          <LogoText />
         </Box>
       </Box>
 
