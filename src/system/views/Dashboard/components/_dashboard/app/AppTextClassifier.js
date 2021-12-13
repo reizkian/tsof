@@ -32,20 +32,21 @@ const ChartWrapperStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 const CHART_DATA = [
-  { name: 'Series 1', data: [80, 50, 30, 40, 100, 20] },
-  { name: 'Series 2', data: [20, 30, 40, 80, 20, 80] },
-  { name: 'Series 3', data: [44, 76, 78, 13, 43, 10] }
+  { name: 'MK', data: [80, 50, 30, 40, 100] },
+  { name: 'PK', data: [20, 30, 40, 80, 20] },
+  { name: 'HK', data: [44, 76, 78, 13, 43] }
 ];
 
 export default function AppCurrentSubject() {
   const theme = useTheme();
 
   const chartOptions = merge(BaseOptionChart(), {
+    colors: ["#d376ea", "#ffd249", "#54c06e"],
     stroke: { width: 2 },
     fill: { opacity: 0.48 },
     legend: { floating: true, horizontalAlign: 'center' },
     xaxis: {
-      categories: ['English', 'History', 'Physics', 'Geography', 'Chinese', 'Math'],
+      categories: ['Bersyukur', 'Teguran', 'Perintah Tuhan', 'Janji Tuhan', 'Rhema'],
       labels: {
         style: {
           colors: [
@@ -63,7 +64,7 @@ export default function AppCurrentSubject() {
 
   return (
     <Card>
-      <CardHeader title="Current Subject" />
+      <CardHeader title="Lembar Kuning" subheader="machine learning text classifier"/>
       <ChartWrapperStyle dir="ltr">
         <ReactApexChart type="radar" series={CHART_DATA} options={chartOptions} height={340} />
       </ChartWrapperStyle>
