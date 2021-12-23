@@ -14,7 +14,7 @@ const NavLinks = () => {
       </motion.li>
       <motion.li initial={animateFrom} animate={animateTo} transition={{delay:0.15}}>
       <div className={classes.PseudoButton}>
-        <a className={classes.navLinkText} href="/">Kelas Pengajaran</a>
+        <a className={classes.navLinkText} href="/kelas-pengajaran">Kelas Pengajaran</a>
         </div>
       </motion.li>
       <motion.li initial={animateFrom} animate={animateTo} transition={{delay:0.25}}>
