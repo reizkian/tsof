@@ -1,0 +1,127 @@
+/* FOR DISPLAY > 990px */
+@media (min-width: 990px) {
+    .containerFluid {
+      padding: 1% 13%;
+    }
+    .dividerContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .divider {
+      text-align: center;
+      height: auto;
+      width: 100%;
+    }
+    .formContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 3% 0%;
+      text-align: center;
+    }
+    .formElement {
+      padding: 1% 8%;
+    }
+    .buttonRegister {
+      margin-top: 10px;
+      background-color: #54c06e;
+      border: none;
+      color: white;
+      padding: 10px 40px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-family: "Roboto", sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 25px;
+    }
+    .buttonRegister:hover {
+      background-color: #4cb365;
+    }
+    .formSectionTitle{
+      font-family: "Roboto", sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: #999999;
+    }
+    .buttonRegister {
+      margin-top: 10px;
+      background-color: #54c06e;
+      border: none;
+      color: white;
+      padding: 10px 40px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-family: "Roboto", sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 25px;
+    }
+  }
+  
+  /* FOR DISPLAY < 990px */
+  @media (max-width: 990px) {
+    .containerFluid {
+      padding: 0% 0%;
+    }
+    .dividerContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0% 0%;
+    }
+    .divider {
+      text-align: center;
+      width: 100%;
+      height: auto;
+    }
+    .formContainer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 10% 0%;
+      text-align: center;
+    }
+    .formElement {
+      padding: 1% 15%;
+    }
+    .buttonRegister {
+      margin-top: 10px;
+      background-color: #54c06e;
+      border: none;
+      color: white;
+      padding: 10px 40px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-family: "Roboto", sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 25px;
+    }
+    .formSectionTitle{
+      font-family: "Roboto", sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      color: #999999;
+    }
+    .buttonRegister {
+      margin-top: 10px;
+      background-color: #54c06e;
+      border: none;
+      color: white;
+      padding: 10px 40px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-family: "Roboto", sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 25px;
+    }
+  }

@@ -18,7 +18,8 @@ function responsiveFontSizes({ sm, md, lg }) {
   };
 }
 
-const FONT_PRIMARY = 'Public Sans, sans-serif';
+const FONT_PRIMARY = 'Open Sans, sans-serif';
+const FONT_TITLE = 'Playfair Display, serif';
 
 const typography = {
   fontFamily: FONT_PRIMARY,
@@ -81,7 +82,7 @@ const typography = {
   },
   caption: {
     lineHeight: 1.5,
-    fontSize: pxToRem(12)
+    fontSize: pxToRem(12),
   },
   overline: {
     fontWeight: 700,
@@ -95,7 +96,14 @@ const typography = {
     lineHeight: 24 / 14,
     fontSize: pxToRem(14),
     textTransform: 'capitalize'
-  }
+  },
+  CourseTitle: {
+    fontFamily: FONT_TITLE,
+    fontWeight: 700,
+    lineHeight: 1.5,
+    fontSize: pxToRem(20),
+    ...responsiveFontSizes({ sm: 20, md: 24, lg: 24 })
+  },
 };
 
 export default typography;

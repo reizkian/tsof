@@ -34,7 +34,7 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const TOTAL = 1723;
+const TOTAL = 1730;
 
 export default function AppGraduateHK() {
   return (

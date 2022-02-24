@@ -4,17 +4,17 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     firebaseAuth: {},
-    test:"test",
+    personalData: {}
   },
   reducers: {
     setFirebaseAuth: (state, action) => {
       state.firebaseAuth = action.payload;
     },
-    setTest: (state, action) => {
-      state.test = action.payload;
+    setPersonalData: (state, action) => {
+      state.personalData = action.payload;
     },
   },
 });
 
-export const { setFirebaseAuth, setTest } = authSlice.actions;
+export const { setFirebaseAuth, setPersonalData} = authSlice.actions;
 export default authSlice.reducer;

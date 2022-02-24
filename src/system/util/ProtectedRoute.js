@@ -1,11 +1,11 @@
 import React from "react";
 import { Route, Navigate } from "react-router-dom";
 
-const SignInRoute = ({ component: Component, authenticated, ...rest }) => {
+const SignInRoute = ({ element: Element, authenticated, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => (authenticated === true ? <Navigate to="/dashboard" /> : <Component {...props} />)}
+      render={(props) => (authenticated === true ? <Navigate to="/dashboard/home" /> : <Element {...props} />)}
     />
   );
 };

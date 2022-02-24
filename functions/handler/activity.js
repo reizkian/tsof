@@ -16,7 +16,7 @@ exports.logActivity = function(userID, timeStamp, method){
             method: method,
         }
         // 4. WRITE payload to activity
-        firebaseDatabase.ref("activity/").child(activityCompoundID).set(payloadData)
+        firebaseDatabase.ref("activities/").child(activityCompoundID).set(payloadData)
         .then(()=>{console.log("success write activity log")})
         .catch((err) => {
             console.log("internal server error, write database")

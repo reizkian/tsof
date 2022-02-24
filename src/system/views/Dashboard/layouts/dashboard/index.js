@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import jwt from "jsonwebtoken";
 
-import { styled } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { setFirebaseAuth, setPersonalData } from "system/redux/reducer/auth";
 
+import { styled } from "@mui/material/styles";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardSidebar from "./DashboardSidebar";
 
@@ -32,33 +34,50 @@ const MainStyle = styled("div")(({ theme }) => ({
 export default function DashboardLayout(props) {
   const [open, setOpen] = useState(false);
 
-  // MOUNT: User Account Data
+  // 1. MOUNT: User Account Data
+  // 1.1 set dashboard layout component state
   const [account, setAccount] = useState({
     displayName: "undefined",
     email: "undefined@email.com",
     role: "undefined role",
     photoURL: "https://drive.google.com/uc?export=view&id=1E9DNjv8-mE3BRWBUAkEzjdNcXWByEp3q",
   });
-  const { state } = useLocation();
+
+  const {state} = useLocation();
+  const dispatch = useDispatch();
+
+  // 1.2 get encodedUserCredential
   if (account.displayName === "undefined") {
-    const encodedUserCredential = state.encodedUserCredential;
-    const decodedUserCredential = jwt.verify(encodedUserCredential, process.env.REACT_APP_JWT_KEY, {
-      algorithm: "HS256",
-    });
+    let encodedUserCredential;
+    let decodedUserCredential;
+    try {
+      encodedUserCredential = state.encodedUserCredential;
+      decodedUserCredential = jwt.verify(encodedUserCredential, process.env.REACT_APP_JWT_KEY, {
+        algorithm: "HS256",
+      });
+    } catch (err) {
+      encodedUserCredential = localStorage.getItem("firebaseUserCredential");
+      decodedUserCredential = jwt.verify(encodedUserCredential, process.env.REACT_APP_JWT_KEY, {
+        algorithm: "HS256",
+      });
+    }
+    // 1.3 add photoURL for personalData
     const personalData = decodedUserCredential.personalData;
     personalData.displayName = personalData.name.split(" ")[0] + " " + personalData.name.split(" ")[1];
     personalData.sex === "Male"
       ? (personalData.photoURL = "https://drive.google.com/uc?export=view&id=1E9DNjv8-mE3BRWBUAkEzjdNcXWByEp3q")
       : (personalData.photoURL = "https://drive.google.com/uc?export=view&id=1erFZ5Baw88bFvllF1af8JNR-AMD1bpi5");
-    setAccount(personalData)
-    }
+    setAccount(personalData);
+    dispatch(setFirebaseAuth(encodedUserCredential));
+    dispatch(setPersonalData(personalData));
+  }
 
   return (
     <RootStyle>
       <DashboardNavbar account={account} onOpenSidebar={() => setOpen(true)} />
       <DashboardSidebar account={account} isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle>
-        <Outlet />
+        <Outlet account={account} />
       </MainStyle>
     </RootStyle>
   );

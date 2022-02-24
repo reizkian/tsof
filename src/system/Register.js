@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import clsx from "clsx";
@@ -42,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Register(props) {
+  const navigateRoute = useNavigate();
   const classes = useStyles();
 
   // Form state
@@ -240,7 +242,7 @@ export default function Register(props) {
       .then((result) => {
         console.log(result.data);
         setFormState({ ...formState, loading: !formState.loading });
-        props.history.push("/sign-in");
+        navigateRoute("/signin", { replace: true });
       })
       .catch((err) => {
         console.log(err)

@@ -10,3 +10,4 @@ export { default as AppTasks } from "./AppTasks";
 export { default as AppTrafficBySite } from "./AppTrafficBySite";
 export { default as AppWebsiteActivity } from "./AppWebsiteActivity";
 export { default as AppGraduateMK } from "./AppGraduateMK";
+export { default as AppMap } from "./AppMap";
