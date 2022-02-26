@@ -1,4 +1,10 @@
 /* FOR DISPLAY > 990px */
+
+img {
+  /* disable right-click to save image*/
+  pointer-events: none;
+}
+
 @media (min-width: 990px) {
     .containerFluid {
       padding: 1% 13%;
