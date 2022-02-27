@@ -32,7 +32,7 @@
     }
     .brandTitle .buttonRegister {
       margin-top: 10px;
-      background-color: #ffc739;
+      background-color: #9d26ca;
       border: none;
       color: white;
       padding: 15px 20px;
@@ -45,7 +45,7 @@
       border-radius: 7px;
     }
     .brandTitle .buttonRegister:hover {
-      background-color: #eab735;
+      background-color: #66008c;
     }
     .brandImage {
       float: right;
@@ -82,7 +82,7 @@
     }
     .brandTitle .buttonRegister {
       margin-top: 10px;
-      background-color: #ffc739;
+      background-color: #9d26ca;
       border: none;
       color: white;
       padding: 15px 20px;
@@ -95,14 +95,14 @@
       border-radius: 75px;
     }
     .brandTitle .buttonRegister:hover {
-        background-color: #eab735;
+        background-color: #66008c;
       }
     /* image */
     .brandImage {
       text-align: center;
     }
     .brandImage .logoTSOF {
-      width: 50%;
+      width: 80%;
       height: auto;
       margin-top: 5%;
       margin-bottom: 0%;

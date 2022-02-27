@@ -44,9 +44,9 @@ export default function Title() {
               animate={animateTo}
               transition={{ delay: 0.05 }}
               className={style.logoTSOF}
-              width="425"
-              height="375"
-              src={require("assets/img/Jesus0.png").default}
+              width="525"
+              height="475"
+              src={require("assets/img/Jesus1.png").default}
               alt="https://drive.google.com/uc?export=view&id=1rSaqlm1Cx8b3XswSFp3y53xYG_oCuNog"
             />
           </div>
