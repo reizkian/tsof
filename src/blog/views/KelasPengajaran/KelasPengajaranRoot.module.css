@@ -67,6 +67,10 @@ img {
       font-weight: 500;
       border-radius: 25px;
     }
+    .eachCourse {
+      padding-top: 0%;
+      padding-bottom: 5%;
+    }
   }
   
   /* FOR DISPLAY < 990px */
@@ -129,5 +133,9 @@ img {
       font-size: 16px;
       font-weight: 500;
       border-radius: 25px;
+    }
+    .eachCourse {
+      padding-top: 0%;
+      padding-bottom: 5%;
     }
   }

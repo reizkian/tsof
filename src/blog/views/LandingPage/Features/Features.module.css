@@ -7,14 +7,14 @@
     width: 100%;
   }
   .containerFeaturesTitle {
-    padding-top: 15%;
+    padding-top: 10%;
     padding-right: 5%;
     width: 65%;
   }
   .featuresTitle {
     font-family: "Playfair Display", serif;
     color: #303031;
-    font-size: 22px;
+    font-size: 2.5rem;
     font-weight: 500;
     padding-bottom: 2%;
   }
@@ -23,7 +23,7 @@
     color: #303031;
     font-weight: 300;
     margin-top: -20px;
-    font-size: 14px;
+    font-size: 1.1rem;
     line-height: 1.5;
     text-align: justify;
     text-justify: inter-word;

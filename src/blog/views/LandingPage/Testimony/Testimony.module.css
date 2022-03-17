@@ -54,9 +54,13 @@
     margin: 0% 1%;
     border-radius: 10px;
     text-align: center;
-    height: 350px;
+    height: 400px;
     width: 30%;
     position: relative;
+  }
+  .valueCardText{
+    margin-top: 5%;
+    font-size: 0.9rem;
   }
   .mk {
     background-color: #9d26ca;
@@ -145,6 +149,7 @@
     width: 75%;
     position: relative;
   }
+
   .mk {
     background-color: #9d26ca;
     border: none;

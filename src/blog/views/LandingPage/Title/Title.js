@@ -43,8 +43,8 @@ export default function Title() {
               animate={animateTo}
               transition={{ delay: 0.05 }}
               className={style.logoTSOF}
-              width="355"
-              height="375"
+              width="455"
+              height="475"
               src={require("assets/img/logo_sof.png").default}
               alt="https://drive.google.com/uc?export=view&id=1rSaqlm1Cx8b3XswSFp3y53xYG_oCuNog"
             />

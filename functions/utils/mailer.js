@@ -20,7 +20,7 @@ exports.sendEmailWelcome = (recieverEmail, recieverName) => {
   });
 
   // ~ read HTML file
-  readHTMLFile("util/smtp/verify_email.html", function(err, html) {
+  readHTMLFile("utils/smtp/verify_email.html", function(err, html) {
     var template = handlebars.compile(html);
     var replacements = {
       recieverEmail: recieverEmail,

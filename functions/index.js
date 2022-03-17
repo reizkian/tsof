@@ -4,14 +4,18 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 
-const { signin, signup } = require("./handler/user")
-const { createCourse } = require ("./handler/course")
+const { signin, signup } = require("./handler/user");
+const { createCourse } = require("./handler/course");
+const { jwtEncodeAPI, jwtDecodeAPI } = require("./utils/jwt");
 app.use(cors());
 
 /* R O U T E */
 app.post("/signin", signin);
 app.post("/signup", signup);
-app.post("/create-course", createCourse)
+app.post("/create-course", createCourse);
+
+app.post("/api/jwt-encode", jwtEncodeAPI);
+app.post("/api/jwt-decode", jwtDecodeAPI);
 
 /* E X P O R T S */
-exports.app = functions.https.onRequest(app)
+exports.app = functions.https.onRequest(app);

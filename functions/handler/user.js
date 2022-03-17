@@ -1,22 +1,23 @@
-const { firebaseDatabase, firebaseAuthentication } = require("../util/admin");
-const jwt = require("jsonwebtoken");
-const jwtDecode = require("jwt-decode");
-const { getCurrentTime } = require("../util/method");
+const { firebaseDatabase, firebaseAuthentication } = require("../utils/admin");
+const {
+  jwtEncodeUtil,
+  jwtDecodeUtil,
+  jwtDecodeFirebase,
+} = require("../utils/jwt");
+const { getCurrentTime } = require("../utils/method");
 const { logActivity } = require("../handler/activity");
-const { sendEmailWelcome } = require("../util/mailer");
-const { useEmulators } = require("../util/admin");
-const { getAddressGeoLocation } = require("../util/geolocation");
-const { privateKeyJWT } = require("../util/admin");
+const { sendEmailWelcome } = require("../utils/mailer");
+const { useEmulators } = require("../utils/admin");
+const { getAddressGeoLocation } = require("../utils/geolocation");
+const { privateKeyJWT } = require("../utils/admin");
 
 exports.signin = function(req, res) {
   /*
     take user email and password, pass it to firebase authentication
   */
-  const payloadData = {
-    token: req.body.token,
-  };
+
   // get user data by decode jwt token
-  const user = jwt.verify(payloadData.token, privateKeyJWT, { algorithm: "HS256" });
+  const user = jwtDecodeUtil(req.body.token);
   const currentDateTime = new Date();
   delete user.iat;
   // ~ error handling
@@ -36,7 +37,7 @@ exports.signin = function(req, res) {
     })
     .then((token) => {
       // ~ decode token, then get user ID
-      req.decodedToken = jwtDecode(token);
+      req.decodedToken = jwtDecodeFirebase(token);
       const userID = req.decodedToken.user_id;
       return userID;
     })
@@ -55,43 +56,35 @@ exports.signin = function(req, res) {
           req.decodedToken.personalData = personalData.val();
           // ~ assign exp for authenticated session (added number in seconds) set for 3 days
           req.decodedToken.exp = req.decodedToken.iat + 60 * 60 * 24 * 3;
-          token = req.decodedToken;
-          console.log(token);
-          token = jwt.sign(token, privateKeyJWT, { algorithm: "HS256" });
-          return res.json({ token });
+          token = jwtEncodeUtil(req.decodedToken);
+          // console.log(token);
+          return res.json({ token: token });
         });
     })
     .catch((err) => {
       console.log(err);
-      return res.status(500).json({ general: "user and password not found" });
+      return res.status(500).json({ general: "Internal server error" });
     });
-  /*
-    TO DO:
-      [v] firebase authentication
-      [v] save last login time stamp    
-  */
 };
 
 exports.signup = function(req, res) {
   /*
     take user personal data, then create user by firebase authentication,
     then write personal data to realtime database
+    
+    * ENCODED DATA *
+    email: req.body.email.trim(),
+    password: req.body.password.trim(),
+    confirmPassword: req.body.confirmPassword.trim(),
+    name: req.body.name.trim(),
+    birthdate: req.body.birthdate.trim(),
+    phone: req.body.phone.trim(),
+    city: req.body.city.trim(),
+    address: req.body.address.trim(),
   */
 
-  const payloadData = {
-    // email: req.body.email.trim(),
-    // password: req.body.password.trim(),
-    // confirmPassword: req.body.confirmPassword.trim(),
-    // name: req.body.name.trim(),
-    // birthdate: req.body.birthdate.trim(),
-    // phone: req.body.phone.trim(),
-    // city: req.body.city.trim(),
-    // address: req.body.address.trim(),
-    token: req.body.token,
-  };
-
   // get user data by decode jwt token
-  const user = jwt.verify(payloadData.token, privateKeyJWT, { algorithm: "HS256" });
+  const user = jwtDecodeUtil(req.body.token)
   const currentDateTime = new Date();
   delete user.iat;
 
@@ -148,7 +141,7 @@ exports.signup = function(req, res) {
               displayName: user.name,
             })
             .then(() => {
-              console.log("update user displayName:", user.name);
+              // console.log("update user displayName:", user.name);
             })
             .catch((err) => {
               console.log(err);
@@ -159,13 +152,16 @@ exports.signup = function(req, res) {
           .then((addressGeoLocation) => {
             user.addressGeoLocation = addressGeoLocation;
             // ~ console log user data
-            console.log("signup request user data: ", user);
+            console.log("signup request user from: ", user.email);
             // ~ write user personal data to database
             firebaseDatabase
               .ref("users/" + user._id)
               .set(user)
               .then(() => {
-                return res.status(201).json({ message: `user signed up successfully`, _id: req.user._id });
+                return res.status(201).json({
+                  message: `user signed up successfully`,
+                  _id: req.user._id,
+                });
               })
               .catch((err) => {
                 return res.status(500).json({ error: err });

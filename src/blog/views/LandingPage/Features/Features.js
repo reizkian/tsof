@@ -11,7 +11,7 @@ export default function Title() {
             alt="https://drive.google.com/uc?export=view&id=1rSaqlm1Cx8b3XswSFp3y53xYG_oCuNog"
           />
           <h1 class={style.featuresTitle}>
-            Belajar Firman Tuhan di dampingi oleh konselor
+            Belajar Firman Tuhan <br></br> di dampingi oleh konselor
           </h1>
           <p class={style.featuresSubTitle}>
             Konselor akan membina dan menuntun pertumbuhan rohani saudara selama

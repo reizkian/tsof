@@ -1,4 +1,4 @@
-const { firebaseDatabase, privateKeyJWT } = require("../util/admin");
+const { firebaseDatabase, privateKeyJWT } = require("../utils/admin");
 const jwt = require("jsonwebtoken");
 
 exports.createCourse = function(req, res) {

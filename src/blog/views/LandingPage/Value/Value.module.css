@@ -1,7 +1,7 @@
 /* FOR DISPLAY > 990px */
 @media (min-width: 990px) {
   .containerFluidValue {
-    padding: 2% 0%;
+    padding: 3% 0%;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -9,7 +9,7 @@
   .valueTitle {
     font-family: "Playfair Display", serif;
     color: #303031;
-    font-size: 30px;
+    font-size: 2.5rem;
     font-weight: 300;
     text-align: center;
   }
@@ -17,8 +17,10 @@
     font-family: "Roboto", sans-serif;
     color: #303031;
     font-weight: 300;
-    font-size: 16px;
+    font-size: 1.2rem;
     line-height: 1.5;
+    padding-left: 10%;
+    padding-right: 10%;
   }
   .valueCardContainer {
     display: flex;
@@ -34,7 +36,7 @@
     margin: 0% 1%;
     border-radius: 10px;
     text-align: center;
-    height: 410px;
+    height: 500px;
     width: 30%;
   }
   .valueCardImage {
@@ -45,7 +47,7 @@
     font-family: "Roboto", sans-serif;
     color: #303031;
     font-weight: 300;
-    font-size: 12px;
+    font-size: 0.9rem;
     line-height: 1.5;
   }
 }

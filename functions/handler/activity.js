@@ -1,5 +1,5 @@
-const { firebaseDatabase } = require("../util/admin");
-const { getCompoundID} = require("../util/method");
+const { firebaseDatabase } = require("../utils/admin");
+const { getCompoundID} = require("../utils/method");
 
 exports.logActivity = function(userID, timeStamp, method){
     // 1. generate logActivity id for each activity

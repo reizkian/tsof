@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn(props) {
-  console.log(props);
+
   const navigateRoute = useNavigate();
   // REACT HOOK STATE
   const classes = useStyles();
@@ -158,8 +158,8 @@ export default function SignIn(props) {
               initial={{ opacity: 0, y: -70 }}
               animate={animateTo}
               transition={{ delay: 0.05 }}
-              width="445"
-              height="455"
+              width="600"
+              height="610"
               src={require("assets/img/signin.png").default}
               alt="https://drive.google.com/uc?export=view&id=1rSaqlm1Cx8b3XswSFp3y53xYG_oCuNog"
             />
@@ -259,6 +259,11 @@ export default function SignIn(props) {
             <motion.li initial={animateFrom} animate={animateTo} transition={{ delay: 0.25 }} className={style.docsNav}>
               <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
                 Pertumbuhan Rohani
+              </a>
+            </motion.li>
+            <motion.li initial={animateFrom} animate={animateTo} transition={{ delay: 0.35 }} className={style.docsNav}>
+              <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
+                Home
               </a>
             </motion.li>
           </ul>
