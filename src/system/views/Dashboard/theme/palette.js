@@ -110,7 +110,7 @@ const palette = {
   action: {
     active: GREY[600],
     hover: GREY[500_8],
-    selected: GREY[500_16],
+    selected: GREY[500_12],
     disabled: GREY[500_80],
     disabledBackground: GREY[500_24],
     focus: GREY[500_24],

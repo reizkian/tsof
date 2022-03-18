@@ -30,7 +30,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 export default function Page404() {
   return (
     <>
-      <div style={{ marginTop: "-6%" }}>
+      <div style={{ marginTop: "0%" }}>
         <RootStyle title="404 Page Not Found | Minimal-UI">
           <Container>
             <MotionContainer initial="initial" open>
@@ -53,7 +53,7 @@ export default function Page404() {
                     />
                   </motion.div>
                 </div>
-                <Button to="/dashboard/home" size="large" variant="contained" component={RouterLink} color="primary">
+                <Button to="/dashboard/murid/saat-teduh" size="large" variant="contained" component={RouterLink} color="primary">
                   Go to Home
                 </Button>
               </Box>

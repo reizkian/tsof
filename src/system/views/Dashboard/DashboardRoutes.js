@@ -1,15 +1,23 @@
-import { Navigate, useRoutes, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import DashboardLayout from "./layouts/dashboard";
-import DashboardApp from "./pages/DashboardApp";
-import Products from "./pages/Products";
-import Blog from "./pages/Blog";
-import User from "./pages/User";
-import Profile from "./pages/Profile";
-import ManageClass from "./pages/ManageClass";
+import { Navigate, useRoutes } from "react-router-dom";
 
+import DashboardLayout from "./layouts/dashboard";
 import LogoOnlyLayout from "./layouts/LogoOnlyLayout";
-import NotFound from "./pages/Page404";
+
+import {
+  SaatTeduh,
+  Internalisasi,
+  Pembina,
+  Overview,
+  Jadwal,
+  Kelas,
+  BuatUser,
+  DaftarUser,
+  DataProcessing,
+  ResourceMonitor,
+  ServerLog,
+  Profile,
+  NotFound,
+} from "./pages";
 
 export default function DashboardRoutes() {
   return useRoutes([
@@ -17,12 +25,24 @@ export default function DashboardRoutes() {
       path: "/dashboard",
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/home" replace /> },
-        { path: "home", element: <DashboardApp /> },
+        { element: <Navigate to="/dashboard/overview" replace /> },
+        { path: "/dashboard", element: <Navigate to="/dashboard/overview" /> },
+        { path: "murid/saat-teduh", element: <SaatTeduh /> },
+        { path: "murid/Internalisasi", element: <Internalisasi /> },
+        { path: "pembina", element: <Pembina /> },
+        { path: "overview", element: <Overview /> },
+        { path: "manage-kelas/jadwal", element: <Jadwal /> },
+        { path: "manage-kelas/kelas", element: <Kelas /> },
+        { path: "manage-users/buat-user", element: <BuatUser /> },
+        { path: "manage-users/daftar-user", element: <DaftarUser /> },
+        { path: "manage-server/data-processing", element: <DataProcessing /> },
+        {
+          path: "manage-server/resource-monitor",
+          element: <ResourceMonitor />,
+        },
+        { path: "manage-server/server-log", element: <ServerLog /> },
         { path: "profile", element: <Profile /> },
-        { path: "user", element: <User /> },
-        { path: "products", element: <Products /> },
-        { path: "manageclass", element: <ManageClass /> },
+        { path: "*", element: <Navigate to="/404" /> },
       ],
     },
     {

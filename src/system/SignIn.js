@@ -123,7 +123,7 @@ export default function SignIn(props) {
       })
       .then((firebaseUserCredential) => {
         console.log(firebaseUserCredential);
-        navigateRoute("/dashboard/home", {
+        navigateRoute("/dashboard", {
           state: { encodedUserCredential: firebaseUserCredential },
           replace: true,
         });

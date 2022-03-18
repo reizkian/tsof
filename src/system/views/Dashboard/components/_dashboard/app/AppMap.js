@@ -33,7 +33,7 @@ const MapWrapper = ({ geolocations, ...rest }) => {
   }, [geolocations.data]);
   return (
     <>
-      <div style={{ height: `500px` }} className="map-canvas" id="map-canvas" ref={mapRef} />
+      <div style={{ height: `700px` }} className="map-canvas" id="map-canvas" ref={mapRef} />
     </>
   );
 };

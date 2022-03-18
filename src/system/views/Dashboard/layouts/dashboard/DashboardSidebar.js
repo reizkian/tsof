@@ -3,7 +3,15 @@ import { useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 // material
 import { styled } from "@mui/material/styles";
-import { alpha, Box, Link, Drawer, Divider, Typography, Avatar } from "@mui/material";
+import {
+  alpha,
+  Box,
+  Link,
+  Drawer,
+  Divider,
+  Typography,
+  Avatar,
+} from "@mui/material";
 
 // components
 import LogoText from "../../components/LogoText";
@@ -11,7 +19,7 @@ import Scrollbar from "../../components/Scrollbar";
 import NavSection from "../../components/NavSection";
 import { MHidden } from "../../components/@material-extend";
 //
-import sidebarConfig from "./SidebarConfig";
+import sidebarConfigUser from "./SidebarConfigUser";
 import sidebarConfigAdmin from "./SidebarConfigAdmin";
 
 // ----------------------------------------------------------------------
@@ -32,17 +40,18 @@ DashboardSidebar.propTypes = {
   onCloseSidebar: PropTypes.func,
 };
 
-export default function DashboardSidebar({ account, isOpenSidebar, onCloseSidebar }) {
+export default function DashboardSidebar({
+  account,
+  isOpenSidebar,
+  onCloseSidebar,
+}) {
   const { pathname } = useLocation();
   const AccountStyle = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
     padding: theme.spacing(2, 2.5),
     borderRadius: theme.shape.borderRadiusSm,
-    backgroundColor:
-      pathname === "/dashboard/profile"
-        ? alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity)
-        : theme.palette.grey[200],
+    backgroundColor: theme.palette.grey[200],
   }));
 
   useEffect(() => {
@@ -56,11 +65,19 @@ export default function DashboardSidebar({ account, isOpenSidebar, onCloseSideba
     <Scrollbar
       sx={{
         height: "100%",
-        "& .simplebar-content": { height: "100%", display: "flex", flexDirection: "column" },
+        "& .simplebar-content": {
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+        },
       }}
     >
       <Box sx={{ px: 2.5, py: 3 }}>
-        <Box component={RouterLink} to="/dashboard/home" sx={{ display: "inline-flex" }}>
+        <Box
+          component={RouterLink}
+          to="/dashboard/home"
+          sx={{ display: "inline-flex" }}
+        >
           <LogoText />
         </Box>
       </Box>
@@ -81,7 +98,7 @@ export default function DashboardSidebar({ account, isOpenSidebar, onCloseSideba
         </Link>
       </Box>
 
-      <NavSection navConfig={sidebarConfig} />
+      <NavSection navConfig={sidebarConfigUser} />
       <Divider variant="middle" />
       <NavSection navConfig={sidebarConfigAdmin} />
 
