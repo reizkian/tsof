@@ -8,7 +8,7 @@ const emailPassword = functions.config().tsof.email_password;
 // get JWT key from firebase environment variable
 const privateKeyJWT = functions.config().tsof;
 
-exports.sendEmailWelcome = (recieverEmail, recieverName) => {
+exports.sendEmailWelcome = (recieverID, recieverEmail, recieverName) => {
   console.log("send email confirmation to: " + recieverEmail);
   // ~ create transporter object to send email
   const transporter = nodemailer.createTransport({
@@ -23,6 +23,7 @@ exports.sendEmailWelcome = (recieverEmail, recieverName) => {
   readHTMLFile("utils/smtp/verify_email.html", function(err, html) {
     var template = handlebars.compile(html);
     var replacements = {
+      recieverID: recieverID,
       recieverEmail: recieverEmail,
       recieverName: recieverName,
     };

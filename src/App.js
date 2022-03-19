@@ -10,7 +10,6 @@ import KelasPengajaran from "blog/KelasPengajaran.js";
 import SignIn from "system/SignIn.js";
 import Register from "system/Register.js";
 import Dashboard from "system/Dashboard.js";
-import NotFound from "system/views/Dashboard/pages/Page404.js";
 
 import ThemeConfig from "system/views/Dashboard/theme";
 import DashboardRoutes from "system/views/Dashboard/DashboardRoutes";
@@ -20,8 +19,8 @@ import { BaseOptionChartStyle } from "system/views/Dashboard/components/charts/B
 import { SignInRoute, AuthenticatedRoute } from "system/util/ProtectedRoute.js";
 import { authenticatedSession } from "system/util/session.js";
 
-// axios.defaults.baseURL = "http://127.0.0.1:5001/the-school-of-fire/us-central1/app";
-axios.defaults.baseURL = "https://us-central1-the-school-of-fire.cloudfunctions.net/app";
+axios.defaults.baseURL = "http://127.0.0.1:5001/the-school-of-fire/us-central1/app";
+// axios.defaults.baseURL = "https://us-central1-the-school-of-fire.cloudfunctions.net/app";
 
 const themeGlobal = createMuiTheme(global);
 

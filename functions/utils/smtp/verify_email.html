@@ -1,292 +1,383 @@
+<!DOCTYPE html>
 <html>
-
-<head>
-    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+  <head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <style type="text/css">
-        @import url('https://themes.googleusercontent.com/fonts/css?kit=UC3ZEjagJi85gF9qFaBgIMtu8OYCv6GzuTXWfq6z0cgibyMe4ukfvPvpfYEqkIMW');
-
-        ol {
-            margin: 0;
-            padding: 0
+      @media screen {
+        @font-face {
+          font-family: "Lato";
+          font-style: normal;
+          font-weight: 400;
+          src: local("Lato Regular"), local("Lato-Regular"),
+            url(https://fonts.gstatic.com/s/lato/v11/qIIYRU-oROkIk8vfvxw6QvesZW2xOQ-xsNqO47m55DA.woff)
+              format("woff");
         }
 
-        table td,
-        table th {
-            padding: 0
+        @font-face {
+          font-family: "Lato";
+          font-style: normal;
+          font-weight: 700;
+          src: local("Lato Bold"), local("Lato-Bold"),
+            url(https://fonts.gstatic.com/s/lato/v11/qdgUG4U09HnJwhYI-uK18wLUuEpTyoUstqEm5AMlJo4.woff)
+              format("woff");
         }
 
-        .c13 {
-            background-color: #ffffff;
-            padding-top: 12pt;
-            padding-bottom: 12pt;
-            line-height: 1.0;
-            orphans: 2;
-            widows: 2;
-            text-align: left;
-            height: 11pt
+        @font-face {
+          font-family: "Lato";
+          font-style: italic;
+          font-weight: 400;
+          src: local("Lato Italic"), local("Lato-Italic"),
+            url(https://fonts.gstatic.com/s/lato/v11/RYyZNoeFgb0l7W3Vu1aSWOvvDin1pK8aKteLpeZ5c0A.woff)
+              format("woff");
         }
 
-        .c1 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.15;
-            orphans: 2;
-            widows: 2;
-            text-align: left;
-            height: 11pt
+        @font-face {
+          font-family: "Lato";
+          font-style: italic;
+          font-weight: 700;
+          src: local("Lato Bold Italic"), local("Lato-BoldItalic"),
+            url(https://fonts.gstatic.com/s/lato/v11/HkF_qI1x_noxlxhrhMQYELO3LdcAZYWl9Si6vvxL-qU.woff)
+              format("woff");
         }
+      }
 
-        .c5 {
-            color: #2a8540;
-            font-weight: 800;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 27pt;
-            font-family: "Playfair Display";
-            font-style: normal
-        }
+      /* CLIENT-SPECIFIC STYLES */
+      body,
+      table,
+      td,
+      a {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
 
-        .c3 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.15;
-            orphans: 2;
-            widows: 2;
-            text-align: center;
-            height: 11pt
-        }
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
 
-        .c0 {
-            color: #000000;
-            font-weight: 400;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 11pt;
-            font-family: "Courier New";
-            font-style: normal
-        }
+      img {
+        -ms-interpolation-mode: bicubic;
+      }
 
-        .c11 {
-            color: #000000;
-            font-weight: 400;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 11pt;
-            font-family: "Roboto";
-            font-style: normal
-        }
+      /* RESET STYLES */
+      img {
+        border: 0;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+      }
 
-        .c6 {
-            color: #000000;
-            font-weight: 400;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 11pt;
-            font-family: "Arial";
-            font-style: normal
-        }
+      table {
+        border-collapse: collapse !important;
+      }
 
-        .c7 {
-            color: #000000;
-            font-weight: 700;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 11pt;
-            font-family: "Courier New";
-            font-style: normal
-        }
+      body {
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+      }
 
-        .c10 {
-            color: #2a8540;
-            font-weight: 700;
-            text-decoration: none;
-            vertical-align: baseline;
-            font-size: 11pt;
-            font-family: "Courier New";
-            font-style: normal
-        }
+      /* iOS BLUE LINKS */
+      a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
 
-        .c9 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.15;
-            orphans: 2;
-            widows: 2;
-            text-align: center
-        }
-
-        .c4 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.0;
-            orphans: 2;
-            widows: 2;
-            text-align: center
-        }
-
-        .c2 {
-            padding-top: 0pt;
-            padding-bottom: 0pt;
-            line-height: 1.15;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        .c8 {
-            background-color: #ffffff;
-            max-width: 451.4pt;
-            padding: 72pt 72pt 72pt 72pt
-        }
-
-        .c12 {
-            font-weight: 400;
-            font-family: "Courier New"
-        }
-
-        .title {
-            padding-top: 0pt;
-            color: #000000;
-            font-size: 26pt;
-            padding-bottom: 3pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        .subtitle {
-            padding-top: 0pt;
-            color: #666666;
-            font-size: 15pt;
-            padding-bottom: 16pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        li {
-            color: #000000;
-            font-size: 11pt;
-            font-family: "Arial"
-        }
-
-        p {
-            margin: 0;
-            color: #000000;
-            font-size: 11pt;
-            font-family: "Arial"
-        }
-
+      /* MOBILE STYLES */
+      @media screen and (max-width: 600px) {
         h1 {
-            padding-top: 20pt;
-            color: #000000;
-            font-size: 20pt;
-            padding-bottom: 6pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
+          font-size: 32px !important;
+          line-height: 32px !important;
         }
+      }
 
-        h2 {
-            padding-top: 18pt;
-            color: #000000;
-            font-size: 16pt;
-            padding-bottom: 6pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        h3 {
-            padding-top: 16pt;
-            color: #434343;
-            font-size: 14pt;
-            padding-bottom: 4pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        h4 {
-            padding-top: 14pt;
-            color: #666666;
-            font-size: 12pt;
-            padding-bottom: 4pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        h5 {
-            padding-top: 12pt;
-            color: #666666;
-            font-size: 11pt;
-            padding-bottom: 4pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
-
-        h6 {
-            padding-top: 12pt;
-            color: #666666;
-            font-size: 11pt;
-            padding-bottom: 4pt;
-            font-family: "Arial";
-            line-height: 1.15;
-            page-break-after: avoid;
-            font-style: italic;
-            orphans: 2;
-            widows: 2;
-            text-align: left
-        }
+      /* ANDROID CENTER FIX */
+      div[style*="margin: 16px 0;"] {
+        margin: 0 !important;
+      }
     </style>
-</head>
 
-<body class="c8">
-    <p class="c9"><span
-            style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 149.65px; height: 158.08px;"><img
-            alt="" src="https://drive.google.com/uc?export=view&id=1TkuylOM36_xtqIL2-8wo-wCw4u_gg0rz"
-                style="width: 149.65px; height: 158.08px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);"
-                title=""></span></p>
-    <p class="c3"><span class="c6"></span></p>
-    <p class="c4"><span class="c5">The School of Fire</span></p>
-    <p class="c13"><span class="c11"></span></p>
-    <p class="c2"><span class="c12">Hello, </span><span class="c7">{{recieverName}}</span></p>
-    <p class="c1"><span class="c0"></span></p>
-    <p class="c2"><span class="c0">Welcome to The School of Fire. Please follow this link to sign in, and do not share
-            your personal information and user credentials to other people.</span></p>
-    <p class="c1"><span class="c0"></span></p>
-    <p class="c2"><span class="c10">https://the-school-of-fire.web.app/signin</span></p>
-    <p class="c1"><span class="c0"></span></p>
-    <p class="c2"><span class="c0">Thank you.</span></p>
-    <p class="c1"><span class="c0"></span></p>
-    <p class="c1"><span class="c0"></span></p>
-    <p class="c2"><span class="c0">Melvin Ingrid Aurelya</span></p>
-    <p class="c2"><span class="c0">Head Master</span></p>
-    <p class="c2"><span class="c0">&mdash;---------------------------</span></p>
-    <p class="c2"><span class="c0">The School of Fire, GKKD Yogyakarta</span></p>
-</body>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
+  <body
+    style="
+      background-color: #f4f4f4;
+      margin: 0 !important;
+      padding: 0 !important;
+    "
+  >
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <!-- LOGO -->
+      <tr>
+        <td bgcolor="#54C06E" align="center">
+          <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            style="max-width: 600px"
+          >
+            <tr>
+              <td
+                align="center"
+                valign="top"
+                style="padding: 40px 10px 40px 10px"
+              ></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td bgcolor="#54C06E" align="center" style="padding: 0px 10px 0px 10px">
+          <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            style="max-width: 600px"
+          >
+            <tr>
+              <td
+                bgcolor="#ffffff"
+                align="center"
+                valign="top"
+                style="
+                  padding: 40px 20px 20px 20px;
+                  border-radius: 4px 4px 0px 0px;
+                  color: #111111;
+                  font-family: 'Lato', Helvetica, Arial, sans-serif;
+                  font-size: 48px;
+                  font-weight: 400;
+                  letter-spacing: 4px;
+                  line-height: 48px;
+                "
+              >
+                <img
+                  src="https://drive.google.com/uc?export=view&id=1TkuylOM36_xtqIL2-8wo-wCw4u_gg0rz"
+                  width="175"
+                  height="170"
+                  style="display: block; border: 0px"
+                />
+                <h1
+                  style="
+                    font-family: 'Playfair Display', serif;
+                    font-size: 30px;
+                    font-weight: 400;
+                    color: #303031;
+                    margin: 2;
+                  "
+                >
+                  The School of Fire
+                </h1>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr>
+        <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px">
+          <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            style="max-width: 600px"
+          >
+            <tr>
+              <td
+                bgcolor="#ffffff"
+                align="left"
+                style="
+                  padding: 20px 30px 40px 30px;
+                  color: #666666;
+                  font-family: 'Lato', Helvetica, Arial, sans-serif;
+                  font-size: 18px;
+                  font-weight: 400;
+                  line-height: 25px;
+                "
+              >
+                <p style="margin: 0">
+                  Halo, {{recieverName}}<br /><br />
+                  Welcome to The School of Fire. Mohon konfirmasi email anda sebelum 
+                  <a
+                    href="https://the-school-of-fire.web.app/signin"
+                    target="_blank"
+                    style="color: #54c06e; font-weight: 700"
+                    >sign in</a
+                  > kedalam sistem informasi, dan pastikan merahasiakan email dan password anda
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" align="left">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td
+                      bgcolor="#ffffff"
+                      align="center"
+                      style="padding: 20px 30px 60px 30px"
+                    >
+                      <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td
+                            align="center"
+                            style="border-radius: 3px"
+                            bgcolor="#54C06E"
+                          ></td>
+                            <a
+                              href="http://127.0.0.1:5001/the-school-of-fire/us-central1/app/api/verify-email/{{ recieverID }}"
+                              style="
+                              font-size: 20px;
+                              font-family: Helvetica, Arial, sans-serif;
+                              color: #ffffff;
+                              text-decoration: none;
+                              background-color: #54c06e;
+                              text-decoration: none;
+                              padding: 15px 25px;
+                              border-radius: 2px;
+                              border: 1px solid #54c06e;
+                              display: inline-block;
+                            "
+                            >
+                              Konfirmasi Akun
+                        </a>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                bgcolor="#ffffff"
+                align="left"
+                style="
+                  padding: 0px 30px 20px 30px;
+                  color: #666666;
+                  font-family: 'Lato', Helvetica, Arial, sans-serif;
+                  font-size: 18px;
+                  font-weight: 400;
+                  line-height: 25px;
+                "
+              >
+                <p style="margin: 0">Terima Kasih.</p>
+              </td>
+            </tr>
+            <tr>
+              <td
+                bgcolor="#ffffff"
+                align="left"
+                style="
+                  padding: 0px 30px 40px 30px;
+                  border-radius: 0px 0px 4px 4px;
+                  color: #666666;
+                  font-family: 'Lato', Helvetica, Arial, sans-serif;
+                  font-size: 18px;
+                  font-weight: 400;
+                  line-height: 25px;
+                "
+              >
+                <p style="margin: 0">Melvin Ingrid Aurelya<br />Kepala Sekolah</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td
+          bgcolor="#f4f4f4"
+          align="center"
+          style="padding: 30px 10px 0px 10px"
+        >
+          <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            style="max-width: 600px"
+          >
+            <tr>
+              <td
+                bgcolor="#FFECD1"
+                align="center"
+                style="
+                  padding: 30px 30px 30px 30px;
+                  border-radius: 4px 4px 4px 4px;
+                  color: #666666;
+                  font-family: 'Lato', Helvetica, Arial, sans-serif;
+                  font-size: 18px;
+                  font-weight: 400;
+                  line-height: 25px;
+                "
+              >
+                <h2
+                  style="
+                    font-size: 20px;
+                    font-weight: 400;
+                    color: #111111;
+                    margin: 0;
+                  "
+                >
+                  Butuh bantuan?
+                </h2>
+                <p style="margin: 0">
+                  <a
+                    href="https://api.whatsapp.com/send?phone=+6281328194051"
+                    target="_blank"
+                    style="color: #54c06e"
+                    >Hubungi kami di nomor ini</a
+                  >
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td bgcolor="#f4f4f4" align="center" style="padding: 0px 10px 0px 10px">
+          <table
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            style="max-width: 600px"
+          >
+            <tr>
+              <td
+                bgcolor="#f4f4f4"
+                align="left"
+                style="
+                  padding: 0px 30px 30px 30px;
+                  color: #666666;
+                  font-family: 'Lato', Helvetica, Arial, sans-serif;
+                  font-size: 14px;
+                  font-weight: 400;
+                  line-height: 18px;
+                "
+              ></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>

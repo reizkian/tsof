@@ -6,10 +6,10 @@ const {
 } = require("../utils/jwt");
 const { getCurrentTime } = require("../utils/method");
 const { logActivity } = require("../handler/activity");
-const { sendEmailWelcome } = require("../utils/mailer");
+const { checkEmailVerified } = require("../utils/auth");
+const { sendEmailWelcome } = require("../utils/smtp/mailer");
 const { useEmulators } = require("../utils/admin");
 const { getAddressGeoLocation } = require("../utils/geolocation");
-const { privateKeyJWT } = require("../utils/admin");
 
 exports.signin = function(req, res) {
   /*
@@ -28,42 +28,64 @@ exports.signin = function(req, res) {
   if (user.password === "") {
     errors.email = "password cannot be empty";
   }
-  // ~ firebase authentication
-  firebaseAuthentication
-    .signInWithEmailAndPassword(user.email, user.password)
-    .then((userCredentials) => {
-      // ~ return id token
-      return userCredentials.user.getIdToken();
-    })
-    .then((token) => {
-      // ~ decode token, then get user ID
-      req.decodedToken = jwtDecodeFirebase(token);
-      const userID = req.decodedToken.user_id;
-      return userID;
-    })
-    .then((userID) => {
-      // ~ logActivity: signin
-      logActivity(userID, getCurrentTime(), "signin");
-      // ~ check and get user personal data
-      console.log(`sign in request: ${user.email} ${userID}`);
-      return firebaseDatabase
-        .ref("users/")
-        .child(userID)
-        .get()
-        .then((personalData) => {
-          var token;
-          // ~ assign role to authentication token if user has role
-          req.decodedToken.personalData = personalData.val();
-          // ~ assign exp for authenticated session (added number in seconds) set for 3 days
-          req.decodedToken.exp = req.decodedToken.iat + 60 * 60 * 24 * 3;
-          token = jwtEncodeUtil(req.decodedToken);
-          // console.log(token);
-          return res.json({ token: token });
+
+  // ~ check if user email is verified
+  checkEmailVerified(user.email)
+    .then((isVerified) => {
+      // ~ check if email verification status
+      if (isVerified) {
+        // ~ proceed to firebase authentication
+        firebaseAuthentication
+          .signInWithEmailAndPassword(user.email, user.password)
+          .then((userCredentials) => {
+            // ~ return id token
+            return userCredentials.user.getIdToken();
+          })
+          .then((token) => {
+            // ~ decode token, then get user ID
+            req.decodedToken = jwtDecodeFirebase(token);
+            const userID = req.decodedToken.user_id;
+            return userID;
+          })
+          .then((userID) => {
+            // ~ logActivity: signin
+            logActivity(userID, getCurrentTime(), "signin");
+            // ~ check and get user personal data
+            console.log(`sign in request: ${user.email} ${userID}`);
+            return firebaseDatabase
+              .ref("users/")
+              .child(userID)
+              .get()
+              .then((personalData) => {
+                var token;
+                // ~ assign role to authentication token if user has role
+                req.decodedToken.personalData = personalData.val();
+                // ~ assign exp for authenticated session (added number in seconds) set for 3 days
+                req.decodedToken.exp = req.decodedToken.iat + 60 * 60 * 24 * 3;
+                token = jwtEncodeUtil(req.decodedToken);
+                // console.log(token);
+                return res.json({ token: token });
+              });
+          })
+          .catch((err) => {
+            let message =
+              err.code === "auth/wrong-password"
+                ? "email atau password tidak ditemukan"
+                : err.code;
+            return res.status(500).json({ message: message });
+          });
+      }
+      // ~ respond error to verified email
+      else {
+        return res.status(500).json({
+          message:
+            "email anda belum terverifikasi, silakan cek kembali email anda",
         });
+      }
     })
     .catch((err) => {
       console.log(err);
-      return res.status(500).json({ general: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     });
 };
 
@@ -84,7 +106,7 @@ exports.signup = function(req, res) {
   */
 
   // get user data by decode jwt token
-  const user = jwtDecodeUtil(req.body.token)
+  const user = jwtDecodeUtil(req.body.token);
   const currentDateTime = new Date();
   delete user.iat;
 
@@ -121,11 +143,12 @@ exports.signup = function(req, res) {
         let userID = userCredentials.user.uid;
         // ~ add user object
         user._id = userID;
+        user._verified = false;
         // ~ logActivity: signup
         logActivity(userID, getCurrentTime(), "signup");
         // ~ send email welcome
         if (!useEmulators) {
-          sendEmailWelcome(user.email, user.name);
+          sendEmailWelcome(user._id, user.email, user.name);
         }
         return user;
       })

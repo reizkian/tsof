@@ -7,6 +7,7 @@ const app = express();
 const { signin, signup } = require("./handler/user");
 const { createCourse } = require("./handler/course");
 const { jwtEncodeAPI, jwtDecodeAPI } = require("./utils/jwt");
+const { verifyEmail, checkEmailVerified } = require("./utils/smtp/verify_email");
 app.use(cors());
 
 /* R O U T E */
@@ -16,6 +17,8 @@ app.post("/create-course", createCourse);
 
 app.post("/api/jwt-encode", jwtEncodeAPI);
 app.post("/api/jwt-decode", jwtDecodeAPI);
+
+app.get("/api/verify-email/:_id", verifyEmail);
 
 /* E X P O R T S */
 exports.app = functions.https.onRequest(app);

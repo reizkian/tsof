@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn(props) {
-
   const navigateRoute = useNavigate();
   // REACT HOOK STATE
   const classes = useStyles();
@@ -101,7 +100,9 @@ export default function SignIn(props) {
 
     // secretOrPrivateKey located in .env file
     const encodedPayloadData = {
-      token: jwt.sign(payloadData, process.env.REACT_APP_JWT_KEY, { algorithm: "HS256" }),
+      token: jwt.sign(payloadData, process.env.REACT_APP_JWT_KEY, {
+        algorithm: "HS256",
+      }),
     };
     // set loading TRUE
     setFormState({ ...formState, loading: !formState.loading });
@@ -129,22 +130,16 @@ export default function SignIn(props) {
         });
       })
       .catch((err) => {
-        console.log(err);
         // close loading alert
         setFormState((prevState) => ({
           ...prevState,
-          errors: err.response,
+          errors: err.response.data,
           loading: false,
         }));
         // open error alert
         if (err) {
           handleOpenErrorSnackBar();
         }
-        setFormState((prevState) => ({
-          ...prevState,
-          errors: err.response,
-          loading: false,
-        }));
       });
   }
 
@@ -177,7 +172,10 @@ export default function SignIn(props) {
                 <h1 className={style.brandText}>The School of Fire</h1>
               </div>
               <div className={style.form}>
-                <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+                <FormControl
+                  className={clsx(classes.margin, classes.textField)}
+                  variant="outlined"
+                >
                   <TextField
                     id="outlined-basic"
                     name="email"
@@ -186,8 +184,13 @@ export default function SignIn(props) {
                     variant="outlined"
                   />
                 </FormControl>
-                <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-                  <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <FormControl
+                  className={clsx(classes.margin, classes.textField)}
+                  variant="outlined"
+                >
+                  <InputLabel htmlFor="outlined-adornment-password">
+                    Password
+                  </InputLabel>
                   <OutlinedInput
                     id="outlined-adornment-password"
                     name="password"
@@ -202,7 +205,11 @@ export default function SignIn(props) {
                           onMouseDown={handleMouseDownPassword}
                           edge="end"
                         >
-                          {formState.showPassword ? <Visibility /> : <VisibilityOff />}
+                          {formState.showPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -222,8 +229,12 @@ export default function SignIn(props) {
                     onClose={handleCloseErrorSnackBar}
                     message="I love it"
                   >
-                    <Alert onClose={handleCloseErrorSnackBar} severity="warning">
-                      user and password tidak ditemukan
+                    <Alert
+                      onClose={handleCloseErrorSnackBar}
+                      severity="warning"
+                    >
+                      {formState.errors.message}
+                      {console.log(formState.errors.message)}
                     </Alert>
                   </Snackbar>
                   {/* LOADING Snackbar */}
@@ -246,23 +257,63 @@ export default function SignIn(props) {
         </div>
         <div className={style.footer}>
           <ul className={style.ul}>
-            <motion.li initial={animateFrom} animate={animateTo} transition={{ delay: 0.05 }} className={style.docsNav}>
-              <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
+            <motion.li
+              initial={animateFrom}
+              animate={animateTo}
+              transition={{ delay: 0.05 }}
+              className={style.docsNav}
+            >
+              <a
+                className={style.docsLink}
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Konseling
               </a>
             </motion.li>
-            <motion.li initial={animateFrom} animate={animateTo} transition={{ delay: 0.15 }} className={style.docsNav}>
-              <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
+            <motion.li
+              initial={animateFrom}
+              animate={animateTo}
+              transition={{ delay: 0.15 }}
+              className={style.docsNav}
+            >
+              <a
+                className={style.docsLink}
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Kelas Pengajaran
               </a>
             </motion.li>
-            <motion.li initial={animateFrom} animate={animateTo} transition={{ delay: 0.25 }} className={style.docsNav}>
-              <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
+            <motion.li
+              initial={animateFrom}
+              animate={animateTo}
+              transition={{ delay: 0.25 }}
+              className={style.docsNav}
+            >
+              <a
+                className={style.docsLink}
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Pertumbuhan Rohani
               </a>
             </motion.li>
-            <motion.li initial={animateFrom} animate={animateTo} transition={{ delay: 0.35 }} className={style.docsNav}>
-              <a className={style.docsLink} href="/" target="_blank" rel="noopener noreferrer">
+            <motion.li
+              initial={animateFrom}
+              animate={animateTo}
+              transition={{ delay: 0.35 }}
+              className={style.docsNav}
+            >
+              <a
+                className={style.docsLink}
+                href="/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Home
               </a>
             </motion.li>
