@@ -54,7 +54,7 @@ export default function Register(props) {
     name: "",
     sex: "",
     birthdate: "mm/dd/yyyy",
-    phone: "",
+    phone: "+62",
     city: "",
     address: "",
     loading: false,
@@ -428,6 +428,8 @@ export default function Register(props) {
                 onChange={handleFormChange}
                 label="No. Whatsapp / HP"
                 variant="outlined"
+                defaultValue={"+62"}
+                helperText={"gunakan format nomor hp dengan kode negara +62"}
               />
             </FormControl>
           </div>

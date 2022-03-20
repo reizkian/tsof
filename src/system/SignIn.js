@@ -115,7 +115,7 @@ export default function SignIn(props) {
       })
       .then((result) => {
         // ~ console log encrypted firebase user credentials
-        console.log(result.data);
+        // console.log(result.data);
         // ~ set encrypted firebaseUserCredential to localStorage
         localStorage.setItem("firebaseUserCredential", `${result.data.token}`);
         // ~ set authenticationStatus to local storage
@@ -123,7 +123,6 @@ export default function SignIn(props) {
         return result.data.token;
       })
       .then((firebaseUserCredential) => {
-        console.log(firebaseUserCredential);
         navigateRoute("/dashboard", {
           state: { encodedUserCredential: firebaseUserCredential },
           replace: true,
@@ -234,7 +233,6 @@ export default function SignIn(props) {
                       severity="warning"
                     >
                       {formState.errors.message}
-                      {console.log(formState.errors.message)}
                     </Alert>
                   </Snackbar>
                   {/* LOADING Snackbar */}
