@@ -309,7 +309,6 @@ export default function SignIn(props) {
               <a
                 className={style.docsLink}
                 href="/"
-                target="_blank"
                 rel="noopener noreferrer"
               >
                 Home

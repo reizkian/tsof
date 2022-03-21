@@ -12,6 +12,7 @@ import {
   Kelas,
   BuatUser,
   DaftarUser,
+  Public,
   DataProcessing,
   ResourceMonitor,
   ServerLog,
@@ -35,6 +36,7 @@ export default function DashboardRoutes() {
         { path: "manage-kelas/kelas", element: <Kelas /> },
         { path: "manage-users/buat-user", element: <BuatUser /> },
         { path: "manage-users/daftar-user", element: <DaftarUser /> },
+        { path: "manage-server/public", element: <Public /> },
         { path: "manage-server/data-processing", element: <DataProcessing /> },
         {
           path: "manage-server/resource-monitor",

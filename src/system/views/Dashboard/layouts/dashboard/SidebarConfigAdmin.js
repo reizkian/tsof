@@ -38,6 +38,10 @@ const sidebarConfigAdmin = [
     icon: getFaIcon(faCog),
     children: [
       {
+        title: "Public",
+        path: "/dashboard/manage-server/public",
+      },
+      {
         title: "Data Processing",
         path: "/dashboard/manage-server/data-processing",
       },

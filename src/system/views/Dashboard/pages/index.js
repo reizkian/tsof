@@ -13,6 +13,7 @@ import DaftarUser from "./manage_users/DaftarUser";
 import Jadwal from "./manage_kelas/Jadwal";
 import Kelas from "./manage_kelas/Kelas";
 
+import Public from "./manage_server/Public";
 import DataProcessing from "./manage_server/DataProcessing";
 import ResourceMonitor from "./manage_server/ResourceMonitor";
 import ServerLog from "./manage_server/ServerLog";
@@ -30,6 +31,7 @@ export {
   Kelas,
   BuatUser,
   DaftarUser,
+  Public,
   DataProcessing,
   ResourceMonitor,
   ServerLog,

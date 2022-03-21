@@ -10,6 +10,7 @@ const { checkEmailVerified } = require("../utils/auth");
 const { sendEmailWelcome } = require("../utils/smtp/mailer");
 const { useEmulators } = require("../utils/admin");
 const { getAddressGeoLocation } = require("../utils/geolocation");
+const { response } = require("express");
 
 exports.signin = function(req, res) {
   /*
@@ -214,3 +215,16 @@ exports.signup = function(req, res) {
 }
   */
 };
+
+exports.getUserPersonalData = function(req,res){
+  // ~ get user ID from parametric route
+  const userID = req.params._id;
+  // ~ get user data
+  firebaseDatabase.ref("users/"+userID).get()
+  .then((respond)=>{
+    return res.status(200).json(respond.val())
+  })
+  .catch((err) => {
+    return res.status(500).json({ error: err });
+  });
+}

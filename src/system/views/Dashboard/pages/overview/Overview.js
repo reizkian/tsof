@@ -17,7 +17,7 @@ import {
   // AppTrafficBySite,
   AppTextClassifier,
   AppPerArea,
-  AppMap
+  AppMap,
 } from "../../components/_dashboard/app";
 
 // ----------------------------------------------------------------------
@@ -30,9 +30,15 @@ export default function Overview(props) {
       <Page title="The School of Fire - System">
         <Container maxWidth="xl">
           <Box sx={{ pb: 5 }}>
-          <motion.div initial={animateFrom} animate={animateTo} transition={{ delay: 0.25 }}>
-              <Typography variant="h4">Hi, Welcome to The Fire Community!</Typography>
-            </motion.div>    
+            <motion.div
+              initial={animateFrom}
+              animate={animateTo}
+              transition={{ delay: 0.25 }}
+            >
+              <Typography variant="h4">
+                Hi, Welcome to The Fire Community!
+              </Typography>
+            </motion.div>
           </Box>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={3}>
@@ -84,9 +90,9 @@ export default function Overview(props) {
           <Grid item xs={12} md={6} lg={8}>
             <AppTasks />
           </Grid> */}
-          <Grid item xs={12} md={6} lg={12}>
-            <AppMap/>
-          </Grid>
+            <Grid item xs={12} md={6} lg={12}>
+              <AppMap />
+            </Grid>
           </Grid>
         </Container>
       </Page>

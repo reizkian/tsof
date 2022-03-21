@@ -23,7 +23,7 @@ var useEmulators = false;
 if (operatingSystem.hostname() === "AMD64") {
   useEmulators = true;
   firebaseAuthentication.useEmulator("http://localhost:9099");
-  firebaseDatabase.useEmulator("localhost", 9000);;
+  firebaseDatabase.useEmulator("localhost", 9000);
 }
 
 /* A P I - K E Y */
