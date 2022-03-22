@@ -1,6 +1,10 @@
 import React, { useState, useCallback } from "react";
-import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 import Cropper from "react-easy-crop";
+import {
+  generateDownload,
+  generateCroppedImageDataURL,
+} from "system/util/image";
 // import "react-image-crop/dist/ReactCrop.css";
 import {
   Box,
@@ -30,60 +34,80 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 const BootstrapDialogTitle = (props) => {
   const { children, onClose, ...other } = props;
-
   return (
     <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
       {children}
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      />
     </DialogTitle>
   );
 };
 
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
+
 export default function MetaData({ personalData }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [croppedArea, setCroppedArea] = React.useState(null);
   const [zoom, setZoom] = useState(1);
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    console.log(croppedArea, croppedAreaPixels);
+    // console.log(croppedArea, croppedAreaPixels);
+    setCroppedArea(croppedAreaPixels);
   }, []);
 
   const [profileState, setProfileState] = React.useState(personalData);
   const [open, setOpen] = React.useState(false);
-  const [fileURL, setFileURL] = React.useState(
-    "https://img.huffingtonpost.com/asset/5ab4d4ac2000007d06eb2c56.jpeg?cache=sih0jwle4e&ops=1910_1000"
-  );
-
+  const [imageDataURL, setImageDataURL] = React.useState(null);
   const handleClickOpenImageDialog = () => {
     setOpen(true);
   };
-  const handleClose = () => {
+  const handleCloseImageDialog = () => {
     setOpen(false);
   };
 
   // ~ handle selected picture file
   function onSelectFile(event) {
-    const image = event.target.files[0];
-    const imageURL = URL.createObjectURL(image);
-    setFileURL(imageURL)
-    console.log(image);
-    console.log(imageURL);
-    if (image) {
+    const imageFile = event.target.files[0];
+
+    if (event.target.files && event.target.files.length > 0) {
+      const reader = new FileReader();
+      reader.readAsDataURL(imageFile);
+      reader.addEventListener("load", () => {
+        setImageDataURL(reader.result);
+      });
+
+      // ~ open dialog cropper
       handleClickOpenImageDialog();
+      // ~ reset dialog cropper parameter for new file
       document.getElementById("imageInput").value = "";
+      setZoom(1);
     }
-    // postImageToServer(personalData._id, image);
+  }
+
+  function onSaveCroppedImageButton() {
+    // setCroppedImageDataURL(generateCroppedImageDataURL(imageDataURL, croppedArea));
+    generateCroppedImageDataURL(personalData._id, imageDataURL, croppedArea)
+      .then((croppedImageDataURL) => {
+        console.log(croppedImageDataURL);
+        // ~ wait async function to resolve cropped image data URL
+        setProfileState((prevState) => ({
+          ...prevState,
+          imageURL: croppedImageDataURL,
+        }));
+      })
+      .then(() => {
+        handleCloseImageDialog();
+      });
   }
 
   // ~ click on image trigger choose file input
@@ -124,37 +148,62 @@ export default function MetaData({ personalData }) {
           />
           <div>
             <BootstrapDialog
-              onClose={handleClose}
+              onClose={handleCloseImageDialog}
               aria-labelledby="customized-dialog-title"
               open={open}
             >
+              <BootstrapDialogTitle
+                id="customized-dialog-title"
+                onClose={handleCloseImageDialog}
+              >
+                Foto Profil
+              </BootstrapDialogTitle>
               <DialogContent dividers>
-                <Box sx={{ width: "350px", height: "400px", p: "20%" }}>
+                <Box sx={{ width: "300px", height: "350px", p: "20%" }}>
                   <div className="App">
-                    <div className="crop-container">
-                      <Cropper
-                        image={fileURL}
-                        crop={crop}
-                        zoom={zoom}
-                        aspect={3 / 3}
-                        onCropChange={setCrop}
-                        onCropComplete={onCropComplete}
-                        onZoomChange={setZoom}
-                      />
-                    </div>
+                    <Box sx={{ width: "150x", height: "150px" }}>
+                      <div className="crop-container">
+                        <Cropper
+                          image={imageDataURL}
+                          crop={crop}
+                          zoom={zoom}
+                          aspect={3 / 3}
+                          onCropChange={setCrop}
+                          onCropComplete={onCropComplete}
+                          onZoomChange={setZoom}
+                        />
+                      </div>
+                    </Box>
                     <div className="controls">
-                      <input
-                        type="range"
-                        value={zoom}
-                        min={1}
-                        max={3}
-                        step={0.1}
-                        aria-labelledby="Zoom"
-                        onChange={(e) => {
-                          setZoom(e.target.value);
-                        }}
-                        className="zoom-range"
-                      />
+                      <Grid container>
+                        <Grid item xs={12}>
+                          <input
+                            type="range"
+                            value={zoom}
+                            min={1}
+                            max={3}
+                            step={0.1}
+                            aria-labelledby="Zoom"
+                            onChange={(e) => {
+                              setZoom(e.target.value);
+                            }}
+                            className="zoom-range"
+                          />
+                        </Grid>
+                        <Grid item xs={12}>
+                          <Box textAlign="center" sx={{ mt: "1%" }}>
+                            <Button
+                              to="/dashboard/home"
+                              id="save-cropped-image-button"
+                              size="medium"
+                              variant="text"
+                              onClick={onSaveCroppedImageButton}
+                            >
+                              simpan
+                            </Button>
+                          </Box>
+                        </Grid>
+                      </Grid>
                     </div>
                   </div>
                 </Box>
