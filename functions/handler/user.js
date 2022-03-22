@@ -1,4 +1,8 @@
-const { firebaseDatabase, firebaseAuthentication } = require("../utils/admin");
+const {
+  firebaseDatabase,
+  firebaseAuthentication,
+  firebaseStorage,
+} = require("../utils/admin");
 const {
   jwtEncodeUtil,
   jwtDecodeUtil,
@@ -216,15 +220,35 @@ exports.signup = function(req, res) {
   */
 };
 
-exports.getUserPersonalData = function(req,res){
+exports.getUserPersonalData = function(req, res) {
   // ~ get user ID from parametric route
   const userID = req.params._id;
   // ~ get user data
-  firebaseDatabase.ref("users/"+userID).get()
-  .then((respond)=>{
-    return res.status(200).json(respond.val())
-  })
-  .catch((err) => {
-    return res.status(500).json({ error: err });
-  });
-}
+  firebaseDatabase
+    .ref("users/" + userID)
+    .get()
+    .then((respond) => {
+      return res.status(200).json(respond.val());
+    })
+    .catch((err) => {
+      return res.status(500).json({ error: err });
+    });
+};
+
+exports.updateUserImage = function(req, res) {
+  const userID = req.params._id;
+  const imageDataURL = req.body.imageDataURL;
+  console.log(imageDataURL.split("/")[0])
+  const storageRef = firebaseStorage.ref();
+  const userImageRef = storageRef.child(`users/images/${userID}.jpeg`);
+
+  userImageRef
+    .putString(imageDataURL, "data_url",{contentType:"image/jpg"})
+    .then((snapshot) => {
+      console.log(`Uploaded ${userID}.png`);
+      return res.status(200);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};

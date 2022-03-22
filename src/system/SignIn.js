@@ -230,7 +230,7 @@ export default function SignIn(props) {
                   >
                     <Alert
                       onClose={handleCloseErrorSnackBar}
-                      severity="warning"
+                      severity="error"
                     >
                       {formState.errors.message}
                     </Alert>

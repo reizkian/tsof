@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import axios from "axios";
 import PropTypes from "prop-types";
 import Cropper from "react-easy-crop";
 import {
@@ -16,7 +17,8 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
+  Snackbar,
+  Alert,
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -77,9 +79,16 @@ export default function MetaData({ personalData }) {
 
   // ~ handle selected picture file
   function onSelectFile(event) {
-    const imageFile = event.target.files[0];
-
+    // ~ check file is exist
     if (event.target.files && event.target.files.length > 0) {
+      const imageFile = event.target.files[0];
+      const fileSizeLimit = 2 * 1024 * 1024; // 1 MB limit
+      if (imageFile.size > fileSizeLimit) {
+        handleOpenErrorSnackBar();
+        document.getElementById("imageInput").value = "";
+        setZoom(1);
+        return;
+      }
       const reader = new FileReader();
       reader.readAsDataURL(imageFile);
       reader.addEventListener("load", () => {
@@ -94,18 +103,39 @@ export default function MetaData({ personalData }) {
     }
   }
 
+  // HANDLE: error notification
+  const [openErrorSnackBar, setOpenErrorSnackBar] = React.useState(false);
+  function handleOpenErrorSnackBar() {
+    setOpenErrorSnackBar(true);
+  }
+  function handleCloseErrorSnackBar(event, reason) {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenErrorSnackBar(false);
+  }
+
   function onSaveCroppedImageButton() {
     // setCroppedImageDataURL(generateCroppedImageDataURL(imageDataURL, croppedArea));
     generateCroppedImageDataURL(personalData._id, imageDataURL, croppedArea)
       .then((croppedImageDataURL) => {
-        console.log(croppedImageDataURL);
         // ~ wait async function to resolve cropped image data URL
         setProfileState((prevState) => ({
           ...prevState,
           imageURL: croppedImageDataURL,
         }));
+        console.log(profileState);
+        return croppedImageDataURL;
       })
-      .then(() => {
+      .then((croppedImageDataURL) => {
+        const payloadData = { imageDataURL: croppedImageDataURL };
+        console.log(payloadData);
+        // ~ POST request handled by updateImageURL callback server
+        axios.post(`/user/image/${profileState._id}`, payloadData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         handleCloseImageDialog();
       });
   }
@@ -236,6 +266,19 @@ export default function MetaData({ personalData }) {
           </Box>
         </Box>
       </Card>
+      {/* WARNING Snackbar */}
+      <Snackbar
+        open={openErrorSnackBar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        key={"topcenter"}
+        autoHideDuration={6000}
+        onClose={handleCloseErrorSnackBar}
+        message="I love it"
+      >
+        <Alert onClose={handleCloseErrorSnackBar} severity="error">
+          Ukuran file tidak boleh melebihi 2MB
+        </Alert>
+      </Snackbar>
     </>
   );
 }
