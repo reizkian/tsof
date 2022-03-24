@@ -4,9 +4,6 @@ import Title from "../system/views/RegisterPage/Title/Title.js";
 import Footer from "./views/LandingPage/Footer/Footer.js";
 import Course from "./views/KelasPengajaran/Course/Course.js";
 
-import { Box, Grid, Container, Typography, Paper } from "@mui/material";
-import { styled } from "@mui/material/styles";
-
 export default function KelasPengajaran() {
   const course = [
     {
@@ -41,14 +38,6 @@ export default function KelasPengajaran() {
       src: require("assets/img/final-hk.png").default,
     },
   ];
-
-  const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  }));
 
   return (
     <>

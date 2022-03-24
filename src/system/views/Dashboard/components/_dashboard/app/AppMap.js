@@ -1,7 +1,7 @@
 import React from "react";
 import MarkerClusterer from "@googlemaps/markerclustererplus";
 // reactstrap components
-import { Box, Card, CardHeader } from "@mui/material";
+import { Card, CardHeader } from "@mui/material";
 import geolocations from "system/views/Dashboard/_mocks_/geolocations";
 
 const MapWrapper = ({ geolocations, ...rest }) => {
@@ -28,12 +28,18 @@ const MapWrapper = ({ geolocations, ...rest }) => {
     });
 
     new MarkerClusterer(map, markers, {
-      imagePath: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+      imagePath:
+        "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
     });
   }, [geolocations.data]);
   return (
     <>
-      <div style={{ height: `700px` }} className="map-canvas" id="map-canvas" ref={mapRef} />
+      <div
+        style={{ height: `700px` }}
+        className="map-canvas"
+        id="map-canvas"
+        ref={mapRef}
+      />
     </>
   );
 };
@@ -42,7 +48,10 @@ const Map = () => {
   return (
     <>
       <Card>
-        <CardHeader title="Distribusi Murid The School of Fire di Indonesia" subheader="by Google Geocoding API" />
+        <CardHeader
+          title="Distribusi Murid The School of Fire di Indonesia"
+          subheader="by Google Geocoding API"
+        />
         <div style={{ marginTop: "10px" }}>
           <MapWrapper geolocations={{ data: geolocations }} />
         </div>

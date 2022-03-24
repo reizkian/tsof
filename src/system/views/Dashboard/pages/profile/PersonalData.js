@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Card, Grid, Typography } from "@mui/material";
+import { Box, Button, Card, Grid } from "@mui/material";
 import { makeStyles, FormControl, TextField } from "@material-ui/core";
 
 import clsx from "clsx";
@@ -26,18 +26,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PersonalData({ personalData }) {
   const classes = useStyles();
-
-  // HANDLE: form state
-  const [formState, setFormState] = React.useState(personalData);
+  
+  const [profileState, setprofileState] = React.useState(personalData);
   function handleFormChange(event) {
-    setFormState((prevState) => ({
+    setprofileState((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
     }));
   }
-  function handleCloseLoadingAlert(event) {
-    setFormState({ ...formState, loading: false });
-  }
+
   return (
     <>
       <Card>
@@ -60,7 +57,7 @@ export default function PersonalData({ personalData }) {
                 <TextField
                   id="name"
                   name="name"
-                  value={formState.name}
+                  value={profileState.name}
                   onChange={handleFormChange}
                   label="Nama Lengkap"
                   variant="outlined"
@@ -76,7 +73,7 @@ export default function PersonalData({ personalData }) {
               >
                 <TextField
                   name="email"
-                  value={formState.email}
+                  value={profileState.email}
                   onChange={handleFormChange}
                   id="email"
                   label="Email"
@@ -93,7 +90,7 @@ export default function PersonalData({ personalData }) {
               >
                 <TextField
                   name="sex"
-                  value={formState.sex === "Male" ? "Pria" : "Wanita"}
+                  value={profileState.sex === "Male" ? "Pria" : "Wanita"}
                   onChange={handleFormChange}
                   disabled
                   id="sex"
@@ -111,7 +108,7 @@ export default function PersonalData({ personalData }) {
               >
                 <TextField
                   name="birthdate"
-                  value={formState.birthdate}
+                  value={profileState.birthdate}
                   onChange={handleFormChange}
                   id="birthdate"
                   label="Tanggal Lahir"
@@ -128,7 +125,7 @@ export default function PersonalData({ personalData }) {
               >
                 <TextField
                   name="phone"
-                  value={formState.phone}
+                  value={profileState.phone}
                   onChange={handleFormChange}
                   id="phone"
                   label="No Whatsapp / HP"
@@ -145,7 +142,7 @@ export default function PersonalData({ personalData }) {
               >
                 <TextField
                   name="city"
-                  value={formState.city}
+                  value={profileState.city}
                   onChange={handleFormChange}
                   id="city"
                   label="Kota / Kabupaten"
@@ -162,7 +159,7 @@ export default function PersonalData({ personalData }) {
               >
                 <TextField
                   name="address"
-                  value={formState.address}
+                  value={profileState.address}
                   onChange={handleFormChange}
                   id="address"
                   label="Alamat"

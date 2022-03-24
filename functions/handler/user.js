@@ -8,13 +8,13 @@ const {
   jwtDecodeUtil,
   jwtDecodeFirebase,
 } = require("../utils/jwt");
-const { getCurrentTime } = require("../utils/method");
+const { getCurrentTime, getBlobFromURI } = require("../utils/method");
 const { logActivity } = require("../handler/activity");
 const { checkEmailVerified } = require("../utils/auth");
 const { sendEmailWelcome } = require("../utils/smtp/mailer");
 const { useEmulators } = require("../utils/admin");
 const { getAddressGeoLocation } = require("../utils/geolocation");
-const { response } = require("express");
+
 
 exports.signin = function(req, res) {
   /*
@@ -25,7 +25,7 @@ exports.signin = function(req, res) {
   const user = jwtDecodeUtil(req.body.token);
   const currentDateTime = new Date();
   delete user.iat;
-  // ~ error handling
+  //  error handling
   let errors = {};
   if (user.email === "") {
     errors.email = "email cannot be empty";
@@ -34,28 +34,28 @@ exports.signin = function(req, res) {
     errors.email = "password cannot be empty";
   }
 
-  // ~ check if user email is verified
+  //  check if user email is verified
   checkEmailVerified(user.email)
     .then((isVerified) => {
-      // ~ check if email verification status
+      //  check if email verification status
       if (isVerified) {
-        // ~ proceed to firebase authentication
+        //  proceed to firebase authentication
         firebaseAuthentication
           .signInWithEmailAndPassword(user.email, user.password)
           .then((userCredentials) => {
-            // ~ return id token
+            //  return id token
             return userCredentials.user.getIdToken();
           })
           .then((token) => {
-            // ~ decode token, then get user ID
+            //  decode token, then get user ID
             req.decodedToken = jwtDecodeFirebase(token);
             const userID = req.decodedToken.user_id;
             return userID;
           })
           .then((userID) => {
-            // ~ logActivity: signin
+            //  logActivity: signin
             logActivity(userID, getCurrentTime(), "signin");
-            // ~ check and get user personal data
+            //  check and get user personal data
             console.log(`sign in request: ${user.email} ${userID}`);
             return firebaseDatabase
               .ref("users/")
@@ -63,9 +63,9 @@ exports.signin = function(req, res) {
               .get()
               .then((personalData) => {
                 var token;
-                // ~ assign role to authentication token if user has role
+                //  assign role to authentication token if user has role
                 req.decodedToken.personalData = personalData.val();
-                // ~ assign exp for authenticated session (added number in seconds) set for 3 days
+                //  assign exp for authenticated session (added number in seconds) set for 3 days
                 req.decodedToken.exp = req.decodedToken.iat + 60 * 60 * 24 * 3;
                 token = jwtEncodeUtil(req.decodedToken);
                 // console.log(token);
@@ -80,7 +80,7 @@ exports.signin = function(req, res) {
             return res.status(500).json({ message: message });
           });
       }
-      // ~ respond error to verified email
+      //  respond error to verified email
       else {
         return res.status(500).json({
           message:
@@ -115,7 +115,7 @@ exports.signup = function(req, res) {
   const currentDateTime = new Date();
   delete user.iat;
 
-  // ~ error handling
+  //  error handling
   let errors = {};
   if (user.email === "") {
     errors.email = "email cannot be empty";
@@ -138,20 +138,20 @@ exports.signup = function(req, res) {
   }
 
   if (Object.keys(errors).length > 0) {
-    // ~ if any errors catched repond with errors message
+    //  if any errors catched repond with errors message
     res.status(400).json({ error: errors });
   } else {
-    // ~ else proceede to create user
+    //  else proceede to create user
     firebaseAuthentication
       .createUserWithEmailAndPassword(user.email, user.password)
       .then((userCredentials) => {
         let userID = userCredentials.user.uid;
-        // ~ add user object
+        //  add user object
         user._id = userID;
         user._verified = false;
-        // ~ logActivity: signup
+        //  logActivity: signup
         logActivity(userID, getCurrentTime(), "signup");
-        // ~ send email welcome
+        //  send email welcome
         if (!useEmulators) {
           sendEmailWelcome(user._id, user.email, user.name);
         }
@@ -159,10 +159,10 @@ exports.signup = function(req, res) {
       })
       .then((user) => {
         req.user = user;
-        // ~ delete password and confirm password
+        //  delete password and confirm password
         delete user.password;
         delete user.confirmPassword;
-        // ~ update user displayName
+        //  update user displayName
         if (firebaseAuthentication.currentUser != null) {
           firebaseAuthentication.currentUser
             .updateProfile({
@@ -175,13 +175,13 @@ exports.signup = function(req, res) {
               console.log(err);
             });
         }
-        // ~ get addressGeoLocation
+        //  get addressGeoLocation
         getAddressGeoLocation(`${user.address} ${user.city}`)
           .then((addressGeoLocation) => {
             user.addressGeoLocation = addressGeoLocation;
-            // ~ console log user data
+            //  console log user data
             console.log("signup request user from: ", user.email);
-            // ~ write user personal data to database
+            //  write user personal data to database
             firebaseDatabase
               .ref("users/" + user._id)
               .set(user)
@@ -221,9 +221,9 @@ exports.signup = function(req, res) {
 };
 
 exports.getUserPersonalData = function(req, res) {
-  // ~ get user ID from parametric route
+  //  get user ID from parametric route
   const userID = req.params._id;
-  // ~ get user data
+  //  get user data
   firebaseDatabase
     .ref("users/" + userID)
     .get()
@@ -235,20 +235,7 @@ exports.getUserPersonalData = function(req, res) {
     });
 };
 
-exports.updateUserImage = function(req, res) {
+exports.updateUserPersonalData = function(req, res) {
   const userID = req.params._id;
-  const imageDataURL = req.body.imageDataURL;
-  console.log(imageDataURL.split("/")[0])
-  const storageRef = firebaseStorage.ref();
-  const userImageRef = storageRef.child(`users/images/${userID}.jpeg`);
 
-  userImageRef
-    .putString(imageDataURL, "data_url",{contentType:"image/jpg"})
-    .then((snapshot) => {
-      console.log(`Uploaded ${userID}.png`);
-      return res.status(200);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+}

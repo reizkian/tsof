@@ -1,5 +1,3 @@
-import DashboardApp from "./DashboardApp";
-
 import SaatTeduh from "./muird/SaatTeduh";
 import Internalisasi from "./muird/Internalisasi";
 

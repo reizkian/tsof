@@ -3,9 +3,12 @@ import style from "./views/SignInPage/SignInPageRoot.module.css";
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { motion } from "framer-motion";
+
 import axios from "axios";
-import jwt from "jsonwebtoken";
 import clsx from "clsx";
+import { jwtEncodeUtil } from "system/util/jwt";
+import jwt from "jsonwebtoken";
+
 import IconButton from "@material-ui/core/IconButton";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -14,7 +17,6 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
@@ -114,11 +116,11 @@ export default function SignIn(props) {
         },
       })
       .then((result) => {
-        // ~ console log encrypted firebase user credentials
+        //  console log encrypted firebase user credentials
         // console.log(result.data);
-        // ~ set encrypted firebaseUserCredential to localStorage
+        //  set encrypted firebaseUserCredential to localStorage
         localStorage.setItem("firebaseUserCredential", `${result.data.token}`);
-        // ~ set authenticationStatus to local storage
+        //  set authenticationStatus to local storage
         localStorage.setItem("authenticationStatus", true);
         return result.data.token;
       })
@@ -228,10 +230,7 @@ export default function SignIn(props) {
                     onClose={handleCloseErrorSnackBar}
                     message="I love it"
                   >
-                    <Alert
-                      onClose={handleCloseErrorSnackBar}
-                      severity="error"
-                    >
+                    <Alert onClose={handleCloseErrorSnackBar} severity="error">
                       {formState.errors.message}
                     </Alert>
                   </Snackbar>
@@ -306,11 +305,7 @@ export default function SignIn(props) {
               transition={{ delay: 0.35 }}
               className={style.docsNav}
             >
-              <a
-                className={style.docsLink}
-                href="/"
-                rel="noopener noreferrer"
-              >
+              <a className={style.docsLink} href="/" rel="noopener noreferrer">
                 Home
               </a>
             </motion.li>

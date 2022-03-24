@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
+
 // material
 import { styled } from "@mui/material/styles";
 import {
-  alpha,
   Box,
   Link,
   Drawer,
@@ -18,11 +18,11 @@ import LogoText from "../../components/LogoText";
 import Scrollbar from "../../components/Scrollbar";
 import NavSection from "../../components/NavSection";
 import { MHidden } from "../../components/@material-extend";
-//
+
 import sidebarConfigUser from "./SidebarConfigUser";
 import sidebarConfigAdmin from "./SidebarConfigAdmin";
 
-// ----------------------------------------------------------------------
+
 
 const DRAWER_WIDTH = 280;
 
@@ -33,7 +33,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   },
 }));
 
-// ----------------------------------------------------------------------
+
 
 DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,

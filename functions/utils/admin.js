@@ -19,9 +19,10 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var firebaseAuthentication = firebase.auth();
 var firebaseDatabase = firebase.database();
-var firebaseStorage = firebase.storage();
+var firebaseStorage = firebase.storage()
 
-// ~ emulators
+
+//  emulators
 var useEmulators = false;
 if (operatingSystem.hostname() === "AMD64") {
   useEmulators = true;

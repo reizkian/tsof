@@ -1,7 +1,7 @@
 const { firebaseDatabase } = require("./admin");
 
 exports.checkEmailVerified = function(email) {
-  // ~ qurey SELECT * FROM users WHERE email=
+  //  qurey SELECT * FROM users WHERE email=
   return firebaseDatabase
     .ref("users")
     .orderByChild("email")

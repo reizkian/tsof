@@ -1,11 +1,10 @@
+import { ref, uploadBytesResumable } from "firebase/storage";
+import { firebaseStorageRef } from "system/util/admin";
+
 import React, { useState, useCallback } from "react";
-import axios from "axios";
 import PropTypes from "prop-types";
 import Cropper from "react-easy-crop";
-import {
-  generateDownload,
-  generateCroppedImageDataURL,
-} from "system/util/image";
+import { dataURLtoBlob, generateCroppedImageDataURL } from "system/util/image";
 // import "react-image-crop/dist/ReactCrop.css";
 import {
   Box,
@@ -20,43 +19,10 @@ import {
   Snackbar,
   Alert,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 import "./Dialog.css";
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
-
-const BootstrapDialogTitle = (props) => {
-  const { children, onClose, ...other } = props;
-  return (
-    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-      {children}
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: "absolute",
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      />
-    </DialogTitle>
-  );
-};
-
-BootstrapDialogTitle.propTypes = {
-  children: PropTypes.node,
-  onClose: PropTypes.func.isRequired,
-};
 
 export default function MetaData({ personalData }) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -76,10 +42,19 @@ export default function MetaData({ personalData }) {
   const handleCloseImageDialog = () => {
     setOpen(false);
   };
+  const [uploadProgress, setUploadPorgress] = React.useState(0);
+  const [
+    uploadProgressVisibility,
+    setUploadProgressVisibility,
+  ] = React.useState("none");
+  const [
+    saveImageButtonVisibility,
+    setSaveImageButtonVisibility,
+  ] = React.useState("");
 
-  // ~ handle selected picture file
+  //  handle selected picture file
   function onSelectFile(event) {
-    // ~ check file is exist
+    //  check file is exist
     if (event.target.files && event.target.files.length > 0) {
       const imageFile = event.target.files[0];
       const fileSizeLimit = 2 * 1024 * 1024; // 1 MB limit
@@ -95,9 +70,9 @@ export default function MetaData({ personalData }) {
         setImageDataURL(reader.result);
       });
 
-      // ~ open dialog cropper
+      //  open dialog cropper
       handleClickOpenImageDialog();
-      // ~ reset dialog cropper parameter for new file
+      //  reset dialog cropper parameter for new file
       document.getElementById("imageInput").value = "";
       setZoom(1);
     }
@@ -117,59 +92,71 @@ export default function MetaData({ personalData }) {
 
   function onSaveCroppedImageButton() {
     // setCroppedImageDataURL(generateCroppedImageDataURL(imageDataURL, croppedArea));
-    generateCroppedImageDataURL(personalData._id, imageDataURL, croppedArea)
-      .then((croppedImageDataURL) => {
-        // ~ wait async function to resolve cropped image data URL
-        setProfileState((prevState) => ({
-          ...prevState,
-          imageURL: croppedImageDataURL,
-        }));
-        console.log(profileState);
-        return croppedImageDataURL;
-      })
-      .then((croppedImageDataURL) => {
-        const payloadData = { imageDataURL: croppedImageDataURL };
-        console.log(payloadData);
-        // ~ POST request handled by updateImageURL callback server
-        axios.post(`/user/image/${profileState._id}`, payloadData, {
-          headers: {
-            "Content-Type": "application/json",
+    generateCroppedImageDataURL(imageDataURL, croppedArea).then(
+      (croppedImageDataURL) => {
+        const croppedImageBlob = dataURLtoBlob(croppedImageDataURL);
+        console.log(croppedImageBlob);
+
+        const imageRef = ref(
+          firebaseStorageRef,
+          `users/images/${profileState._id}.png`
+        );
+        const uploadTask = uploadBytesResumable(imageRef, croppedImageBlob);
+
+        setSaveImageButtonVisibility("none");
+        setUploadProgressVisibility("");
+
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+
+            setUploadPorgress(Math.round(progress));
           },
-        });
-        handleCloseImageDialog();
-      });
+          (error) => {
+            // Handle unsuccessful uploads
+            console.log(error);
+          },
+          () => {
+            // Handle successful uploads on complete
+            handleCloseImageDialog();
+            setSaveImageButtonVisibility("");
+            setUploadProgressVisibility("none");
+            // Set profile state as imageURL is updated
+            setProfileState((prevState) => ({
+              ...prevState,
+              imageURL: `https://firebasestorage.googleapis.com/v0/b/the-school-of-fire.appspot.com/o/users%2Fimages%2F${
+                profileState._id
+              }.png?alt=media`,
+            }));
+
+            console.log(profileState);
+          }
+        );
+      }
+    );
   }
 
-  // ~ click on image trigger choose file input
+  //  click on image trigger choose file input
   function handleEditPicture() {
     const fileInput = document.getElementById("imageInput");
     fileInput.click();
   }
 
-  function postImageToServer(_id, image) {
-    const formData = new FormData();
-    formData.append("_id", _id);
-    formData.append("image", image, image.name);
-    console.log(Array.from(formData));
-  }
-
-  function handleSubmit(event) {
-    setProfileState((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-  }
   return (
     <>
       <Card>
         <Box sx={{ p: "3%", my: 3, mx: "auto" }}>
-          <a onClick={handleEditPicture}>
-            <Avatar
-              sx={{ width: 130, height: 130, mx: "auto" }}
-              src={personalData.imageURL}
-              alt={personalData.displayName}
-            />
-          </a>
+          <Avatar
+            sx={{ width: 130, height: 130, mx: "auto", cursor: "pointer" }}
+            src={profileState.imageURL}
+            alt={profileState.displayName}
+            onClick={handleEditPicture}
+          />
           <input
             type="file"
             id="imageInput"
@@ -221,7 +208,13 @@ export default function MetaData({ personalData }) {
                           />
                         </Grid>
                         <Grid item xs={12}>
-                          <Box textAlign="center" sx={{ mt: "1%" }}>
+                          <Box
+                            textAlign="center"
+                            sx={{
+                              display: saveImageButtonVisibility,
+                              mt: "1%",
+                            }}
+                          >
                             <Button
                               to="/dashboard/home"
                               id="save-cropped-image-button"
@@ -231,6 +224,18 @@ export default function MetaData({ personalData }) {
                             >
                               simpan
                             </Button>
+                          </Box>
+                          <Box
+                            textAlign="center"
+                            sx={{
+                              display: uploadProgressVisibility,
+                              mt: "1.5%",
+                            }}
+                          >
+                            <CircularProgressWithLabel
+                              value={uploadProgress}
+                              visibility={uploadProgressVisibility}
+                            />
                           </Box>
                         </Grid>
                       </Grid>
@@ -282,3 +287,75 @@ export default function MetaData({ personalData }) {
     </>
   );
 }
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialogContent-root": {
+    padding: theme.spacing(2),
+  },
+  "& .MuiDialogActions-root": {
+    padding: theme.spacing(1),
+  },
+}));
+
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      <IconButton
+        aria-label="close"
+        onClick={onClose}
+        sx={{
+          position: "absolute",
+          right: 8,
+          top: 8,
+          color: (theme) => theme.palette.grey[500],
+        }}
+      />
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
+
+function CircularProgressWithLabel(props) {
+  return (
+    <Box sx={{ position: "relative", display: "inline-flex" }} {...props}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: "absolute",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        {...props}
+      >
+        <Typography
+          variant="caption"
+          component="div"
+          color="text.secondary"
+          {...props}
+        >
+          {`${Math.round(props.value)}%`}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
+CircularProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate variant.
+   * Value between 0 and 100.
+   * @default 0
+   */
+  value: PropTypes.number.isRequired,
+};

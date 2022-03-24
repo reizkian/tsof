@@ -10,7 +10,7 @@ const privateKeyJWT = functions.config().tsof;
 
 exports.sendEmailWelcome = (recieverID, recieverEmail, recieverName) => {
   console.log("send email confirmation to: " + recieverEmail);
-  // ~ create transporter object to send email
+  //  create transporter object to send email
   const transporter = nodemailer.createTransport({
     service: "Gmail",
     auth: {
@@ -19,7 +19,7 @@ exports.sendEmailWelcome = (recieverID, recieverEmail, recieverName) => {
     },
   });
 
-  // ~ read HTML file
+  //  read HTML file
   readHTMLFile("utils/smtp/verify_email.html", function(err, html) {
     var template = handlebars.compile(html);
     var replacements = {
@@ -27,9 +27,9 @@ exports.sendEmailWelcome = (recieverID, recieverEmail, recieverName) => {
       recieverEmail: recieverEmail,
       recieverName: recieverName,
     };
-    // ~ variable html replacement
+    //  variable html replacement
     var htmlToSend = template(replacements);
-    // ~ mailer option
+    //  mailer option
     const option = {
       from: "sofgkkdjogja@gmail.com",
       to: recieverEmail,
@@ -40,7 +40,7 @@ exports.sendEmailWelcome = (recieverID, recieverEmail, recieverName) => {
   });
 };
 
-// ~ function to read HTML file
+//  function to read HTML file
 function readHTMLFile(path, callback) {
   fs.readFile(path, { encoding: "utf-8" }, function(err, html) {
     if (err) {

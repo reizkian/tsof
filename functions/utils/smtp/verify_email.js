@@ -1,9 +1,9 @@
 const { firebaseDatabase } = require("../admin");
 
 exports.verifyEmail = function(req, res) {
-  // ~ get user ID from parametric route
+  //  get user ID from parametric route
   const userID = req.params._id;
-  // ~ set email verification status on user ID
+  //  set email verification status on user ID
   firebaseDatabase
     .ref("users/" + userID + "/_verified")
     .set(true)
