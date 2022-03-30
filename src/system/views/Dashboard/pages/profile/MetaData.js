@@ -1,10 +1,15 @@
 import { ref, uploadBytesResumable } from "firebase/storage";
 import { firebaseStorageRef } from "system/util/admin";
 
+import { useDispatch } from "react-redux";
+import { setPersonalData } from "system/redux/reducer/auth";
+
 import React, { useState, useCallback } from "react";
+import axios from "axios";
 import PropTypes from "prop-types";
 import Cropper from "react-easy-crop";
 import { dataURLtoBlob, generateCroppedImageDataURL } from "system/util/image";
+import { jwtEncodeUtil } from "system/util/jwt";
 // import "react-image-crop/dist/ReactCrop.css";
 import {
   Box,
@@ -25,23 +30,33 @@ import { styled } from "@mui/material/styles";
 import "./Dialog.css";
 
 export default function MetaData({ personalData }) {
+  const dispatch = useDispatch();
+
+  // STATE: user personal data
+  const [profileState, setProfileState] = React.useState(personalData);
+  const [isUpdated, setIsUpdated] = React.useState(false);
+
+  // STATE: react easy cropper
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [croppedArea, setCroppedArea] = React.useState(null);
   const [zoom, setZoom] = useState(1);
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-    // console.log(croppedArea, croppedAreaPixels);
     setCroppedArea(croppedAreaPixels);
   }, []);
 
-  const [profileState, setProfileState] = React.useState(personalData);
-  const [open, setOpen] = React.useState(false);
+  // STATE: image dialog
+  const [openImageDialog, setOpenImageDialog] = React.useState(false);
   const [imageDataURL, setImageDataURL] = React.useState(null);
+  const [croppedImageDataURL, setCroppedImageDataURL] = React.useState(null);
+
   const handleClickOpenImageDialog = () => {
-    setOpen(true);
+    setOpenImageDialog(true);
   };
   const handleCloseImageDialog = () => {
-    setOpen(false);
+    setOpenImageDialog(false);
   };
+
+  // STATE: upload progress
   const [uploadProgress, setUploadPorgress] = React.useState(0);
   const [
     uploadProgressVisibility,
@@ -52,18 +67,31 @@ export default function MetaData({ personalData }) {
     setSaveImageButtonVisibility,
   ] = React.useState("");
 
-  //  handle selected picture file
+  // STATE: error
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [openErrorSnackBar, setOpenErrorSnackBar] = React.useState(false);
+
+  // STATE: success
+  const [successMessage, setSuccessMessage] = React.useState("");
+  const [openSuccessSnackBar, setOpenSuccessSnackBar] = React.useState(false);
+
+  // FUNCTION: handle selected picture file
   function onSelectFile(event) {
     //  check file is exist
     if (event.target.files && event.target.files.length > 0) {
       const imageFile = event.target.files[0];
       const fileSizeLimit = 2 * 1024 * 1024; // 1 MB limit
+
+      // error handling to limit file size
       if (imageFile.size > fileSizeLimit) {
+        setErrorMessage("ukuran file tidak boleh melebihi 2MB");
         handleOpenErrorSnackBar();
         document.getElementById("imageInput").value = "";
         setZoom(1);
         return;
       }
+
+      // read image file as data url
       const reader = new FileReader();
       reader.readAsDataURL(imageFile);
       reader.addEventListener("load", () => {
@@ -72,31 +100,31 @@ export default function MetaData({ personalData }) {
 
       //  open dialog cropper
       handleClickOpenImageDialog();
+
       //  reset dialog cropper parameter for new file
       document.getElementById("imageInput").value = "";
       setZoom(1);
     }
   }
 
-  // HANDLE: error notification
-  const [openErrorSnackBar, setOpenErrorSnackBar] = React.useState(false);
-  function handleOpenErrorSnackBar() {
-    setOpenErrorSnackBar(true);
-  }
-  function handleCloseErrorSnackBar(event, reason) {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenErrorSnackBar(false);
+  // FUNCTION: overide Input element DOM
+  function handleEditPicture() {
+    // indentify <input> by element id
+    const fileInput = document.getElementById("imageInput");
+    // overide click
+    fileInput.click();
   }
 
+  // FUNCTION: upload image to Firebase Storage, then update component state
   function onSaveCroppedImageButton() {
-    // setCroppedImageDataURL(generateCroppedImageDataURL(imageDataURL, croppedArea));
+    // generate image data url
     generateCroppedImageDataURL(imageDataURL, croppedArea).then(
       (croppedImageDataURL) => {
+        setCroppedImageDataURL(croppedImageDataURL);
         const croppedImageBlob = dataURLtoBlob(croppedImageDataURL);
         console.log(croppedImageBlob);
 
+        // Firebase Storage
         const imageRef = ref(
           firebaseStorageRef,
           `users/images/${profileState._id}.png`
@@ -113,7 +141,6 @@ export default function MetaData({ personalData }) {
             // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
 
             setUploadPorgress(Math.round(progress));
           },
@@ -126,25 +153,88 @@ export default function MetaData({ personalData }) {
             handleCloseImageDialog();
             setSaveImageButtonVisibility("");
             setUploadProgressVisibility("none");
-            // Set profile state as imageURL is updated
+            // Update local state by setProfileState as imageURL is updated
             setProfileState((prevState) => ({
               ...prevState,
               imageURL: `https://firebasestorage.googleapis.com/v0/b/the-school-of-fire.appspot.com/o/users%2Fimages%2F${
                 profileState._id
               }.png?alt=media`,
             }));
-
-            console.log(profileState);
+            // Set Profile State Is Updated
+            setIsUpdated(true);
+            // send updated user personal data to server
+            // updateUserPersonalData(profileState);
           }
         );
       }
     );
   }
 
-  //  click on image trigger choose file input
-  function handleEditPicture() {
-    const fileInput = document.getElementById("imageInput");
-    fileInput.click();
+  React.useEffect(() => {
+    if (isUpdated) {
+      updateUserPersonalData(profileState);
+    }
+  }, [isUpdated]);
+
+  // FUNCTION: update user imageURL at Firebase Database
+  function updateUserPersonalData(newUserPersonalData) {
+    // encode updated user personal data at profileState
+    const encodedPayloadData = { token: jwtEncodeUtil(newUserPersonalData) };
+
+    axios
+      .post(`user/${profileState._id}`, encodedPayloadData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((respond) => {
+        console.log(respond.data);
+        console.log(newUserPersonalData);
+
+        // use image data URL for redux and local storage
+        newUserPersonalData.imageURL = croppedImageDataURL;
+
+        // set redux new personalData
+        dispatch(setPersonalData(newUserPersonalData));
+        
+        // set local storage
+        localStorage.setItem(
+          "personalData",
+          jwtEncodeUtil(newUserPersonalData)
+        );
+        
+        // snackbar success message
+        setSuccessMessage(respond.data.message);
+        handleOpenSuccessSnackBar();
+        return respond.data.message;
+      })
+      .catch((err) => {
+        console.log(err.respond.data);
+        setErrorMessage(err.respond.data.message);
+        handleOpenErrorSnackBar();
+      });
+  }
+
+  // FUNCTION: success snack bar
+  function handleOpenSuccessSnackBar() {
+    setOpenSuccessSnackBar(true);
+  }
+  function handleCloseSuccessSnackBar(event, reason) {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSuccessSnackBar(false);
+  }
+
+  // FUNCTION: error nack bar
+  function handleOpenErrorSnackBar() {
+    setOpenErrorSnackBar(true);
+  }
+  function handleCloseErrorSnackBar(event, reason) {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenErrorSnackBar(false);
   }
 
   return (
@@ -167,7 +257,7 @@ export default function MetaData({ personalData }) {
             <BootstrapDialog
               onClose={handleCloseImageDialog}
               aria-labelledby="customized-dialog-title"
-              open={open}
+              open={openImageDialog}
             >
               <BootstrapDialogTitle
                 id="customized-dialog-title"
@@ -271,7 +361,8 @@ export default function MetaData({ personalData }) {
           </Box>
         </Box>
       </Card>
-      {/* WARNING Snackbar */}
+
+      {/* ERROR Snackbar */}
       <Snackbar
         open={openErrorSnackBar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -281,12 +372,30 @@ export default function MetaData({ personalData }) {
         message="I love it"
       >
         <Alert onClose={handleCloseErrorSnackBar} severity="error">
-          Ukuran file tidak boleh melebihi 2MB
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* SUCCESS Snackbar */}
+      <Snackbar
+        open={openSuccessSnackBar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        key={"topcenter"}
+        autoHideDuration={6000}
+        onClose={handleCloseSuccessSnackBar}
+        message="I love it"
+      >
+        <Alert onClose={handleCloseSuccessSnackBar} severity="success">
+          {successMessage}
         </Alert>
       </Snackbar>
     </>
   );
 }
+
+// ---------------------------------------------- //
+// M A T E R I A L  -  U I   C O M P O N E N T S  //
+// ---------------------------------------------  //
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {

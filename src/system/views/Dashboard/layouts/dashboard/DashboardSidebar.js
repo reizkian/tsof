@@ -75,7 +75,7 @@ export default function DashboardSidebar({
       <Box sx={{ px: 2.5, py: 3 }}>
         <Box
           component={RouterLink}
-          to="/dashboard/home"
+          to="/dashboard"
           sx={{ display: "inline-flex" }}
         >
           <LogoText />
@@ -85,10 +85,10 @@ export default function DashboardSidebar({
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="/dashboard/profile">
           <AccountStyle>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            <Avatar src={account.imageURL} alt="imageURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                {account.displayName}
+                {account.name}
               </Typography>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
                 {account.role}

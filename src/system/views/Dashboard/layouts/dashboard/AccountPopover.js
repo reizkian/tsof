@@ -29,6 +29,10 @@ export default function AccountPopover({ account }) {
     setOpen(false);
   };
 
+  function onClickSignOutButton(){
+    localStorage.clear()
+  }
+
   return (
     <>
       <IconButton
@@ -51,13 +55,13 @@ export default function AccountPopover({ account }) {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={account.imageURL} />
       </IconButton>
 
       <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 220 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {account.displayName}
+            {account.name}
           </Typography>
           <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
             {account.email}
@@ -89,7 +93,7 @@ export default function AccountPopover({ account }) {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button to="/" fullWidth color="inherit" variant="outlined" component={RouterLink}>
+          <Button to="/" fullWidth color="inherit" variant="outlined" component={RouterLink} onClick={onClickSignOutButton}>
             sign out
           </Button>
         </Box>

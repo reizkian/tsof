@@ -1,8 +1,14 @@
 import React from "react";
-import { Box, Button, Card, Grid } from "@mui/material";
+import axios from "axios";
+import clsx from "clsx";
+
+import { useDispatch } from "react-redux";
+import { setPersonalData } from "system/redux/reducer/auth";
+
+import { Box, Button, Card, Grid, Snackbar, Alert } from "@mui/material";
 import { makeStyles, FormControl, TextField } from "@material-ui/core";
 
-import clsx from "clsx";
+import { jwtEncodeUtil } from "system/util/jwt";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,14 +31,81 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PersonalData({ personalData }) {
+  const dispatch = useDispatch();
   const classes = useStyles();
-  
+
+  // STATE: user personal data
   const [profileState, setprofileState] = React.useState(personalData);
+
+  // STATE: error
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [openErrorSnackBar, setOpenErrorSnackBar] = React.useState(false);
+
+  // STATE: success
+  const [successMessage, setSuccessMessage] = React.useState("");
+  const [openSuccessSnackBar, setOpenSuccessSnackBar] = React.useState(false);
+
+  // STATE: save button disabled
+  const [saveButtonDisabled, setSaveButtonDisabled] = React.useState(false)
+
   function handleFormChange(event) {
     setprofileState((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
     }));
+  }
+
+  // FUNCTION: update user personal data at Firebase Database
+  function updateUserPersonalData() {
+    // disabled save button
+    setSaveButtonDisabled(true)
+    // encode updated user personal data at profileState
+    const encodedPayloadData = { token: jwtEncodeUtil(profileState) };
+
+    axios
+      .post(`user/${profileState._id}`, encodedPayloadData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((respond) => {
+        console.log(respond.data);
+
+        // set redux new personalData
+        dispatch(setPersonalData(profileState));
+        // set local storage
+        localStorage.setItem(
+          "personalData",
+          jwtEncodeUtil(profileState)
+        );
+
+        setSuccessMessage(respond.data.message);
+        handleOpenSuccessSnackBar();
+        setSaveButtonDisabled(false)
+        return respond.data.message;
+      })
+      .catch((err) => {
+        console.log(err.respond.data);
+        setErrorMessage(err.respond.data.message);
+        handleOpenErrorSnackBar();
+        setSaveButtonDisabled(false)
+      });
+  }
+
+  // FUNCTION: success snack bar
+  function handleOpenSuccessSnackBar() {
+    setOpenSuccessSnackBar(true);
+  }
+  function handleCloseSuccessSnackBar(reason) {
+    setOpenSuccessSnackBar(false);
+  }
+
+  // FUNCTION: error nack bar
+  function handleOpenErrorSnackBar() {
+    setOpenErrorSnackBar(true);
+  }
+  function handleCloseErrorSnackBar(reason) {
+    setOpenErrorSnackBar(false);
   }
 
   return (
@@ -171,7 +244,13 @@ export default function PersonalData({ personalData }) {
             {/* INPUT: address*/}
             <Grid item xs={12} md={12} lg={12}>
               <Box sx={{ paddingBottom: "30px" }}>
-                <Button to="/dashboard/home" size="large" variant="contained">
+                <Button
+                  to="/dashboard/home"
+                  size="large"
+                  variant="contained"
+                  onClick={updateUserPersonalData}
+                  disabled={saveButtonDisabled}
+                >
                   simpan
                 </Button>
               </Box>
@@ -179,6 +258,34 @@ export default function PersonalData({ personalData }) {
           </Grid>
         </Box>
       </Card>
+
+      {/* ERROR Snackbar */}
+      <Snackbar
+        open={openErrorSnackBar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        key={"topcenter"}
+        autoHideDuration={6000}
+        onClose={handleCloseErrorSnackBar}
+        message="I love it"
+      >
+        <Alert onClose={handleCloseErrorSnackBar} severity="error">
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* SUCCESS Snackbar */}
+      <Snackbar
+        open={openSuccessSnackBar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        key={"topcenter"}
+        autoHideDuration={6000}
+        onClose={handleCloseSuccessSnackBar}
+        message="I love it"
+      >
+        <Alert onClose={handleCloseSuccessSnackBar} severity="success">
+          {successMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

@@ -4,13 +4,14 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 
-const { signin, signup, getUserPersonalData, updateUserImage } = require("./handler/user");
+const { signin, signup, getUserPersonalData, updateUserPersonalData, getUserList } = require("./handler/user");
 const { createCourse } = require("./handler/course");
 const { jwtEncodeAPI, jwtDecodeAPI } = require("./utils/jwt");
 const {
   verifyEmail,
   checkEmailVerified,
 } = require("./utils/smtp/verify_email");
+
 app.use(cors());
 
 /* R O U T E */
@@ -18,7 +19,9 @@ app.post("/signin", signin);
 app.post("/signup", signup);
 
 app.get("/user/:_id", getUserPersonalData);
-app.post("/user/image/:_id", updateUserImage);
+app.post("/user/:_id", updateUserPersonalData);
+
+app.get("/users",)
 
 app.post("/create-course", createCourse);
 

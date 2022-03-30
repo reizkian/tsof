@@ -1,13 +1,16 @@
 import React from "react";
 import style from "./views/SignInPage/SignInPageRoot.module.css";
+
+import { useDispatch } from "react-redux";
+import { setFirebaseAuth, setPersonalData } from "system/redux/reducer/auth";
+
 import { useNavigate } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { motion } from "framer-motion";
 
 import axios from "axios";
 import clsx from "clsx";
-import { jwtEncodeUtil } from "system/util/jwt";
-import jwt from "jsonwebtoken";
+import { jwtEncodeUtil, jwtDecodeUtil } from "system/util/jwt";
 
 import IconButton from "@material-ui/core/IconButton";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
@@ -38,8 +41,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn(props) {
+  const dispatch = useDispatch();
   const navigateRoute = useNavigate();
+
   // REACT HOOK STATE
+  
   const classes = useStyles();
   const [formState, setFormState] = React.useState({
     email: "",
@@ -77,6 +83,7 @@ export default function SignIn(props) {
   function handleOpenErrorSnackBar() {
     setOpenErrorSnackBar(true);
   }
+  
   function handleCloseErrorSnackBar(event, reason) {
     if (reason === "clickaway") {
       return;
@@ -91,6 +98,7 @@ export default function SignIn(props) {
       email: formState.email,
       password: formState.password,
     };
+
     /*
       ~ npm jsonwebtoken
       documentation:
@@ -100,14 +108,14 @@ export default function SignIn(props) {
         jwt.verify(token, secretOrPublicKey, [options, callback])
     */
 
-    // secretOrPrivateKey located in .env file
+    // encode payload data before send to server
     const encodedPayloadData = {
-      token: jwt.sign(payloadData, process.env.REACT_APP_JWT_KEY, {
-        algorithm: "HS256",
-      }),
+      token: jwtEncodeUtil(payloadData)
     };
+
     // set loading TRUE
     setFormState({ ...formState, loading: !formState.loading });
+
     // POST request encodedPayloadData to "/signup" route
     axios
       .post("/signin", encodedPayloadData, {
@@ -116,12 +124,18 @@ export default function SignIn(props) {
         },
       })
       .then((result) => {
-        //  console log encrypted firebase user credentials
-        // console.log(result.data);
-        //  set encrypted firebaseUserCredential to localStorage
+
+        // set local storage variable
         localStorage.setItem("firebaseUserCredential", `${result.data.token}`);
-        //  set authenticationStatus to local storage
         localStorage.setItem("authenticationStatus", true);
+        const decodedUserCredential = jwtDecodeUtil(result.data.token);
+        const encodedPersonalData = jwtEncodeUtil(decodedUserCredential.personalData)
+        localStorage.setItem("personalData", encodedPersonalData)
+
+        // set redux state
+        dispatch(setFirebaseAuth(decodedUserCredential));
+        dispatch(setPersonalData(decodedUserCredential.personalData));
+
         return result.data.token;
       })
       .then((firebaseUserCredential) => {

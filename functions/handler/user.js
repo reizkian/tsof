@@ -15,7 +15,6 @@ const { sendEmailWelcome } = require("../utils/smtp/mailer");
 const { useEmulators } = require("../utils/admin");
 const { getAddressGeoLocation } = require("../utils/geolocation");
 
-
 exports.signin = function(req, res) {
   /*
     take user email and password, pass it to firebase authentication
@@ -53,8 +52,6 @@ exports.signin = function(req, res) {
             return userID;
           })
           .then((userID) => {
-            //  logActivity: signin
-            logActivity(userID, getCurrentTime(), "signin");
             //  check and get user personal data
             console.log(`sign in request: ${user.email} ${userID}`);
             return firebaseDatabase
@@ -69,6 +66,8 @@ exports.signin = function(req, res) {
                 req.decodedToken.exp = req.decodedToken.iat + 60 * 60 * 24 * 3;
                 token = jwtEncodeUtil(req.decodedToken);
                 // console.log(token);
+                //  logActivity: signin
+                logActivity(userID, getCurrentTime(), "signin", "success", "-");
                 return res.json({ token: token });
               });
           })
@@ -149,6 +148,14 @@ exports.signup = function(req, res) {
         //  add user object
         user._id = userID;
         user._verified = false;
+
+        user.sex === "Male"
+          ? (user.imageURL =
+              "https://firebasestorage.googleapis.com/v0/b/the-school-of-fire.appspot.com/o/users%2Fimages%2Favatar_male.jpg?alt=media")
+          : (user.imageURL =
+              "https://firebasestorage.googleapis.com/v0/b/the-school-of-fire.appspot.com/o/users%2Fimages%2Favatar_female.jpg?alt=media");
+        ws;
+
         //  logActivity: signup
         logActivity(userID, getCurrentTime(), "signup");
         //  send email welcome
@@ -228,7 +235,10 @@ exports.getUserPersonalData = function(req, res) {
     .ref("users/" + userID)
     .get()
     .then((respond) => {
-      return res.status(200).json(respond.val());
+      // encode personal data
+      const payloadData = { token: jwtEncodeUtil(respond.val()) };
+      // return respond
+      return res.status(200).json(payloadData);
     })
     .catch((err) => {
       return res.status(500).json({ error: err });
@@ -236,6 +246,23 @@ exports.getUserPersonalData = function(req, res) {
 };
 
 exports.updateUserPersonalData = function(req, res) {
+  // decode data
   const userID = req.params._id;
+  const personalData = jwtDecodeUtil(req.body.token);
+  delete personalData.iat;
+  // write to Firebase Database
+  firebaseDatabase
+    .ref("users/" + userID)
+    .set(personalData)
+    .then(() => {
+      return res.status(201).json({ message: "update berhasil" });
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).json({ message: "Internal server error" });
+    });
+};
 
+exports.getUserList = function(req,res){
+  
 }

@@ -4,7 +4,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: {
     firebaseAuth: {},
-    personalData: {}
+    personalData: {},
   },
   reducers: {
     setFirebaseAuth: (state, action) => {
@@ -16,5 +16,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setFirebaseAuth, setPersonalData} = authSlice.actions;
+export const { setFirebaseAuth, setPersonalData } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,5 +1,5 @@
 const base64 = require("base-64");
-const Blob = require('node-blob');
+const Blob = require("node-blob");
 
 exports.getCurrentTime = function(req, res) {
   //  calibrated for GMT+07
@@ -27,9 +27,9 @@ exports.getCurrentTime = function(req, res) {
   return datetime;
 };
 
-exports.getCompoundID = function(object, userID) {
+exports.getCompoundID = function(userID) {
   const time = new Date().valueOf();
-  const compoundID = time + "_" + object + "_" + userID;
+  const compoundID = time + "_" + userID;
   return compoundID;
 };
 
