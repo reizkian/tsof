@@ -31,7 +31,7 @@ export default function DashboardRoutes() {
         { path: "murid/saat-teduh", element: <SaatTeduh /> },
         { path: "murid/Internalisasi", element: <Internalisasi /> },
         { path: "pembina", element: <Pembina /> },
-        { path: "overview", element: <Overview /> },
+        { path: "overview", element: <Overview /> }, 
         { path: "manage-kelas/jadwal", element: <Jadwal /> },
         { path: "manage-kelas/kelas", element: <Kelas /> },
         { path: "manage-users/buat-user", element: <BuatUser /> },

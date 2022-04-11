@@ -4,7 +4,7 @@ const {
 } = require("../utils/admin");
 
 const { getCurrentTime, getBlobFromURI } = require("../utils/method");
-const { logActivity } = require("../handler/activity");
+const { logActivity } = require("./activity");
 const { sendEmailWelcome } = require("../utils/smtp/mailer");
 const { useEmulators } = require("../utils/admin");
 const { getAddressGeoLocation } = require("../utils/geolocation");
@@ -154,7 +154,6 @@ exports.signup = function(req, res) {
               "https://firebasestorage.googleapis.com/v0/b/the-school-of-fire.appspot.com/o/users%2Fimages%2Favatar_male.jpg?alt=media")
           : (user.imageURL =
               "https://firebasestorage.googleapis.com/v0/b/the-school-of-fire.appspot.com/o/users%2Fimages%2Favatar_female.jpg?alt=media");
-        ws;
 
         //  logActivity: signup
         logActivity(userID, getCurrentTime(), "signup");

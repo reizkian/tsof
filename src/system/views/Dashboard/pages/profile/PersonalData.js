@@ -46,7 +46,7 @@ export default function PersonalData({ personalData }) {
   const [openSuccessSnackBar, setOpenSuccessSnackBar] = React.useState(false);
 
   // STATE: save button disabled
-  const [saveButtonDisabled, setSaveButtonDisabled] = React.useState(false)
+  const [saveButtonDisabled, setSaveButtonDisabled] = React.useState(false);
 
   function handleFormChange(event) {
     setprofileState((prevState) => ({
@@ -58,37 +58,33 @@ export default function PersonalData({ personalData }) {
   // FUNCTION: update user personal data at Firebase Database
   function updateUserPersonalData() {
     // disabled save button
-    setSaveButtonDisabled(true)
+    setSaveButtonDisabled(true);
     // encode updated user personal data at profileState
     const encodedPayloadData = { token: jwtEncodeUtil(profileState) };
 
     axios
-      .post(`user/${profileState._id}`, encodedPayloadData, {
+      .post(`user/${profileState._id}`, {
+        params: encodedPayloadData,
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((respond) => {
-        console.log(respond.data);
-
         // set redux new personalData
         dispatch(setPersonalData(profileState));
         // set local storage
-        localStorage.setItem(
-          "personalData",
-          jwtEncodeUtil(profileState)
-        );
+        localStorage.setItem("personalData", jwtEncodeUtil(profileState));
 
         setSuccessMessage(respond.data.message);
         handleOpenSuccessSnackBar();
-        setSaveButtonDisabled(false)
+        setSaveButtonDisabled(false);
         return respond.data.message;
       })
       .catch((err) => {
         console.log(err.respond.data);
         setErrorMessage(err.respond.data.message);
         handleOpenErrorSnackBar();
-        setSaveButtonDisabled(false)
+        setSaveButtonDisabled(false);
       });
   }
 

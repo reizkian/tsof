@@ -2,7 +2,10 @@ import React from "react";
 
 import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setPersonalData } from "system/redux/reducer/auth";
+import {
+  setPersonalData,
+  refreshPersonalData,
+} from "system/redux/reducer/auth";
 
 import { styled } from "@mui/material/styles";
 import DashboardNavbar from "./DashboardNavbar";
@@ -11,6 +14,7 @@ import DashboardSidebar from "./DashboardSidebar";
 import { jwtEncodeUtil, jwtDecodeUtil } from "system/util/jwt";
 import account from "../../_mocks_/account";
 import axios from "axios";
+import { is } from "date-fns/locale";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
@@ -35,54 +39,49 @@ const MainStyle = styled("div")(({ theme }) => ({
 }));
 
 export default function DashboardLayout(props) {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-  const [isReset, setIsReset] = React.useState(false);
-  // const { firebaseAuth } = useSelector((state) => state.auth);
-  let { personalData } = useSelector((state) => state.auth);
+  const [isRefreshed, setIsRefreshed] = React.useState(false);
+  const { personalData } = useSelector((state) => state.auth);
+  const [account, setAccount] = React.useState(personalData);
 
+  React.useEffect(() => {
+    if (personalData._id === undefined) {
+      getUserPersonalData();
+    }
+  }, []);
 
-  // 1. MOUNT: User Account Data
-  // 1.1 set dashboard layout component state
+  function getUserPersonalData() {
+    const personalData = jwtDecodeUtil(localStorage.getItem("personalData"));
+    const userID = personalData._id;
 
-  // const { state } = useLocation();
-  // const dispatch = useDispatch();
-
-  // 1.2 get encodedUserCredential
-  // if (account.displayName === "undefined") {
-  //   let encodedUserCredential;
-  //   let decodedUserCredential;
-  //   try {
-  //     encodedUserCredential = state.encodedUserCredential;
-  //     decodedUserCredential = jwt.verify(encodedUserCredential, process.env.REACT_APP_JWT_KEY, {
-  //       algorithm: "HS256",
-  //     });
-  //   } catch (err) {
-  //     encodedUserCredential = localStorage.getItem("firebaseUserCredential");
-  //     decodedUserCredential = jwt.verify(encodedUserCredential, process.env.REACT_APP_JWT_KEY, {
-  //       algorithm: "HS256",
-  //     });
-  //   }
-  //   // 1.3 add imageURL for personalData
-  //   const personalData = decodedUserCredential.personalData;
-  //   personalData.displayName = personalData.name.split(" ")[0] + " " + personalData.name.split(" ")[1];
-  //   personalData.sex === "Male"
-  //     ? (personalData.imageURL = "https://drive.google.com/uc?export=view&id=1E9DNjv8-mE3BRWBUAkEzjdNcXWByEp3q")
-  //     : (personalData.imageURL = "https://drive.google.com/uc?export=view&id=1erFZ5Baw88bFvllF1af8JNR-AMD1bpi5");
-  //   setAccount(personalData);
-  //   dispatch(setFirebaseAuth(encodedUserCredential));
-  //   dispatch(setPersonalData(personalData));
-  // }
+    axios
+      .get(`user/${userID}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((respond) => {
+        const personalData = jwtDecodeUtil(respond.data.token);
+        dispatch(setPersonalData(personalData));
+        setAccount(personalData);
+        setIsRefreshed(false);
+      })
+      .catch((err) => {
+        console.log(err.respond.data);
+      });
+  }
 
   return (
     <RootStyle>
-      <DashboardNavbar account={personalData} onOpenSidebar={() => setOpen(true)} />
+      <DashboardNavbar account={account} onOpenSidebar={() => setOpen(true)} />
       <DashboardSidebar
-        account={personalData}
+        account={account}
         isOpenSidebar={open}
         onCloseSidebar={() => setOpen(false)}
       />
       <MainStyle>
-        <Outlet account={personalData} />
+        <Outlet account={account} />
       </MainStyle>
     </RootStyle>
   );

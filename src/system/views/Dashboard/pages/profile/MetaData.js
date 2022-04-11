@@ -188,9 +188,6 @@ export default function MetaData({ personalData }) {
         },
       })
       .then((respond) => {
-        console.log(respond.data);
-        console.log(newUserPersonalData);
-
         // use image data URL for redux and local storage
         newUserPersonalData.imageURL = croppedImageDataURL;
 

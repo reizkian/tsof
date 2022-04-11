@@ -34,15 +34,16 @@ export default function Page404() {
         <RootStyle title="404 Page Not Found | Minimal-UI">
           <Container>
             <MotionContainer initial="initial" open>
-              <Box sx={{ maxWidth: 480, margin: "auto", textAlign: "center" }}>
+              <Box sx={{ maxWidth: 580, margin: "auto", textAlign: "center" }}>
                 <motion.div variants={varBounceIn}>
-                  <Typography variant="h3" paragraph>
-                    Sorry, page not found!
+                  <Typography variant="h4" paragraph>
+                    Maaf, halaman tidak ditemukan!
                   </Typography>
                 </motion.div>
                 <Typography sx={{ color: "text.secondary" }}>
-                  Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check
-                  your spelling.
+                  Maaf, kami tidak dapat menemukan halaman yang Anda cari.
+                  Mungkin Anda salah mengetik URL? Pastikan untuk memeriksa
+                  ejaan Anda.
                 </Typography>
                 <div style={{ marginTop: "-5%" }}>
                   <motion.div variants={varBounceIn}>
@@ -53,8 +54,14 @@ export default function Page404() {
                     />
                   </motion.div>
                 </div>
-                <Button to="/dashboard/murid/saat-teduh" size="large" variant="contained" component={RouterLink} color="primary">
-                  Go to Home
+                <Button
+                  to="/dashboard/murid/saat-teduh"
+                  size="large"
+                  variant="contained"
+                  component={RouterLink}
+                  color="primary"
+                >
+                  Kembali
                 </Button>
               </Box>
             </MotionContainer>

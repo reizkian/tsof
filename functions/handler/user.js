@@ -1,8 +1,6 @@
 const { firebaseDatabase } = require("../utils/admin");
-const {
-  jwtEncodeUtil,
-  jwtDecodeUtil,
-} = require("../utils/jwt");
+const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
+const { checkAccessLevel3 } = require("./authorization");
 
 exports.getUserPersonalData = function(req, res) {
   //  get user ID from parametric route
@@ -40,4 +38,35 @@ exports.updateUserPersonalData = function(req, res) {
     });
 };
 
-exports.getUserList = function(req, res) {};
+exports.getUserList = function(req, res) {
+  // parse firebase user credential
+  const firebaseUserCredentials = jwtDecodeUtil(req.body.token);
+  // parse personal data
+  const personalData = firebaseUserCredentials.personalData;
+  // check authorization level 3
+  const isAuthorized = checkAccessLevel3(personalData.role);
+
+  if (isAuthorized) {
+    // get users data
+    firebaseDatabase
+      .ref("users")
+      .orderByChild("_id")
+      .get()
+      .then((respond) => {
+        const respondArray = Object.values(respond.val());
+        const payloadData = {
+          users: respondArray,
+        };
+        // encode payload data
+        const token = jwtEncodeUtil(payloadData);
+        // return respond
+        return res.json({token:token});
+      })
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json({ message: "Internal server error" });
+      });
+  } else {
+    return res.status(500).json({ message: "unathorized access" });
+  }
+};

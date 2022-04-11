@@ -4,10 +4,11 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 
-const { signin, signup } = require("./handler/auth");
+const { signin, signup } = require("./handler/authentication");
 const {
   getUserPersonalData,
   updateUserPersonalData,
+  getUserList
 } = require("./handler/user");
 const { createCourse } = require("./handler/course");
 const { jwtEncodeAPI, jwtDecodeAPI } = require("./utils/jwt");
@@ -25,7 +26,7 @@ app.post("/signup", signup);
 app.get("/user/:_id", getUserPersonalData);
 app.post("/user/:_id", updateUserPersonalData);
 
-app.get("/users");
+app.post("/get-user-list",getUserList);
 
 app.post("/create-course", createCourse);
 
