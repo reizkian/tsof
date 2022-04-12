@@ -1,10 +1,15 @@
-import { Typography } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
+
 import Page from "../../components/Page";
+import PageTitle from "../../components/PageTitle";
 
 export default function ServerLog() {
   return (
     <Page title="The School of Fire | Sistem Informasi">
-      <Typography variant="h4">Server Log</Typography>
+      <Container maxWidth="xl"><Box sx={{ pb: 5 }}>
+        <PageTitle>Server Log</PageTitle>
+        </Box>
+        </Container>
     </Page>
   );
 }
