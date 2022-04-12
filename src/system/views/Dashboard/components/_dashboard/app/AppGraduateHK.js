@@ -34,14 +34,14 @@ const IconWrapperStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const TOTAL = 1730;
+const TOTAL = 188;
 
 export default function AppGraduateHK() {
   return (
     <RootStyle>
-      <IconWrapperStyle>
+      {/* <IconWrapperStyle>
         <Icon icon={likeFilled} width={24} height={24} />
-      </IconWrapperStyle>
+      </IconWrapperStyle> */}
       <Typography variant="h3">{fShortenNumber(TOTAL)}</Typography>
       <Typography variant="subtitle2" sx={{ opacity: 0.72 }}>
         Lulus Hamba Kristus
