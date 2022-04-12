@@ -53,23 +53,9 @@ export default function DashboardLayout(props) {
 
   function getUserPersonalData() {
     const personalData = jwtDecodeUtil(localStorage.getItem("personalData"));
-    const userID = personalData._id;
-
-    axios
-      .get(`user/${userID}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((respond) => {
-        const personalData = jwtDecodeUtil(respond.data.token);
-        dispatch(setPersonalData(personalData));
-        setAccount(personalData);
-        setIsRefreshed(false);
-      })
-      .catch((err) => {
-        console.log(err.respond.data);
-      });
+    dispatch(setPersonalData(personalData));
+    setAccount(personalData);
+    setIsRefreshed(false);
   }
 
   return (
