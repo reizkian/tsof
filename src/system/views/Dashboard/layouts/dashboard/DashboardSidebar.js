@@ -4,25 +4,18 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 
 // material
 import { styled } from "@mui/material/styles";
-import {
-  Box,
-  Link,
-  Drawer,
-  Divider,
-  Typography,
-  Avatar,
-} from "@mui/material";
+import { Box, Link, Drawer, Divider, Typography, Avatar } from "@mui/material";
 
 // components
 import LogoText from "../../components/LogoText";
 import Scrollbar from "../../components/Scrollbar";
 import NavSection from "../../components/NavSection";
 import { MHidden } from "../../components/@material-extend";
-
+// hooks
+import useResponsive from '../../hooks/useResponsive';
+//
 import sidebarConfigUser from "./SidebarConfigUser";
 import sidebarConfigAdmin from "./SidebarConfigAdmin";
-
-
 
 const DRAWER_WIDTH = 280;
 
@@ -32,8 +25,6 @@ const RootStyle = styled("div")(({ theme }) => ({
     width: DRAWER_WIDTH,
   },
 }));
-
-
 
 DashboardSidebar.propTypes = {
   isOpenSidebar: PropTypes.bool,
@@ -46,6 +37,8 @@ export default function DashboardSidebar({
   onCloseSidebar,
 }) {
   const { pathname } = useLocation();
+  const isDesktop = useResponsive('up', 'lg');
+
   const AccountStyle = styled("div")(({ theme }) => ({
     display: "flex",
     alignItems: "center",
@@ -64,9 +57,9 @@ export default function DashboardSidebar({
   const renderContent = (
     <Scrollbar
       sx={{
-        height: "100%",
+        height: 1,
         "& .simplebar-content": {
-          height: "100%",
+          height: 1,
           display: "flex",
           flexDirection: "column",
         },
@@ -101,39 +94,38 @@ export default function DashboardSidebar({
       <NavSection navConfig={sidebarConfigUser} />
       <Divider variant="middle" />
       <NavSection navConfig={sidebarConfigAdmin} />
-
-      <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   );
 
   return (
     <RootStyle>
-      <MHidden width="lgUp">
+      {!isDesktop && (
         <Drawer
           open={isOpenSidebar}
           onClose={onCloseSidebar}
           PaperProps={{
-            sx: { width: DRAWER_WIDTH },
+            sx: { width: DRAWER_WIDTH }
           }}
         >
           {renderContent}
         </Drawer>
-      </MHidden>
+      )}
 
-      <MHidden width="lgDown">
+      {isDesktop && (
         <Drawer
           open
           variant="persistent"
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
-              bgcolor: "background.default",
-            },
+              bgcolor: 'background.default',
+              borderRightStyle: 'dashed'
+            }
           }}
         >
           {renderContent}
         </Drawer>
-      </MHidden>
+      )}
     </RootStyle>
   );
 }

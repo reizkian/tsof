@@ -26,7 +26,7 @@ export default function DashboardRoutes() {
       path: "/dashboard",
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/overview" replace /> },
+        { element: <Navigate to="/dashboard/overview"/> },
         { path: "/dashboard", element: <Navigate to="/dashboard/overview" /> },
         { path: "murid/saat-teduh", element: <SaatTeduh /> },
         { path: "murid/Internalisasi", element: <Internalisasi /> },
