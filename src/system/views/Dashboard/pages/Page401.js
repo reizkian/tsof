@@ -13,7 +13,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
   display: "flex",
   minHeight: "100%",
   alignItems: "center",
-  paddingTop: theme.spacing(15),
+  paddingTop: theme.spacing(0),
   paddingBottom: theme.spacing(10),
   palette: {
     primary: {
@@ -27,29 +27,28 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Page404() {
+export default function Page401() {
   return (
     <>
       <div style={{ marginTop: "0%" }}>
-        <RootStyle title="The School of Fire | 404 Not Found">
+        <RootStyle title="The School of Fire | 401 Unauthorized">
           <Container>
             <MotionContainer initial="initial" open>
-              <Box sx={{ maxWidth: 580, margin: "auto", textAlign: "center" }}>
+              <Box sx={{ maxWidth: 600, margin: "auto", textAlign: "center" }}>
                 <motion.div variants={varBounceIn}>
                   <Typography variant="h4" paragraph>
-                    Maaf, halaman tidak ditemukan!
+                    Woof, anda tidak memiliki akses ke halaman ini!
                   </Typography>
                 </motion.div>
                 <Typography sx={{ color: "text.secondary" }}>
-                  Maaf, kami tidak dapat menemukan halaman yang Anda cari.
-                  Mungkin Anda salah memasukan URL? Pastikan untuk memeriksanya kembali.
+                  Terjadi kesalahan: Jika anda merasa seharusnya dapat mengakses halaman ini, silakan menghubungi System Administrator.
                 </Typography>
                 <div style={{ marginTop: "-5%" }}>
                   <motion.div variants={varBounceIn}>
                     <Box
                       component="img"
-                      src={require("assets/img/404.png").default}
-                      sx={{ height: 260, mx: "auto", my: { xs: 5, sm: 10 } }}
+                      src={require("assets/img/401.png").default}
+                      sx={{ height: 310, mx: "auto", my: { xs: 5, sm: 10 } }}
                     />
                   </motion.div>
                 </div>

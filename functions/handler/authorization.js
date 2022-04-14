@@ -4,7 +4,7 @@ const accessLevel1 = [
   "System Administrator",
   "Kepala Sekolah",
   "Penanggung Jawab Kelas",
-  "Konselor",
+  "Pembina",
 ];
 const accessLevel2 = [
   "System Administrator",

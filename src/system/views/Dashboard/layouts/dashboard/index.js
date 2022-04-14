@@ -67,7 +67,7 @@ export default function DashboardLayout(props) {
         onCloseSidebar={() => setOpen(false)}
       />
       <MainStyle>
-        <Outlet account={account} />
+        <Outlet />
       </MainStyle>
     </RootStyle>
   );
