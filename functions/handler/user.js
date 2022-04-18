@@ -1,6 +1,6 @@
 const { firebaseDatabase } = require("../utils/admin");
 const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
-const { checkAccessLevel3 } = require("./authorization");
+const { checkAccessLevel2 } = require("./authorization");
 
 exports.getUserPersonalData = function(req, res) {
   //  get user ID from parametric route
@@ -44,7 +44,7 @@ exports.getUserList = function(req, res) {
   // parse personal data
   const personalData = firebaseUserCredentials.personalData;
   // check authorization level 3
-  const isAuthorized = checkAccessLevel3(personalData.role);
+  const isAuthorized = checkAccessLevel2(personalData.role);
 
   if (isAuthorized) {
     // get users data
@@ -54,6 +54,7 @@ exports.getUserList = function(req, res) {
       .get()
       .then((respond) => {
         const respondArray = Object.values(respond.val());
+        // respond object payload data
         const payloadData = {
           users: respondArray,
         };

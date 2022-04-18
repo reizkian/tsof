@@ -193,13 +193,13 @@ export default function MetaData({ personalData }) {
 
         // set redux new personalData
         dispatch(setPersonalData(newUserPersonalData));
-        
+
         // set local storage
         localStorage.setItem(
           "personalData",
           jwtEncodeUtil(newUserPersonalData)
         );
-        
+
         // snackbar success message
         setSuccessMessage(respond.data.message);
         handleOpenSuccessSnackBar();

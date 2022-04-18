@@ -1,20 +1,14 @@
 import React from "react";
 
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setPersonalData,
-  refreshPersonalData,
-} from "system/redux/reducer/auth";
+import { setPersonalData } from "system/redux/reducer/auth";
 
 import { styled } from "@mui/material/styles";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardSidebar from "./DashboardSidebar";
 
-import { jwtEncodeUtil, jwtDecodeUtil } from "system/util/jwt";
-import account from "../../_mocks_/account";
-import axios from "axios";
-import { is } from "date-fns/locale";
+import { jwtDecodeUtil } from "system/util/jwt";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
@@ -67,7 +61,7 @@ export default function DashboardLayout(props) {
         onCloseSidebar={() => setOpen(false)}
       />
       <MainStyle>
-        <Outlet />
+        <Outlet context={[account, setAccount]} />
       </MainStyle>
     </RootStyle>
   );

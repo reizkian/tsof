@@ -1,12 +1,8 @@
-import { Icon } from "@iconify/react";
-import likeFilled from "@iconify/icons-ant-design/like-filled";
 // material
-import { alpha, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Card, Typography } from "@mui/material";
 // utils
 import { fShortenNumber } from "../../../utils/formatNumber";
-
-// ----------------------------------------------------------------------
 
 const RootStyle = styled(Card)(({ theme }) => ({
   boxShadow: "none",
@@ -15,21 +11,6 @@ const RootStyle = styled(Card)(({ theme }) => ({
   color: "#7a4f01",
   backgroundColor: "#ffe28c",
 }));
-
-const IconWrapperStyle = styled("div")(({ theme }) => ({
-  margin: "auto",
-  display: "flex",
-  borderRadius: "50%",
-  alignItems: "center",
-  width: theme.spacing(8),
-  height: theme.spacing(8),
-  justifyContent: "center",
-  marginBottom: theme.spacing(3),
-  color: "#B78103",
-  backgroundImage: `linear-gradient(135deg, ${alpha("#7a4f01", 0)} 0%, ${alpha("#7a4f01", 0.24)} 100%)`,
-}));
-
-// ----------------------------------------------------------------------
 
 const TOTAL = 419;
 

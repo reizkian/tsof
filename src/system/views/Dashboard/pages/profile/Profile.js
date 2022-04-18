@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 // material
 import { Box, Grid, Container, Typography } from "@mui/material";
 import Page from "../../components/Page";
@@ -7,7 +7,6 @@ import MetaData from "./MetaData";
 import PersonalData from "./PersonalData";
 
 export default function Profile() {
-  const { firebaseAuth } = useSelector((state) => state.auth);
   const { personalData } = useSelector((state) => state.auth);
   const animateFrom = { opacity: 0, y: -60 };
   const animateTo = { opacity: 1, y: 0 };

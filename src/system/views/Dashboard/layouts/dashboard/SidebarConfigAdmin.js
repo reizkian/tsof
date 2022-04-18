@@ -19,8 +19,8 @@ const sidebarConfigAdmin = [
     path: "/dashboard/manage-kelas",
     icon: getFaIcon(faGraduationCap),
     children: [
-      { title: "Jadwal", path: "/dashboard/manage-kelas/jadwal" },
       { title: "Kelas", path: "/dashboard/manage-kelas/kelas" },
+      { title: "Jadwal", path: "/dashboard/manage-kelas/jadwal" },
     ],
   },
   {
@@ -28,8 +28,8 @@ const sidebarConfigAdmin = [
     path: "/dashboard/manage-users",
     icon: getFaIcon(faUserGear),
     children: [
-      { title: "Buat User", path: "/dashboard/manage-users/buat-user" },
       { title: "Daftar User", path: "/dashboard/manage-users/daftar-user" },
+      { title: "Buat User", path: "/dashboard/manage-users/buat-user" },
     ],
   },
   {

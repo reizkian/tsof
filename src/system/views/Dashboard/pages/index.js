@@ -1,3 +1,5 @@
+import Beranda from "./beranda/Beranda";
+
 import SaatTeduh from "./muird/SaatTeduh";
 import Internalisasi from "./muird/Internalisasi";
 
@@ -21,6 +23,7 @@ import Profile from "./profile/Profile";
 import NotFound from "./Page404";
 
 export {
+  Beranda,
   SaatTeduh,
   Internalisasi,
   Pembina,

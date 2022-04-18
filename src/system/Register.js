@@ -455,7 +455,7 @@ export default function Register(props) {
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             key={"bottomcenter"}
             autoHideDuration={20000}
-            onClose={handleCloseErrorSnackBar}
+            onClose={handleCloseLoadingAlert}
             message="I love it"
           >
             <Alert onClose={handleCloseLoadingAlert} severity="success">

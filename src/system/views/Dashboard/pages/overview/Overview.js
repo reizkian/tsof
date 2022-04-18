@@ -36,7 +36,7 @@ export default function Overview(props) {
               transition={{ delay: 0.25 }}
             >
               <Typography variant="h4">
-                Hi, Welcome to The Fire Community!
+                Overview
               </Typography>
             </motion.div>
           </Box>

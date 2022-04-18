@@ -10,7 +10,6 @@ import { Box, Link, Drawer, Divider, Typography, Avatar } from "@mui/material";
 import LogoText from "../../components/LogoText";
 import Scrollbar from "../../components/Scrollbar";
 import NavSection from "../../components/NavSection";
-import { MHidden } from "../../components/@material-extend";
 // hooks
 import useResponsive from '../../hooks/useResponsive';
 //

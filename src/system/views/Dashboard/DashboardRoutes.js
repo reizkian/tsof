@@ -6,6 +6,7 @@ import LogoOnlyLayout from "./layouts/LogoOnlyLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import {
+  Beranda,
   SaatTeduh,
   Internalisasi,
   Pembina,
@@ -23,37 +24,20 @@ import {
 } from "./pages";
 
 export default function DashboardRoutes() {
-  // const dispatch = useDispatch();
-  // const { personalData } = useSelector((state) => state.auth);
-  // const [account, setAccount] = React.useState(personalData);
-  // const [isRefreshed, setIsRefreshed] = React.useState(false);
-
-  // React.useEffect(() => {
-  //   if (personalData._id === undefined) {
-  //     getUserPersonalData();
-  //   }
-  // }, []);
-
-  // function getUserPersonalData() {
-  //   const personalData = jwtDecodeUtil(localStorage.getItem("personalData"));
-  //   dispatch(setPersonalData(personalData));
-  //   setAccount(personalData);
-  //   setIsRefreshed(false);
-  // }
-
   return useRoutes([
     {
       path: "/dashboard",
       element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/overview" /> },
-        { path: "/dashboard", element: <Navigate to="/dashboard/overview" /> },
+        { element: <Navigate to="/dashboard/beranda" /> },
+        { path: "/dashboard", element: <Navigate to="/dashboard/beranda" /> },
+        { path: "beranda", element: <Beranda /> },
         { path: "murid/saat-teduh", element: <SaatTeduh /> },
         { path: "murid/Internalisasi", element: <Internalisasi /> },
         {
           path: "pembina",
           element: (
-            <ProtectedRoute level={1} >
+            <ProtectedRoute level={1}>
               <Pembina />
             </ProtectedRoute>
           ),
@@ -62,7 +46,7 @@ export default function DashboardRoutes() {
         {
           path: "manage-kelas/jadwal",
           element: (
-            <ProtectedRoute level={2} >
+            <ProtectedRoute level={2}>
               <Jadwal />
             </ProtectedRoute>
           ),
@@ -70,7 +54,7 @@ export default function DashboardRoutes() {
         {
           path: "manage-kelas/kelas",
           element: (
-            <ProtectedRoute level={2} >
+            <ProtectedRoute level={2}>
               <Kelas />
             </ProtectedRoute>
           ),
@@ -78,7 +62,7 @@ export default function DashboardRoutes() {
         {
           path: "manage-users/buat-user",
           element: (
-            <ProtectedRoute level={2} >
+            <ProtectedRoute level={3}>
               <BuatUser />
             </ProtectedRoute>
           ),
@@ -86,7 +70,7 @@ export default function DashboardRoutes() {
         {
           path: "manage-users/daftar-user",
           element: (
-            <ProtectedRoute level={2} >
+            <ProtectedRoute level={2}>
               <DaftarUser />
             </ProtectedRoute>
           ),
@@ -94,7 +78,7 @@ export default function DashboardRoutes() {
         {
           path: "manage-server/public",
           element: (
-            <ProtectedRoute level={3} >
+            <ProtectedRoute level={3}>
               <Public />
             </ProtectedRoute>
           ),
@@ -102,7 +86,7 @@ export default function DashboardRoutes() {
         {
           path: "manage-server/data-processing",
           element: (
-            <ProtectedRoute level={3} >
+            <ProtectedRoute level={3}>
               <DataProcessing />
             </ProtectedRoute>
           ),
@@ -110,7 +94,7 @@ export default function DashboardRoutes() {
         {
           path: "manage-server/resource-monitor",
           element: (
-            <ProtectedRoute level={3} >
+            <ProtectedRoute level={3}>
               <ResourceMonitor />
             </ProtectedRoute>
           ),
@@ -118,7 +102,7 @@ export default function DashboardRoutes() {
         {
           path: "manage-server/server-log",
           element: (
-            <ProtectedRoute level={3} >
+            <ProtectedRoute level={3}>
               <ServerLog />
             </ProtectedRoute>
           ),

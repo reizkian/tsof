@@ -1,9 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserGraduate, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faUserGraduate, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 const getFaIcon = (name) => <FontAwesomeIcon icon={name} size="lg" />;
 
 const sidebarConfigUser = [
+  {
+    title: "Beranda",
+    path: "/dashboard/beranda",
+    icon: getFaIcon(faHouse),
+  },
   {
     title: "Murid",
     path: "/dashboard/murid",

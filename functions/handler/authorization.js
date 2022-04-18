@@ -1,11 +1,10 @@
-const { func } = require("prop-types");
-
 const accessLevel1 = [
   "System Administrator",
   "Kepala Sekolah",
   "Penanggung Jawab Kelas",
   "Pembina",
 ];
+
 const accessLevel2 = [
   "System Administrator",
   "Kepala Sekolah",
@@ -19,7 +18,7 @@ exports.checkAccessLevel1 = function(role) {
 };
 
 exports.checkAccessLevel2 = function(role) {
-  return accessLevel3.includes(role);
+  return accessLevel2.includes(role);
 };
 
 exports.checkAccessLevel3 = function(role) {
