@@ -32,8 +32,22 @@ export default function DashboardRoutes() {
         { element: <Navigate to="/dashboard/beranda" /> },
         { path: "/dashboard", element: <Navigate to="/dashboard/beranda" /> },
         { path: "beranda", element: <Beranda /> },
-        { path: "murid/saat-teduh", element: <SaatTeduh /> },
-        { path: "murid/Internalisasi", element: <Internalisasi /> },
+        {
+          path: "murid/saat-teduh",
+          element: (
+            <ProtectedRoute level={0}>
+              <SaatTeduh />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "murid/Internalisasi",
+          element: (
+            <ProtectedRoute level={0}>
+              <Internalisasi />
+            </ProtectedRoute>
+          ),
+        },
         {
           path: "pembina",
           element: (
