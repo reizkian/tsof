@@ -5,6 +5,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { firebaseStorage, firebaseStorageRef } from "system/util/admin";
 import { ref, deleteObject } from "firebase/storage";
 import {
+  Avatar,
   Box,
   Menu,
   Button,
@@ -22,6 +23,7 @@ import {
   Select,
   Snackbar,
   Alert,
+  Typography,
   LinearProgress,
 } from "@mui/material";
 
@@ -167,7 +169,7 @@ export default function MoreMenu({ swapData }) {
           });
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         console.log("axios error");
         setErrorMessage("Internal server error");
         setOpenDialogDelete(false);
@@ -219,10 +221,57 @@ export default function MoreMenu({ swapData }) {
 
       {/* DIALOG UPDATE USER */}
       <Dialog open={openDialog} onClose={handleClose}>
-        <DialogTitle>Ubah Data User</DialogTitle>
         <DialogContent>
           <Box sx={{ width: 500 }}>
-            <ScrollBar style={{ maxHeight: 500 }}>
+            <ScrollBar style={{ maxHeight: 700 }}>
+              <Avatar
+                sx={{
+                  width: 100,
+                  height: 100,
+                  mx: "auto",
+                  cursor: "pointer",
+                  mt: 3,
+                }}
+                src={userData.imageURL}
+                alt={userData.name}
+              />
+              <Typography
+                variant="h5"
+                sx={{
+                  color: "text.primary",
+                  mx: "auto",
+                  flexGrow: 1,
+                  textAlign: "center",
+                  mt:1
+                }}
+              >
+                {userData.name}
+              </Typography>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  color: "text.secondary",
+                  mx: "auto",
+                  flexGrow: 1,
+                  textAlign: "center",
+                  mt:0
+                }}
+              >
+                {userData.email}
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: "text.secondary",
+                  mx: "auto",
+                  flexGrow: 1,
+                  textAlign: "center",
+                  mt:0,
+                  mb:2
+                }}
+              >
+                {userData.city}, {userData.phone}
+              </Typography>
               <TextField
                 margin="dense"
                 id="name"
@@ -308,6 +357,18 @@ export default function MoreMenu({ swapData }) {
               />
               <TextField
                 margin="dense"
+                id="birthdate"
+                name="birthdate"
+                label="Tanggal Lahir"
+                type="birthdate"
+                fullWidth
+                variant="filled"
+                value={userData.birthdate}
+                onChange={handleUserDataChange}
+                sx={{ mb: 3 }}
+              />
+              <TextField
+                margin="dense"
                 id="city"
                 name="city"
                 label="Kota"
@@ -339,7 +400,7 @@ export default function MoreMenu({ swapData }) {
         ) : (
           <DialogActions>
             <Button onClick={handleClose}>Batal</Button>
-            <Button onClick={handleSave}>Simpan</Button>
+            <Button onClick={handleSave}>Update Data</Button>
           </DialogActions>
         )}
       </Dialog>
@@ -405,4 +466,8 @@ export default function MoreMenu({ swapData }) {
       </Snackbar>
     </>
   );
+}
+
+function getUserAge(birthdate){
+
 }
