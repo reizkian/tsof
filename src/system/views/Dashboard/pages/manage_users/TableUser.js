@@ -1,42 +1,26 @@
 import React from "react";
-
 import { filter } from "lodash";
-import { sentenceCase, upperCase } from "change-case";
-import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
   Card,
-  Menu,
   Table,
   Stack,
   Avatar,
-  Button,
-  MenuItem,
   Checkbox,
   TableRow,
   TableBody,
   TableCell,
-  Container,
-  IconButton,
   Typography,
-  ListItemIcon,
-  ListItemText,
-  LinearProgress,
   TableContainer,
+  LinearProgress,
   TablePagination,
 } from "@mui/material";
 
-import {
-  TableHeadOveride,
-  TableToolbar,
-} from "../../components/table";
-
-import MoreMenu from "./MoreMenu"
+import MoreMenu from "./MoreMenu";
 import Label from "../../components/Label";
-import Iconify from "../../components/Iconify";
 import Scrollbar from "../../components/Scrollbar";
 import SearchNotFound from "../../components/SearchNotFound";
+import { TableHeadOveride, TableToolbar } from "../../components/table";
 
 export default function TableUser({ data }) {
   const [page, setPage] = React.useState(0);
@@ -45,12 +29,11 @@ export default function TableUser({ data }) {
   const [orderBy, setOrderBy] = React.useState("name");
   const [userData, setUserData] = React.useState([]);
   const [filterName, setFilterName] = React.useState("");
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [swapUserData, setSwapUserData] = React.useState({});
   const [filteredUsers, setFilteredUsers] = React.useState([]);
-  const [isUserNotFound, setIsUserNotFound] = React.useState(false);
-  const [isMenuOpened, setIsMenuOpened] = React.useState(false);
   const [isDataMounted, setIsDataMounted] = React.useState(false);
+  const [isUserNotFound, setIsUserNotFound] = React.useState(false);
 
   React.useEffect(() => {
     setUserData(data.users);
@@ -66,16 +49,16 @@ export default function TableUser({ data }) {
         }
       }
     }
-    
-    if(filterName===""){
-      setIsUserNotFound(false)
+
+    if (filterName === "") {
+      setIsUserNotFound(false);
     }
-  }, [userData, isUserNotFound, filterName]);
+  }, [userData, filterName, order, orderBy]);
 
   const TABLE_HEAD = [
-    { id: "name", label: "Nama", alignRight: false },
+    { id: "name", label: "Akun", alignRight: false },
     { id: "role", label: "Role", alignRight: false },
-    { id: "kelas", label: "Kelas", alignRight: false },
+    { id: "kelas", label: "Murid Aktif", alignRight: false },
     { id: "email", label: "Email", alignRight: false },
     { id: "phone", label: "No Tlp", alignRight: false },
   ];
@@ -182,12 +165,10 @@ export default function TableUser({ data }) {
                             role="checkbox"
                             selected={isItemSelected}
                             aria-checked={isItemSelected}
+                            sx={{ pl: 0 }}
                           >
                             <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={isItemSelected}
-                                onChange={(event) => handleClick(event, name)}
-                              />
+                              <Box/>
                             </TableCell>
                             <TableCell
                               component="th"
@@ -307,7 +288,7 @@ function applySortFilter(array, comparator, query) {
 
 function activeClass(text) {
   if (text !== undefined) {
-    let activeClass = text.split("@")[1];
+    let activeClass = text.student.split("@")[1];
     switch (activeClass) {
       case "mk":
         return (
@@ -332,12 +313,12 @@ function activeClass(text) {
         break;
       default:
         return (
-          <Label variant="ghost" color="error">
-            Error
+          <Label variant="ghost" >
+            Tidak Aktif
           </Label>
         );
     }
   } else {
-    return <Label variant="ghost">Tidak terdaftar</Label>;
+    return <Label variant="ghost">Tidak Aktif</Label>;
   }
 }

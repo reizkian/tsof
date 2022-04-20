@@ -223,7 +223,7 @@ export default function MetaData({ personalData }) {
     setOpenSuccessSnackBar(false);
   }
 
-  // FUNCTION: error nack bar
+  // FUNCTION: error snack bar
   function handleOpenErrorSnackBar() {
     setOpenErrorSnackBar(true);
   }
@@ -363,7 +363,6 @@ export default function MetaData({ personalData }) {
       <Snackbar
         open={openErrorSnackBar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        key={"topcenter"}
         autoHideDuration={6000}
         onClose={handleCloseErrorSnackBar}
         message="I love it"
@@ -377,7 +376,6 @@ export default function MetaData({ personalData }) {
       <Snackbar
         open={openSuccessSnackBar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        key={"topcenter"}
         autoHideDuration={6000}
         onClose={handleCloseSuccessSnackBar}
         message="I love it"

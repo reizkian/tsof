@@ -7,6 +7,7 @@
 
 # testing
 /coverage
+/out
 
 # production
 /build
@@ -24,6 +25,7 @@
 /functions/.runtimeconfig.json
 /functions/seed/auth_export
 /functions/seed/database_export
+/functions/.adminconfig.json
 
 # log
 ui-debug.log

@@ -43,13 +43,17 @@ export default function DashboardLayout(props) {
     if (personalData._id === undefined) {
       getUserPersonalData();
     }
-  }, []);
+    if(isRefreshed){
+      setAccount(personalData)
+    }
+  }, [personalData]);
 
   function getUserPersonalData() {
+    console.log("get data from local storage")
     const personalData = jwtDecodeUtil(localStorage.getItem("personalData"));
     dispatch(setPersonalData(personalData));
     setAccount(personalData);
-    setIsRefreshed(false);
+    setIsRefreshed(true);
   }
 
   return (

@@ -22,7 +22,7 @@ export default function SearchNotFound({ searchQuery = "", ...other }) {
           <Box
             component="img"
             src={require("assets/img/searching.png").default}
-            sx={{ height: 310, mx: "auto", mt: 15, mb: 0 }}
+            sx={{ height: 250, mx: "auto", mt: 10, mb: 0 }}
           />
         </motion.div>
       </div>

@@ -39,7 +39,7 @@ function checkAccessLevel3(role) {
   return accessLevel3.includes(role);
 }
 
-export function checkAccessLeve() {
+export function checkAccessLevel() {
   const encodedPersonalData = localStorage.getItem("personalData")
   const decodedPersonalData = jwtDecodeUtil(encodedPersonalData)
   const role = decodedPersonalData.role;

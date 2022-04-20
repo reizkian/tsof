@@ -259,7 +259,6 @@ export default function PersonalData({ personalData }) {
       <Snackbar
         open={openErrorSnackBar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        key={"topcenter"}
         autoHideDuration={6000}
         onClose={handleCloseErrorSnackBar}
         message="I love it"
@@ -273,7 +272,6 @@ export default function PersonalData({ personalData }) {
       <Snackbar
         open={openSuccessSnackBar}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
-        key={"topcenter"}
         autoHideDuration={6000}
         onClose={handleCloseSuccessSnackBar}
         message="I love it"

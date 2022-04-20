@@ -1,12 +1,11 @@
 import React from "react";
-import { checkAccessLeve } from "system/util/authorization";
+import { checkAccessLevel } from "system/util/authorization";
 
 import Page401 from "system/views/Dashboard/pages/Page401";
 
 export default function ProtectedRoute({ level, children }) {
-  const accessLevel = checkAccessLeve();
-  console.log(accessLevel)
-
+  const accessLevel = checkAccessLevel();
+  
   let isAuthorized = null;
   switch (level) {
     case 0:

@@ -1,9 +1,6 @@
-const {
-  firebaseDatabase,
-  firebaseAuthentication,
-} = require("../utils/admin");
+const { firebaseDatabase, firebaseAuthentication } = require("../utils/admin");
 
-const { getCurrentTime, getBlobFromURI } = require("../utils/method");
+const { getCurrentTime } = require("../utils/method");
 const { logActivity } = require("./activity");
 const { sendEmailWelcome } = require("../utils/smtp/mailer");
 const { useEmulators } = require("../utils/admin");
@@ -237,5 +234,8 @@ checkEmailVerified = function(email) {
       const respondArray = Object.values(respond.val());
       const isVerified = respondArray[0]._verified;
       return isVerified;
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: "Internal server error" });
     });
 };

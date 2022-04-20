@@ -8,6 +8,7 @@ const { signin, signup } = require("./handler/authentication");
 const {
   getUserPersonalData,
   updateUserPersonalData,
+  deleteUser,
   getUserList
 } = require("./handler/user");
 const { createCourse } = require("./handler/course");
@@ -25,6 +26,7 @@ app.post("/signup", signup);
 
 app.get("/user/:_id", getUserPersonalData);
 app.post("/user/:_id", updateUserPersonalData);
+app.delete("/user/:_id", deleteUser);
 
 app.post("/get-user-list",getUserList);
 

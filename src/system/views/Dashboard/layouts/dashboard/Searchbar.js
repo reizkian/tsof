@@ -21,7 +21,7 @@ const APPBAR_DESKTOP = 92;
 const SearchbarStyle = styled('div')(({ theme }) => ({
   top: 0,
   left: 0,
-  zIndex: 99,
+  zIndex: 50,
   width: '100%',
   display: 'flex',
   position: 'absolute',

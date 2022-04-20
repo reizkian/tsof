@@ -25,8 +25,6 @@ const RootStyle = styled(Page)(({ theme }) => ({
   },
 }));
 
-// ----------------------------------------------------------------------
-
 export default function Page401() {
   return (
     <>
@@ -52,7 +50,7 @@ export default function Page401() {
                     />
                   </motion.div>
                 </div>
-                <Button
+                {/* <Button
                   to="/dashboard/murid/saat-teduh"
                   size="large"
                   variant="contained"
@@ -60,7 +58,7 @@ export default function Page401() {
                   color="primary"
                 >
                   Kembali
-                </Button>
+                </Button> */}
               </Box>
             </MotionContainer>
           </Container>

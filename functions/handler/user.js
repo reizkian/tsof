@@ -1,6 +1,12 @@
-const { firebaseDatabase } = require("../utils/admin");
+const {
+  admin,
+  firebaseDatabase,
+  firebaseAdmin,
+  firebaseStorage,
+} = require("../utils/admin");
 const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
-const { checkAccessLevel2 } = require("./authorization");
+const { checkAccessLevel2, checkAccessLevel3 } = require("./authorization");
+const { logActivity } = require("./activity");
 
 exports.getUserPersonalData = function(req, res) {
   //  get user ID from parametric route
@@ -38,6 +44,40 @@ exports.updateUserPersonalData = function(req, res) {
     });
 };
 
+exports.deleteUser = function(req, res) {
+  // parsing role from request
+  const { headers } = req;
+  const firebaseUserCredential = jwtDecodeUtil(headers.authorization);
+  const isAuthorized = checkAccessLevel3(
+    firebaseUserCredential.personalData.role
+  );
+  // parsing userID to be deleted
+  const deleteUserID = req.params._id;
+
+  if (isAuthorized) {
+    admin
+      .auth()
+      .deleteUser(deleteUserID)
+      .then(() => {
+        console.log("delete success");
+        firebaseDatabase
+          .ref("users/" + deleteUserID)
+          .remove()
+          .then(() => {
+            return res.status(200).json({ message: "Delete success" });
+          })
+          .catch((err) => {
+            return res.status(500).json({ message: "Internal server error" });
+          });
+      })
+      .catch((err) => {
+        return res.status(500).json({ message: "Internal server error" });
+      });
+  } else {
+    return res.status(500).json({ message: "Unathorized access" });
+  }
+};
+
 exports.getUserList = function(req, res) {
   // parse firebase user credential
   const firebaseUserCredentials = jwtDecodeUtil(req.body.token);
@@ -61,13 +101,12 @@ exports.getUserList = function(req, res) {
         // encode payload data
         const token = jwtEncodeUtil(payloadData);
         // return respond
-        return res.json({token:token});
+        return res.json({ token: token });
       })
       .catch((err) => {
-        console.log(err);
         return res.status(500).json({ message: "Internal server error" });
       });
   } else {
-    return res.status(500).json({ message: "unathorized access" });
+    return res.status(500).json({ message: "Unathorized access" });
   }
 };

@@ -3,6 +3,11 @@ const firebase = require("firebase");
 const functions = require("firebase-functions");
 require("firebase/storage");
 const operatingSystem = require("os");
+const path = require("path");
+
+const adminConfigPath = path.resolve(__dirname,"../.adminconfig.json");
+const adminConfig = require(adminConfigPath)
+
 
 const firebaseConfig = {
   apiKey: functions.config().tsof.project_api_key,
@@ -16,11 +21,15 @@ const firebaseConfig = {
 };
 
 /* F I R E B A S E */
+admin.initializeApp({
+  credential: admin.credential.cert(adminConfig),
+  databaseURL: "https://the-school-of-fire.firebaseio.com/"
+});
 firebase.initializeApp(firebaseConfig);
+
 var firebaseAuthentication = firebase.auth();
 var firebaseDatabase = firebase.database();
-var firebaseStorage = firebase.storage()
-
+var firebaseStorage = firebase.storage();
 
 //  emulators
 var useEmulators = false;
