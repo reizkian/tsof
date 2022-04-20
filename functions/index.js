@@ -9,9 +9,10 @@ const {
   getUserPersonalData,
   updateUserPersonalData,
   deleteUser,
-  getUserList
+  getUserList,
 } = require("./handler/user");
 const { createCourse } = require("./handler/course");
+const { getActiveClassList } = require("./handler/class");
 const { jwtEncodeAPI, jwtDecodeAPI } = require("./utils/jwt");
 const {
   verifyEmail,
@@ -27,8 +28,9 @@ app.post("/signup", signup);
 app.get("/user/:_id", getUserPersonalData);
 app.post("/user/:_id", updateUserPersonalData);
 app.delete("/user/:_id", deleteUser);
+app.post("/get-user-list", getUserList);
 
-app.post("/get-user-list",getUserList);
+app.get("/class/get-active-class-list", getActiveClassList);
 
 app.post("/create-course", createCourse);
 
