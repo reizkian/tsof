@@ -61,10 +61,8 @@ export default function PersonalData({ personalData }) {
     setSaveButtonDisabled(true);
     // encode updated user personal data at profileState
     const encodedPayloadData = { token: jwtEncodeUtil(profileState) };
-
     axios
-      .post(`user/${profileState._id}`, {
-        params: encodedPayloadData,
+      .post(`user/${profileState._id}`, encodedPayloadData,{
         headers: {
           "Content-Type": "application/json",
         },
@@ -81,7 +79,7 @@ export default function PersonalData({ personalData }) {
         return respond.data.message;
       })
       .catch((err) => {
-        console.log(err.respond.data);
+        console.log(err.respond);
         setErrorMessage(err.respond.data.message);
         handleOpenErrorSnackBar();
         setSaveButtonDisabled(false);
@@ -239,15 +237,13 @@ export default function PersonalData({ personalData }) {
 
             {/* INPUT: address*/}
             <Grid item xs={12} md={12} lg={12}>
-              <Box sx={{ paddingBottom: "30px" }}>
+              <Box sx={{ paddingBottom: "5px" }}>
                 <Button
                   to="/dashboard/home"
-                  size="large"
-                  variant="contained"
                   onClick={updateUserPersonalData}
                   disabled={saveButtonDisabled}
                 >
-                  simpan
+                  Simpan
                 </Button>
               </Box>
             </Grid>

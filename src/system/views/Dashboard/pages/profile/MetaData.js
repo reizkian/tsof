@@ -26,6 +26,7 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/material/styles";
 import "./Dialog.css";
 
@@ -250,6 +251,7 @@ export default function MetaData({ personalData }) {
             hidden="hidden"
             onChange={onSelectFile}
           />
+
           <div>
             <BootstrapDialog
               onClose={handleCloseImageDialog}
@@ -332,20 +334,33 @@ export default function MetaData({ personalData }) {
               </DialogContent>
             </BootstrapDialog>
           </div>
-          <Box sx={{ my: 3, mx: "auto" }}>
+          <Box sx={{ my: 1, mx: "auto" }}>
             <Typography
-              variant="subtitle1"
+              variant="body2"
               sx={{
-                color: "text.primary",
+                color: "text.secondary",
                 mx: "auto",
                 flexGrow: 1,
                 textAlign: "center",
               }}
             >
+              File *.jpg, *.png, *jpeg <br />
+              ukuran maksimum 2 MB
+            </Typography>
+            <Typography
+              variant="h4"
+              sx={{
+                color: "text.primary",
+                mx: "auto",
+                flexGrow: 1,
+                textAlign: "center",
+                mt: 3,
+              }}
+            >
               {personalData.name}
             </Typography>
             <Typography
-              variant="body1"
+              variant="subtitle1"
               sx={{
                 color: "text.secondary",
                 mx: "auto",
@@ -355,6 +370,15 @@ export default function MetaData({ personalData }) {
             >
               {personalData.role}
             </Typography>
+          </Box>
+          <Box sx={{ mt:3 }}>
+          <Button
+            onClick={handleEditPicture}
+            sx={{ mx: "auto", flexGrow: 1, textAlign: "center"}}
+            style={{margin: 'auto', display: "flex"}}
+          >
+            Upload Foto
+          </Button>
           </Box>
         </Box>
       </Card>
