@@ -5,13 +5,15 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 import clsx from "clsx";
 import IconButton from "@material-ui/core/IconButton";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
+import FilledInput from "@material-ui/core/FilledInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Autocomplete from "@mui/material/Autocomplete";
+import CircularProgress from "@mui/material/CircularProgress";
 // import AdapterDateFns from "@mui/lab/AdapterDateFns";
 // import LocalizationProvider from "@mui/lab/LocalizationProvider";
 // import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
@@ -23,6 +25,7 @@ import NavBar from "./views/RegisterPage/NavBar/NavBar.js";
 import Title from "./views/RegisterPage/Title/Title.js";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import { titleCase } from "system/util/string";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Register(props) {
   const navigateRoute = useNavigate();
   const classes = useStyles();
-
+  const provinsi = require("system/util/location/provinsi.json");
   // Form state
   const [formState, setFormState] = React.useState({
     email: "",
@@ -55,6 +58,7 @@ export default function Register(props) {
     sex: "",
     birthdate: "mm/dd/yyyy",
     phone: "+62",
+    province: "",
     city: "",
     address: "",
     loading: false,
@@ -62,6 +66,38 @@ export default function Register(props) {
     showConfirmPassword: false,
     errors: {},
   });
+
+  const [LOCATION, SET_LOCATION] = React.useState({
+    provinceID: null,
+    provinceIsExist: false,
+    cityID: null,
+    cityIsExist: false,
+    cityLoading: false,
+    districtID: null,
+    districtIsExist: false,
+  });
+
+  const [kabupatenData, setKabupatenData] = React.useState({ fetchedData: [] });
+  const [loadingKabupatenData, setLoadingKabupatenData] = React.useState(false);
+
+
+  async function loadKabupatenJSON(id) {
+    fetch(`https://ibnux.github.io/data-indonesia/kabupaten/${id}.json`)
+      .then((res) => res.json())
+      .then((json) => {
+        const fetchedKabupaten = { fetchedData: json };
+        setKabupatenData(fetchedKabupaten);
+        setLoadingKabupatenData(false);
+      });
+  }
+
+
+  React.useEffect(() => {
+    if (LOCATION.provinceIsExist) {
+      loadKabupatenJSON(LOCATION.provinceID);
+    }
+  }, [LOCATION]);
+
   // HANDLE: form state
   function handleFormChange(event) {
     setFormState((prevState) => ({
@@ -78,7 +114,10 @@ export default function Register(props) {
     setFormState({ ...formState, showPassword: !formState.showPassword });
   };
   const handleClickShowConfirmPassword = () => {
-    setFormState({ ...formState, showConfirmPassword: !formState.showConfirmPassword });
+    setFormState({
+      ...formState,
+      showConfirmPassword: !formState.showConfirmPassword,
+    });
   };
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -119,7 +158,10 @@ export default function Register(props) {
       sex: formState.sex,
       birthdate: formState.birthdate,
       phone: formState.phone,
+      province: formState.province,
       city: formState.city,
+      district: formState.district,
+      subDistrict: formState.subDistrict,
       address: formState.address,
     };
 
@@ -196,6 +238,15 @@ export default function Register(props) {
       handleOpenErrorSnackBar();
       return;
     }
+    if (payloadData.province === "") {
+      setSnackBarEmptyError((prevState) => ({
+        ...prevState,
+        open: true,
+        message: "Provinsi tidak boleh kosong",
+      }));
+      handleOpenErrorSnackBar();
+      return;
+    }
     if (payloadData.city === "") {
       setSnackBarEmptyError((prevState) => ({
         ...prevState,
@@ -226,13 +277,15 @@ export default function Register(props) {
 
     // secretOrPrivateKey located in .env file
     const encodedPayloadData = {
-      token: jwt.sign(payloadData, process.env.REACT_APP_JWT_KEY, { algorithm: "HS256" }),
+      token: jwt.sign(payloadData, process.env.REACT_APP_JWT_KEY, {
+        algorithm: "HS256",
+      }),
     };
 
     // set loading TRUE
     setFormState({ ...formState, loading: !formState.loading });
 
-    // POST request encodedPayloadData to "/signup" route  
+    // POST request encodedPayloadData to "/signup" route
     axios
       .post("/signup", encodedPayloadData, {
         headers: {
@@ -240,12 +293,11 @@ export default function Register(props) {
         },
       })
       .then((result) => {
-        console.log(result.data);
         setFormState({ ...formState, loading: !formState.loading });
         navigateRoute("/signin", { replace: true });
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         // close loading alert
         setFormState((prevState) => ({
           ...prevState,
@@ -280,16 +332,30 @@ export default function Register(props) {
         <div className={style.formContainer}>
           {/* INPUT: email */}
           <div className={style.formElemet}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <TextField name="email" onChange={handleFormChange} id="email" label="Email" variant="outlined" />
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
+              <TextField
+                name="email"
+                onChange={handleFormChange}
+                id="email"
+                label="Email"
+                variant="filled"
+              />
             </FormControl>
           </div>
 
           {/* INPUT: password */}
           <div className={style.formElemet}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-              <OutlinedInput
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <FilledInput
                 name="password"
                 id="password"
                 type={formState.showPassword ? "text" : "password"}
@@ -304,7 +370,11 @@ export default function Register(props) {
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
                     >
-                      {formState.showPassword ? <Visibility /> : <VisibilityOff />}
+                      {formState.showPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -314,9 +384,14 @@ export default function Register(props) {
           </div>
           {/* INPUT: confirm passowrd */}
           <div className={style.formElemet}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">Konfirmasi Password</InputLabel>
-              <OutlinedInput
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
+              <InputLabel htmlFor="outlined-adornment-password">
+                Konfirmasi Password
+              </InputLabel>
+              <FilledInput
                 id="confirmPassword"
                 name="confirmPassword"
                 label="Konfirmasi Password"
@@ -331,7 +406,11 @@ export default function Register(props) {
                       onMouseDown={handleMouseDownConfirmPassword}
                       edge="end"
                     >
-                      {formState.showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                      {formState.showConfirmPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
                     </IconButton>
                   </InputAdornment>
                 }
@@ -342,14 +421,28 @@ export default function Register(props) {
           <h2 className={style.formSectionTitle}>Data Pribadi</h2>
           {/* INPUT: name */}
           <div className={style.formElemet}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <TextField id="name" name="name" onChange={handleFormChange} label="Nama Lengkap" variant="outlined" />
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
+              <TextField
+                id="name"
+                name="name"
+                onChange={handleFormChange}
+                label="Nama Lengkap"
+                variant="filled"
+              />
             </FormControl>
           </div>
           {/* INPUT: sex */}
           <div className={style.formElemet}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <InputLabel id="demo-simple-select-label">Jenis Kelamin</InputLabel>
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
+              <InputLabel id="demo-simple-select-label">
+                Jenis Kelamin
+              </InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="sex"
@@ -379,11 +472,14 @@ export default function Register(props) {
                 />
               </FormControl>
             </LocalizationProvider> */}
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
               <TextField
                 id="birthdate"
                 name="birthdate"
-                variant="outlined"
+                variant="filled"
                 label="Tanggal Lahir (Bulan / Tanggal / Tahun)"
                 type="date"
                 defaultValue="yyy-MM-dd"
@@ -395,39 +491,127 @@ export default function Register(props) {
               />
             </FormControl>
           </div>
+          {/* INPUT: province */}
+          <div className={style.formElemet}>
+            <Autocomplete
+              sx={{ width: "40ch", pb: "3%" }}
+              name="province"
+              disableClearable
+              onChange={(event, newValue) => {
+                const selectedOption = provinsi.filter((data) => {
+                  return data.nama === newValue;
+                });
+                SET_LOCATION((prevState) => ({
+                  ...prevState,
+                  provinceID: selectedOption[0].id,
+                  provinceIsExist: true,
+                  cityLoading: true,
+                }));
+                setFormState((prevState) => ({
+                  ...prevState,
+                  province: newValue,
+                }));
+              }}
+              onInputChange={(event, newInputValue) => {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  province: newInputValue,
+                }));
+              }}
+              options={provinsi.map((option) => option.nama)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Provinsi"
+                  variant="filled"
+                  helperText={"sesuai dengan KTP"}
+                />
+              )}
+            />
+          </div>
           {/* INPUT: city */}
           <div className={style.formElemet}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
-              <TextField
-                id="city"
-                name="city"
-                onChange={handleFormChange}
-                label="Kota / Kabupaten"
-                variant="outlined"
-              />
-            </FormControl>
+            <Autocomplete
+              sx={{ width: "40ch", pb: "3%" }}
+              name="city"
+              disableClearable
+              onChange={(event, newValue) => {
+                setLoadingKabupatenData(true);
+                const selectedOption = kabupatenData.fetchedData.filter(
+                  (data) => {
+                    return data.nama === newValue;
+                  }
+                );
+                SET_LOCATION((prevState) => ({
+                  ...prevState,
+                  cityID: selectedOption[0].id,
+                  cityIsExist: true,
+                }));
+                setFormState((prevState) => ({
+                  ...prevState,
+                  city: newValue,
+                }));
+              }}
+              onInputChange={(event, newInputValue) => {
+                setFormState((prevState) => ({
+                  ...prevState,
+                  city: newInputValue,
+                }));
+              }}
+              options={kabupatenData.fetchedData.map((option) => option.nama)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Kota / Kabupaten"
+                  variant="filled"
+                  helperText={"sesuai dengan KTP"}
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <React.Fragment>
+                        {loadingKabupatenData ? (
+                          <CircularProgress
+                            color="inherit"
+                            size={20}
+                            sx={{ mb: 2 }}
+                          />
+                        ) : null}
+                        {params.InputProps.endAdornment}
+                      </React.Fragment>
+                    ),
+                  }}
+                />
+              )}
+            />
           </div>
           {/* INPUT: address */}
           <div className={style.formElemet}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
               <TextField
                 id="address"
                 name="address"
                 onChange={handleFormChange}
-                label="Alamat Domisili"
-                variant="outlined"
+                label="Alamat"
+                variant="filled"
+                helperText={"sesuai dengan KTP"}
               />
             </FormControl>
           </div>
           {/* INPUT: phone */}
           <div className={style.formElemet}>
-            <FormControl className={clsx(classes.margin, classes.textField)} variant="outlined">
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="filled"
+            >
               <TextField
                 id="phone"
                 name="phone"
                 onChange={handleFormChange}
                 label="No. Whatsapp / HP"
-                variant="outlined"
+                variant="filled"
                 defaultValue={"+62"}
                 helperText={"gunakan format nomor hp dengan kode negara +62"}
               />
@@ -440,10 +624,8 @@ export default function Register(props) {
           <Snackbar
             open={snackBarEmptyError.open}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            key={"bottomcenter"}
             autoHideDuration={6000}
             onClose={handleCloseErrorSnackBar}
-            message="I love it"
           >
             <Alert onClose={handleCloseErrorSnackBar} severity="error">
               {snackBarEmptyError.message}
@@ -453,10 +635,8 @@ export default function Register(props) {
           <Snackbar
             open={formState.loading}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            key={"bottomcenter"}
             autoHideDuration={20000}
             onClose={handleCloseLoadingAlert}
-            message="I love it"
           >
             <Alert onClose={handleCloseLoadingAlert} severity="success">
               {"Mohon tunggu koneksi server"}

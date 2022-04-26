@@ -179,7 +179,7 @@ exports.signup = function(req, res) {
             });
         }
         //  get addressGeoLocation
-        getAddressGeoLocation(`${user.address} ${user.city}`)
+        getAddressGeoLocation(`${user.address} ${user.city} ${user.province}`)
           .then((addressGeoLocation) => {
             user.addressGeoLocation = addressGeoLocation;
             //  console log user data
