@@ -499,7 +499,7 @@ export default function DaftarKelas({ classes, group, account }) {
               </b>
               . Harap diisi dengan teliti dan benar.
             </DialogContentText>
-            <Box sx={{ px: 2 }}>
+            <Box>
               <Typography sx={{ mt: 3, mb: 1 }} variant="h4">
                 {account.name}
               </Typography>
