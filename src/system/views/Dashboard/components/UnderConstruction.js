@@ -46,7 +46,7 @@ export default function UnderConstruction({page}) {
                     <Box
                       component="img"
                       src={require("assets/img/build.png").default}
-                      sx={{ height: 450, mx: "auto", mt:10}}
+                      sx={{ height: 250, mx: "auto", mt:10}}
                     />
                   </motion.div>
                 </div>
