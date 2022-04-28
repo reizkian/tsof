@@ -62,7 +62,7 @@ export default function PersonalData({ personalData }) {
     // encode updated user personal data at profileState
     const encodedPayloadData = { token: jwtEncodeUtil(profileState) };
     axios
-      .post(`user/${profileState._id}`, encodedPayloadData,{
+      .post(`user/${profileState._id}`, encodedPayloadData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -149,24 +149,6 @@ export default function PersonalData({ personalData }) {
               </FormControl>
             </Grid>
 
-            {/* INPUT: sex */}
-            <Grid item xs={12} md={6} lg={6}>
-              <FormControl
-                className={clsx(classes.margin, classes.textField)}
-                variant="outlined"
-              >
-                <TextField
-                  name="sex"
-                  value={profileState.sex === "Male" ? "Pria" : "Wanita"}
-                  onChange={handleFormChange}
-                  disabled
-                  id="sex"
-                  label="Gender"
-                  variant="outlined"
-                />
-              </FormControl>
-            </Grid>
-
             {/* INPUT: birth date */}
             <Grid item xs={12} md={6} lg={6}>
               <FormControl
@@ -209,6 +191,23 @@ export default function PersonalData({ personalData }) {
               >
                 <TextField
                   name="city"
+                  value={profileState.province}
+                  onChange={handleFormChange}
+                  id="city"
+                  label="Provinsi"
+                  variant="outlined"
+                />
+              </FormControl>
+            </Grid>
+
+            {/* INPUT: city*/}
+            <Grid item xs={12} md={6} lg={6}>
+              <FormControl
+                className={clsx(classes.margin, classes.textField)}
+                variant="outlined"
+              >
+                <TextField
+                  name="city"
                   value={profileState.city}
                   onChange={handleFormChange}
                   id="city"
@@ -235,7 +234,6 @@ export default function PersonalData({ personalData }) {
               </FormControl>
             </Grid>
 
-            {/* INPUT: address*/}
             <Grid item xs={12} md={12} lg={12}>
               <Box sx={{ paddingBottom: "5px" }}>
                 <Button
@@ -257,7 +255,6 @@ export default function PersonalData({ personalData }) {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         autoHideDuration={6000}
         onClose={handleCloseErrorSnackBar}
-        message="I love it"
       >
         <Alert onClose={handleCloseErrorSnackBar} severity="error">
           {errorMessage}
@@ -270,7 +267,6 @@ export default function PersonalData({ personalData }) {
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         autoHideDuration={6000}
         onClose={handleCloseSuccessSnackBar}
-        message="I love it"
       >
         <Alert onClose={handleCloseSuccessSnackBar} severity="success">
           {successMessage}

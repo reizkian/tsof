@@ -123,6 +123,7 @@
     display: flex;
     width: 50%;
     margin-left: 10px;
+    margin-bottom: 20px;
   }
   .chipDate {
     margin: 1% 0%;
@@ -136,7 +137,8 @@
     font-size: 12px;
     line-height: 1.5;
     float: right;
-    margin-top: 4%;
+    margin-top: 7%;
+    padding-top: 5%;
   }
   .valueCard {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);

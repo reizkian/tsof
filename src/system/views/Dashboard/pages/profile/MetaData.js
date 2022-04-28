@@ -35,8 +35,8 @@ export default function MetaData({ personalData }) {
 
   // STATE: user personal data
   const [profileState, setProfileState] = React.useState(personalData);
-  const [isUpdated, setIsUpdated] = React.useState(false);
-
+  const [isImageUploaded, setIsImageUploaded] = React.useState(false);
+  const [isImageUpdated, setIsImageUpdated] = React.useState(false);
   // STATE: react easy cropper
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [croppedArea, setCroppedArea] = React.useState(null);
@@ -81,7 +81,7 @@ export default function MetaData({ personalData }) {
     //  check file is exist
     if (event.target.files && event.target.files.length > 0) {
       const imageFile = event.target.files[0];
-      const fileSizeLimit = 2 * 1024 * 1024; // 1 MB limit
+      const fileSizeLimit = 2 * 1024 * 1024; // 2 MB limit
 
       // error handling to limit file size
       if (imageFile.size > fileSizeLimit) {
@@ -162,7 +162,7 @@ export default function MetaData({ personalData }) {
               }.png?alt=media`,
             }));
             // Set Profile State Is Updated
-            setIsUpdated(true);
+            setIsImageUploaded(true);
             // send updated user personal data to server
             // updateUserPersonalData(profileState);
           }
@@ -172,10 +172,11 @@ export default function MetaData({ personalData }) {
   }
 
   React.useEffect(() => {
-    if (isUpdated) {
+    console.log(profileState);
+    if (isImageUploaded) {
       updateUserPersonalData(profileState);
     }
-  }, [isUpdated]);
+  }, [isImageUploaded]);
 
   // FUNCTION: update user imageURL at Firebase Database
   function updateUserPersonalData(newUserPersonalData) {
@@ -371,14 +372,14 @@ export default function MetaData({ personalData }) {
               {personalData.role}
             </Typography>
           </Box>
-          <Box sx={{ mt:3 }}>
-          <Button
-            onClick={handleEditPicture}
-            sx={{ mx: "auto", flexGrow: 1, textAlign: "center"}}
-            style={{margin: 'auto', display: "flex"}}
-          >
-            Upload Foto
-          </Button>
+          <Box sx={{ mt: 3 }}>
+            <Button
+              onClick={handleEditPicture}
+              sx={{ mx: "auto", flexGrow: 1, textAlign: "center" }}
+              style={{ margin: "auto", display: "flex" }}
+            >
+              Upload Foto
+            </Button>
           </Box>
         </Box>
       </Card>

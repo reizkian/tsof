@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from "axios";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPersonalData } from "system/redux/reducer/auth";
@@ -43,17 +43,35 @@ export default function DashboardLayout(props) {
     if (personalData._id === undefined) {
       getUserPersonalData();
     }
-    if(isRefreshed){
-      setAccount(personalData)
+    if (isRefreshed) {
+      setAccount(personalData);
     }
-  }, [personalData]);
+  }, [personalData, isRefreshed]);
 
   function getUserPersonalData() {
-    console.log("get data from local storage")
-    const personalData = jwtDecodeUtil(localStorage.getItem("personalData"));
-    dispatch(setPersonalData(personalData));
-    setAccount(personalData);
-    setIsRefreshed(true);
+    // * GET DATA FROM LOCAL STORAGE
+    // console.log("get data from local storage")
+    // const personalData = jwtDecodeUtil(localStorage.getItem("personalData"));
+    // dispatch(setPersonalData(personalData));
+    // setAccount(personalData);
+    // setIsRefreshed(true);
+
+    const userID = jwtDecodeUtil(localStorage.getItem("personalData"))._id;
+    axios
+      .get(`user/${userID}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((respond) => {
+        const personalData = jwtDecodeUtil(respond.data.token);
+        dispatch(setPersonalData(personalData));
+        setAccount(personalData);
+        setIsRefreshed(true);
+      })
+      .catch((err) => {
+        console.log(err.respond.data);
+      });
   }
 
   return (

@@ -223,7 +223,7 @@ export default function MoreMenu({ swapData }) {
       <Dialog open={openDialog} onClose={handleClose}>
         <DialogContent>
           <Box sx={{ width: 500 }}>
-            <ScrollBar style={{ maxHeight: 700 }}>
+            <ScrollBar style={{ maxHeight: 600 }}>
               <Avatar
                 sx={{
                   width: 100,

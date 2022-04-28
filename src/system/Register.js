@@ -509,13 +509,13 @@ export default function Register(props) {
                 }));
                 setFormState((prevState) => ({
                   ...prevState,
-                  province: newValue,
+                  province: titleCase(newValue),
                 }));
               }}
               onInputChange={(event, newInputValue) => {
                 setFormState((prevState) => ({
                   ...prevState,
-                  province: newInputValue,
+                  province: titleCase(newInputValue),
                 }));
               }}
               options={provinsi.map((option) => option.nama)}
@@ -549,13 +549,13 @@ export default function Register(props) {
                 }));
                 setFormState((prevState) => ({
                   ...prevState,
-                  city: newValue,
+                  city: titleCase(newValue),
                 }));
               }}
               onInputChange={(event, newInputValue) => {
                 setFormState((prevState) => ({
                   ...prevState,
-                  city: newInputValue,
+                  city: titleCase(newInputValue),
                 }));
               }}
               options={kabupatenData.fetchedData.map((option) => option.nama)}

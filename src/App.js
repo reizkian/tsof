@@ -16,9 +16,8 @@ import DashboardRoutes from "system/views/Dashboard/DashboardRoutes";
 import ScrollToTop from "system/views/Dashboard/components/ScrollToTop";
 import { BaseOptionChartStyle } from "system/views/Dashboard/components/charts/BaseOptionChart";
 
-
-axios.defaults.baseURL = "http://127.0.0.1:5001/the-school-of-fire/us-central1/app";
-// axios.defaults.baseURL = "https://us-central1-the-school-of-fire.cloudfunctions.net/app";
+// axios.defaults.baseURL = "http://127.0.0.1:5001/the-school-of-fire/us-central1/app";
+axios.defaults.baseURL = "https://us-central1-the-school-of-fire.cloudfunctions.net/app";
 
 const themeGlobal = createMuiTheme(global);
 
