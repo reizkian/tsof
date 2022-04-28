@@ -24,7 +24,7 @@ const accessLevel2 = [
 const accessLevel3 = ["System Administrator", "Kepala Sekolah"];
 
 function checkAccessLevel0(role) {
-  return accessLevel1.includes(role);
+  return accessLevel0.includes(role);
 }
 
 function checkAccessLevel1(role) {

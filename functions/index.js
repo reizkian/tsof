@@ -12,12 +12,10 @@ const {
   getUserList,
 } = require("./handler/user");
 const { createCourse } = require("./handler/course");
-const { getActiveClassList } = require("./handler/class");
+const { getActiveClassList, registerClass } = require("./handler/class");
+const { getGroupList } = require("./handler/group");
 const { jwtEncodeAPI, jwtDecodeAPI } = require("./utils/jwt");
-const {
-  verifyEmail,
-  checkEmailVerified,
-} = require("./utils/smtp/verify_email");
+const { verifyEmail } = require("./utils/smtp/verify_email");
 
 app.use(cors());
 
@@ -31,8 +29,11 @@ app.delete("/user/:_id", deleteUser);
 app.post("/get-user-list", getUserList);
 
 app.get("/class/get-active-class-list", getActiveClassList);
+app.post("/class/register/:_id", registerClass);
 
-app.post("/create-course", createCourse);
+app.post("/course/create-course", createCourse);
+
+app.get("/group/get-group-list", getGroupList);
 
 app.post("/api/jwt-encode", jwtEncodeAPI);
 app.post("/api/jwt-decode", jwtDecodeAPI);

@@ -1,3 +1,11 @@
+const accessLevel0 = [
+  "System Administrator",
+  "Kepala Sekolah",
+  "Penanggung Jawab Kelas",
+  "Pembina",
+  "Murid",
+];
+
 const accessLevel1 = [
   "System Administrator",
   "Kepala Sekolah",
@@ -12,6 +20,10 @@ const accessLevel2 = [
 ];
 
 const accessLevel3 = ["System Administrator", "Kepala Sekolah"];
+
+exports.checkAccessLevel0 = function(role) {
+  return accessLevel0.includes(role);
+};
 
 exports.checkAccessLevel1 = function(role) {
   return accessLevel1.includes(role);
