@@ -190,10 +190,10 @@ export default function PersonalData({ personalData }) {
                 variant="outlined"
               >
                 <TextField
-                  name="city"
+                  name="province"
                   value={profileState.province}
                   onChange={handleFormChange}
-                  id="city"
+                  id="province"
                   label="Provinsi"
                   variant="outlined"
                 />
