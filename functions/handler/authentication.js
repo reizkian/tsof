@@ -69,6 +69,7 @@ exports.signin = function(req, res) {
               });
           })
           .catch((err) => {
+            console.error(err);
             let message =
               err.code === "auth/wrong-password"
                 ? "email atau password tidak ditemukan"
@@ -153,7 +154,7 @@ exports.signup = function(req, res) {
               "https://firebasestorage.googleapis.com/v0/b/the-school-of-fire.appspot.com/o/users%2Fimages%2Favatar_female.jpg?alt=media");
 
         //  logActivity: signup
-        logActivity(userID, getCurrentTime(), "signup");
+        logActivity(userID, getCurrentTime(), "signup", "success", "-");
         //  send email welcome
         if (!useEmulators) {
           sendEmailWelcome(user._id, user.email, user.name);

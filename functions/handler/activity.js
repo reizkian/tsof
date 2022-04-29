@@ -1,40 +1,46 @@
 const { firebaseDatabase } = require("../utils/admin");
-const { getCompoundID } = require("../utils/method");
+const { checkAccessLevel3 } = require("./authorization");
+const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
 
 exports.logActivity = function(userID, timeStamp, method, severity, message) {
-  // 1. generate logActivity id for each activity
-  let activityCompoundID = getCompoundID(userID);
-  // 2. get user classID
-  return firebaseDatabase
-    .ref("users/" + userID)
-    .child("classID")
-    .get()
-    .then((readedData) => {
-      const classID = readedData.val();
-      // 3. define payload data for activity logging
-      const payloadData = {
-        timeStamp: timeStamp,
-        userID: userID,
-        classID: classID,
-        method: method,
-        severity: severity,
-        message: message,
-      };
-      // 4. WRITE payload to activity
-      firebaseDatabase
-        .ref("activities/")
-        .child(activityCompoundID)
-        .set(payloadData)
-        .then(() => {
-          console.log("success write activity log");
-        })
-        .catch((err) => {
-          console.log("internal server error, write database");
-          console.log(err);
-        });
+  const payloadData = {
+    userID: userID,
+    timeStamp: timeStamp,
+    method: method,
+    severity: severity,
+    message: message,
+  };
+  firebaseDatabase
+    .ref(`activities/`)
+    .push(payloadData)
+    .then(() => {
+      console.log("success write activity log");
     })
     .catch((err) => {
-      console.log("internal server error, read database");
+      console.log("internal server error, write database");
       console.log(err);
     });
+};
+
+exports.getLogActivity = function(req, res) {
+  const { headers } = req;
+  const firebaseUserCredential = jwtDecodeUtil(headers.authorization);
+  const isAuthorized = checkAccessLevel3(
+    firebaseUserCredential.personalData.role
+  );
+
+  if (isAuthorized) {
+    firebaseDatabase
+      .ref("activities/")
+      .get()
+      .then((respond) => {
+        const respondArray = Object.values(respond.val());
+        const payloadData = {
+          logs: respondArray,
+        };
+        return res.status(200).json(payloadData);
+      });
+  } else {
+    return res.status(500).json({ message: "Unathorized access" });
+  }
 };

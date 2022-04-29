@@ -1,7 +1,5 @@
-const {
-  admin,
-  firebaseDatabase,
-} = require("../utils/admin");
+const { admin, firebaseDatabase } = require("../utils/admin");
+const { getCurrentTime } = require("../utils/method");
 const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
 const { checkAccessLevel2, checkAccessLevel3 } = require("./authorization");
 const { logActivity } = require("./activity");
@@ -32,12 +30,26 @@ exports.updateUserPersonalData = function(req, res) {
   // write to Firebase Database
   firebaseDatabase
     .ref("users/" + userID)
-    .set(personalData)
+    .update(personalData)
     .then(() => {
+      logActivity(
+        userID,
+        getCurrentTime(),
+        "updateUserPersonalData",
+        "success",
+        `updating user ${userID}`
+      );
       return res.status(201).json({ message: "update berhasil" });
     })
     .catch((err) => {
       console.log(err);
+      logActivity(
+        userID,
+        getCurrentTime(),
+        "updateUserPersonalData",
+        "failed",
+        `updating user ${userID}`
+      );
       return res.status(500).json({ message: "Internal server error" });
     });
 };
@@ -51,27 +63,52 @@ exports.deleteUser = function(req, res) {
   );
   // parsing userID to be deleted
   const deleteUserID = req.params._id;
+  const authorizedUserID = firebaseUserCredential.personalData._id;
 
   if (isAuthorized) {
-    admin
-      .auth()
-      .deleteUser(deleteUserID)
-      .then(() => {
-        console.log("delete success");
-        firebaseDatabase
-          .ref("users/" + deleteUserID)
-          .remove()
+    firebaseDatabase
+      .ref(`users/${deleteUserID}`)
+      .get()
+      .then((respond) => {
+        const deleteUserData = respond.val();
+        admin
+          .auth()
+          .deleteUser(deleteUserID)
           .then(() => {
-            return res.status(200).json({ message: "Delete success" });
+            console.log("delete success");
+            firebaseDatabase
+              .ref("users/" + deleteUserID)
+              .remove()
+              .then(() => {
+                // log
+                logActivity(
+                  authorizedUserID,
+                  getCurrentTime(),
+                  "deleteUser",
+                  "success",
+                  `deleting user ${deleteUserData.name} ${deleteUserData.email}`
+                );
+                return res.status(200).json({ message: "Delete success" });
+              })
+              .catch((err) => {
+                return res
+                  .status(500)
+                  .json({ message: "Internal server error" });
+              });
           })
           .catch((err) => {
             return res.status(500).json({ message: "Internal server error" });
           });
-      })
-      .catch((err) => {
-        return res.status(500).json({ message: "Internal server error" });
       });
   } else {
+    // log
+    logActivity(
+      authorizedUserID,
+      getCurrentTime(),
+      "deleteUser",
+      "failed",
+      "unauthorized attempt to delete a user"
+    );
     return res.status(500).json({ message: "Unathorized access" });
   }
 };
