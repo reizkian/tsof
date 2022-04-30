@@ -47,7 +47,7 @@ exports.updateUserPersonalData = function(req, res) {
         userID,
         getCurrentTime(),
         "updateUserPersonalData",
-        "failed",
+        "error",
         `updating user ${userID}`
       );
       return res.status(500).json({ message: "Internal server error" });
@@ -106,7 +106,7 @@ exports.deleteUser = function(req, res) {
       authorizedUserID,
       getCurrentTime(),
       "deleteUser",
-      "failed",
+      "error",
       "unauthorized attempt to delete a user"
     );
     return res.status(500).json({ message: "Unathorized access" });

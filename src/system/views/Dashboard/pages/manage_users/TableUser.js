@@ -6,7 +6,6 @@ import {
   Table,
   Stack,
   Avatar,
-  Checkbox,
   TableRow,
   TableBody,
   TableCell,

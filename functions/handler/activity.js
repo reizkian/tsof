@@ -5,7 +5,7 @@ const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
 exports.logActivity = function(userID, timeStamp, method, severity, message) {
   const payloadData = {
     userID: userID,
-    timeStamp: timeStamp,
+    timeStamp: Date.now().toString(),
     method: method,
     severity: severity,
     message: message,

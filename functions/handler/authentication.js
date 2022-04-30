@@ -64,21 +64,41 @@ exports.signin = function(req, res) {
                 token = jwtEncodeUtil(req.decodedToken);
                 // console.log(token);
                 //  logActivity: signin
-                logActivity(userID, getCurrentTime(), "signin", "success", "-");
+                logActivity(
+                  userID,
+                  getCurrentTime(),
+                  "signin",
+                  "success",
+                  `signin request ${user.email}`
+                );
                 return res.json({ token: token });
               });
           })
           .catch((err) => {
-            console.error(err);
+            console.error(err.code);
             let message =
               err.code === "auth/wrong-password"
                 ? "email atau password tidak ditemukan"
                 : err.code;
+            logActivity(
+              "-",
+              getCurrentTime(),
+              "signin",
+              "error",
+              `${err.code} ${user.email}`
+            );
             return res.status(500).json({ message: message });
           });
       }
       //  respond error to verified email
       else {
+        logActivity(
+          "-",
+          getCurrentTime(),
+          "sigin",
+          "warning",
+          `email ${user.email} is not verified`
+        );
         return res.status(500).json({
           message:
             "email anda belum terverifikasi, silakan cek kembali email anda",
@@ -153,8 +173,6 @@ exports.signup = function(req, res) {
           : (user.imageURL =
               "https://firebasestorage.googleapis.com/v0/b/the-school-of-fire.appspot.com/o/users%2Fimages%2Favatar_female.jpg?alt=media");
 
-        //  logActivity: signup
-        logActivity(userID, getCurrentTime(), "signup", "success", "-");
         //  send email welcome
         if (!useEmulators) {
           sendEmailWelcome(user._id, user.email, user.name);
@@ -190,6 +208,14 @@ exports.signup = function(req, res) {
               .ref("users/" + user._id)
               .set(user)
               .then(() => {
+                // logActivity: signup
+                logActivity(
+                  user._id,
+                  getCurrentTime(),
+                  "signup",
+                  "success",
+                  `signup request ${user.email}`
+                );
                 return res.status(201).json({
                   message: `user signed up successfully`,
                   _id: req.user._id,
@@ -237,6 +263,13 @@ checkEmailVerified = function(email) {
       return isVerified;
     })
     .catch((err) => {
+      logActivity(
+        "-",
+        getCurrentTime(),
+        "checkEmailVerified",
+        "error",
+        `verifying ${email}`
+      );
       return res.status(500).json({ message: "Internal server error" });
     });
 };

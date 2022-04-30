@@ -1,9 +1,16 @@
 import React from "react";
 import axios from "axios";
-import { Box, Container, LinearProgress } from "@mui/material";
+import {
+  Box,
+  breadcrumbsClasses,
+  Container,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 
 import Page from "../../components/Page";
 import PageTitle from "../../components/PageTitle";
+import Label from "../../components/Label";
 
 export default function ServerLog() {
   const [respondAPI, setRespondAPI] = React.useState({});
@@ -17,8 +24,11 @@ export default function ServerLog() {
         },
       })
       .then((respond) => {
-        console.log(respond.data);
-        setRespondAPI(respond.data);
+        // sort log array: the most recent log at the top
+        const recentSort = respond.data.logs.sort(function(a, b) {
+          return parseInt(b.timeStamp) - parseInt(a.timeStamp);
+        });
+        setRespondAPI({logs:recentSort});
       });
   }
 
@@ -35,16 +45,80 @@ export default function ServerLog() {
         {respondAPI.logs === undefined ? (
           <LinearProgress />
         ) : (
-          respondAPI.logs.map((data) => {
-            return <LogRow eachLog={data} />;
-          })
+          <>
+            <table>
+              <tr>
+                <th align={tableHeaderAligh} style={styleTableHeader}>
+                  Time Stamp
+                </th>
+                <th align={tableHeaderAligh} style={styleTableHeader}>
+                  Severity
+                </th>
+                <th align={tableHeaderAligh} style={styleTableHeader}>
+                  Method
+                </th>
+                <th align={tableHeaderAligh} style={styleTableHeader}>
+                  Message
+                </th>
+              </tr>
+              {respondAPI.logs.map((data) => {
+                return <LogRow eachLog={data} />;
+              })}
+            </table>
+          </>
         )}
       </Container>
     </Page>
   );
 }
 
+const tableHeaderAligh = "left";
+const styleTableHeader = {
+  padding: "0 15px 5px 0px",
+};
+const styleTableData = {
+  padding: "0 15px 0 0px",
+};
+
 function LogRow({ eachLog }) {
-  console.log(eachLog);
-  return <>{eachLog.timeStamp} {eachLog.method} {eachLog.severity} <br></br></>;
+  return (
+    <>
+      <tr>
+        <td style={styleTableData}>
+          {new Date(parseInt(eachLog.timeStamp)).toString().split("G")[0]}
+        </td>
+        <td style={styleTableData}>
+          <SeverityLabel>{eachLog.severity}</SeverityLabel>
+        </td>
+        <td style={styleTableData}>{eachLog.method}</td>
+        <td style={styleTableData}>{eachLog.message}</td>
+      </tr>
+    </>
+  );
 }
+
+function SeverityLabel({ children }) {
+  switch (children) {
+    case "success":
+      return (
+        <Label variant="ghost" color="primary">
+          {children}
+        </Label>
+      );
+    case "error":
+      return (
+        <Label variant="ghost" color="error">
+          {children}
+        </Label>
+      );
+    case "warning":
+      return (
+        <Label variant="ghost" color="warning">
+          {children}
+        </Label>
+      );
+    default:
+      return <Label variant="ghost">undefined</Label>;
+  }
+}
+
