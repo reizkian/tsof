@@ -3,6 +3,7 @@ import axios from "axios";
 import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setPersonalData } from "system/redux/reducer/auth";
+import { setUnReadNotifications } from "system/redux/reducer/notifications";
 
 import { styled } from "@mui/material/styles";
 import DashboardNavbar from "./DashboardNavbar";
@@ -34,6 +35,8 @@ const MainStyle = styled("div")(({ theme }) => ({
 
 export default function DashboardLayout(props) {
   const dispatch = useDispatch();
+  const userID = jwtDecodeUtil(localStorage.getItem("personalData"))._id;
+
   const [open, setOpen] = React.useState(false);
   const [isRefreshed, setIsRefreshed] = React.useState(false);
   const { personalData } = useSelector((state) => state.auth);
@@ -42,6 +45,7 @@ export default function DashboardLayout(props) {
   React.useEffect(() => {
     if (personalData._id === undefined) {
       getUserPersonalData();
+      getUnReadNotifications();
     }
     if (isRefreshed) {
       setAccount(personalData);
@@ -56,7 +60,6 @@ export default function DashboardLayout(props) {
     // setAccount(personalData);
     // setIsRefreshed(true);
 
-    const userID = jwtDecodeUtil(localStorage.getItem("personalData"))._id;
     axios
       .get(`user/${userID}`, {
         headers: {
@@ -71,6 +74,22 @@ export default function DashboardLayout(props) {
       })
       .catch((err) => {
         console.log(err.respond.data);
+      });
+  }
+
+  function getUnReadNotifications() {
+    axios
+      .get(`notifications/unread/${userID}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((respond) => {
+        // set notification redux state
+        dispatch(setUnReadNotifications(respond.data.notifications));
+      })
+      .catch((error) => {
+        console.error(error);
       });
   }
 

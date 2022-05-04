@@ -14,7 +14,11 @@ const {
 const { createCourse } = require("./handler/course");
 const { getActiveClassList, registerClass } = require("./handler/class");
 const { getGroupList } = require("./handler/group");
-const { getLogActivity } = require("./handler/activity");
+const { getLogActivity } = require("./handler/log");
+const {
+  getUnReadNotifications,
+  setReadedNotifications,
+} = require("./handler/notification");
 
 const { jwtEncodeAPI, jwtDecodeAPI } = require("./utils/jwt");
 const { verifyEmail } = require("./utils/smtp/verify_email");
@@ -38,6 +42,9 @@ app.post("/course/create-course", createCourse);
 app.get("/group/get-group-list", getGroupList);
 
 app.get("/activity/get-log", getLogActivity);
+
+app.get("/notifications/unread/:_id", getUnReadNotifications);
+app.post("/notifications/setread/:_id", setReadedNotifications);
 
 app.post("/api/jwt-encode", jwtEncodeAPI);
 app.post("/api/jwt-decode", jwtDecodeAPI);

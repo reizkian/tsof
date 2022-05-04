@@ -1,8 +1,8 @@
 const { firebaseDatabase } = require("../utils/admin");
 const { checkAccessLevel3 } = require("./authorization");
-const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
+const { jwtDecodeUtil } = require("../utils/jwt");
 
-exports.logActivity = function(userID, timeStamp, method, severity, message) {
+exports.logActivity = function(userID, method, severity, message) {
   const payloadData = {
     userID: userID,
     timeStamp: Date.now().toString(),
@@ -11,11 +11,9 @@ exports.logActivity = function(userID, timeStamp, method, severity, message) {
     message: message,
   };
   firebaseDatabase
-    .ref(`activities/`)
+    .ref(`logs/`)
     .push(payloadData)
-    .then(() => {
-      console.log("success write activity log");
-    })
+    .then(() => {})
     .catch((err) => {
       console.log("internal server error, write database");
       console.log(err);
@@ -31,7 +29,7 @@ exports.getLogActivity = function(req, res) {
 
   if (isAuthorized) {
     firebaseDatabase
-      .ref("activities/")
+      .ref("logs/")
       .get()
       .then((respond) => {
         const respondArray = Object.values(respond.val());

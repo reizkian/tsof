@@ -2,7 +2,7 @@ const { admin, firebaseDatabase } = require("../utils/admin");
 const { getCurrentTime } = require("../utils/method");
 const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
 const { checkAccessLevel2, checkAccessLevel3 } = require("./authorization");
-const { logActivity } = require("./activity");
+const { logActivity } = require("./log");
 
 exports.getUserPersonalData = function(req, res) {
   //  get user ID from parametric route
@@ -34,7 +34,6 @@ exports.updateUserPersonalData = function(req, res) {
     .then(() => {
       logActivity(
         userID,
-        getCurrentTime(),
         "updateUserPersonalData",
         "success",
         `updating user ${userID}`
@@ -45,7 +44,6 @@ exports.updateUserPersonalData = function(req, res) {
       console.log(err);
       logActivity(
         userID,
-        getCurrentTime(),
         "updateUserPersonalData",
         "error",
         `updating user ${userID}`
@@ -83,7 +81,6 @@ exports.deleteUser = function(req, res) {
                 // log
                 logActivity(
                   authorizedUserID,
-                  getCurrentTime(),
                   "deleteUser",
                   "success",
                   `deleting user ${deleteUserData.name} ${deleteUserData.email}`
@@ -104,7 +101,6 @@ exports.deleteUser = function(req, res) {
     // log
     logActivity(
       authorizedUserID,
-      getCurrentTime(),
       "deleteUser",
       "error",
       "unauthorized attempt to delete a user"

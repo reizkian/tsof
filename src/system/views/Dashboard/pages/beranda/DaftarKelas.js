@@ -120,7 +120,6 @@ export default function DaftarKelas({ classes, group, account }) {
     setIsUploading(true);
     checkEmptyForm();
     registerClassAPI();
-    setIsUploading(false);
   }
   function handleOpenSuccessSnackBar() {
     setOpenSuccessSnackBar(true);

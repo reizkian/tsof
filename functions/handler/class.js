@@ -1,15 +1,9 @@
-const {
-  admin,
-  firebaseDatabase,
-  firebaseAdmin,
-  firebaseStorage,
-} = require("../utils/admin");
+const { firebaseDatabase } = require("../utils/admin");
 
-const {
-  checkAccessLevel1,
-} = require("./authorization");
+const { checkAccessLevel1 } = require("./authorization");
 
 const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
+const { pushNotification } = require("./notification");
 
 exports.getActiveClassList = function(req, res) {
   firebaseDatabase
@@ -79,7 +73,7 @@ exports.registerClass = function(req, res) {
           });
       })
       .then(() => {
-        // CLASS: push user
+        // CLASS: add user
         switch (payloadData.role) {
           case "Murid":
             firebaseDatabase
@@ -89,6 +83,29 @@ exports.registerClass = function(req, res) {
                 _id: userID,
                 as: payloadData.role,
                 iat: Date.now().toString(),
+              })
+              .then(() => {
+                let courseName;
+                switch (payloadData.classID.student.split("@")[1]) {
+                  case "mk":
+                    courseName = "Murid Kristus";
+                    break;
+                  case "pk":
+                    courseName = "Pekerja Kristus";
+                    break;
+                  case "hk":
+                    courseName = "Hamba Kristus";
+                    break;
+                  default:
+                    courseName = "";
+                }
+                pushNotification(
+                  userID,
+                  "Registrasi Kelas",
+                  `berhasil mendaftar kelas ${courseName} sebagai ${
+                    payloadData.role
+                  }`
+                );
               });
             break;
           case "Pembina":
@@ -99,6 +116,29 @@ exports.registerClass = function(req, res) {
                 _id: userID,
                 as: payloadData.role,
                 iat: Date.now().toString(),
+              })
+              .then(() => {
+                let courseName;
+                switch (payloadData.classID.counselor.split("@")[1]) {
+                  case "mk":
+                    courseName = "Murid Kristus";
+                    break;
+                  case "pk":
+                    courseName = "Pekerja Kristus";
+                    break;
+                  case "hk":
+                    courseName = "Hamba Kristus";
+                    break;
+                  default:
+                    courseName = "";
+                }
+                pushNotification(
+                  userID,
+                  "Registrasi Kelas",
+                  `berhasil mendaftar kelas ${courseName} sebagai ${
+                    payloadData.role
+                  }`
+                );
               });
             break;
           default:

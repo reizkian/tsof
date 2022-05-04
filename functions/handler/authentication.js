@@ -1,7 +1,7 @@
 const { firebaseDatabase, firebaseAuthentication } = require("../utils/admin");
 
 const { getCurrentTime } = require("../utils/method");
-const { logActivity } = require("./activity");
+const { logActivity } = require("./log");
 const { sendEmailWelcome } = require("../utils/smtp/mailer");
 const { useEmulators } = require("../utils/admin");
 const { getAddressGeoLocation } = require("../utils/geolocation");
@@ -66,7 +66,6 @@ exports.signin = function(req, res) {
                 //  logActivity: signin
                 logActivity(
                   userID,
-                  getCurrentTime(),
                   "signin",
                   "success",
                   `signin request ${user.email}`
@@ -82,7 +81,6 @@ exports.signin = function(req, res) {
                 : err.code;
             logActivity(
               "-",
-              getCurrentTime(),
               "signin",
               "error",
               `${err.code} ${user.email}`
@@ -94,7 +92,6 @@ exports.signin = function(req, res) {
       else {
         logActivity(
           "-",
-          getCurrentTime(),
           "sigin",
           "warning",
           `email ${user.email} is not verified`
@@ -211,7 +208,6 @@ exports.signup = function(req, res) {
                 // logActivity: signup
                 logActivity(
                   user._id,
-                  getCurrentTime(),
                   "signup",
                   "success",
                   `signup request ${user.email}`
@@ -265,7 +261,6 @@ checkEmailVerified = function(email) {
     .catch((err) => {
       logActivity(
         "-",
-        getCurrentTime(),
         "checkEmailVerified",
         "error",
         `verifying ${email}`

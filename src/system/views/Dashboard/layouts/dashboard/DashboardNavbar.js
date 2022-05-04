@@ -55,7 +55,7 @@ export default function DashboardNavbar({ account, onOpenSidebar }) {
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           {/* <LanguagePopover /> */}
-          <NotificationsPopover />
+          <NotificationsPopover account={account} />
           <AccountPopover account={account}/>
         </Stack>
       </ToolbarStyle>
