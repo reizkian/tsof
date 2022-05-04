@@ -35,6 +35,7 @@ import {
 import pallete from "system/views/Dashboard/theme/palette";
 import { eydMonth } from "system/util/time";
 import { toBoolean } from "system/util/string";
+import { jwtDecodeUtil, jwtEncodeUtil } from "system/util/jwt";
 
 const REGISTRATION_FORM_PROPERTIES = {
   mk: {
@@ -120,6 +121,7 @@ export default function DaftarKelas({ classes, group, account }) {
     setIsUploading(true);
     checkEmptyForm();
     registerClassAPI();
+    updatePersonalDataLocalStorage();
   }
   function handleOpenSuccessSnackBar() {
     setOpenSuccessSnackBar(true);
@@ -232,6 +234,20 @@ export default function DaftarKelas({ classes, group, account }) {
         isMarried: false,
       }));
     }
+  }
+
+  function updatePersonalDataLocalStorage() {
+    const encodedPersonalData = localStorage.getItem("personalData");
+    const decodedPersonalData = jwtDecodeUtil(encodedPersonalData);
+    // deep copy
+    let newPersonalData = JSON.parse(JSON.stringify(decodedPersonalData));
+    newPersonalData["role"] = formState.role;
+    newPersonalData["classID"] =
+      formState.role === "Murid"
+        ? { student: classProperties._id }
+        : { counselor: classProperties._id };
+    // update
+    localStorage.setItem("personalData", jwtEncodeUtil(newPersonalData));
   }
 
   // React Effect

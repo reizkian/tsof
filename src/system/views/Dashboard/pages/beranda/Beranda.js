@@ -74,7 +74,7 @@ export default function Beranda() {
         open={openSnackbarInfo}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         key={"topcenter"}
-        autoHideDuration={4000}
+        autoHideDuration={20000}
         onClose={handleCloseSnackBar}
         message="I love it"
       >
