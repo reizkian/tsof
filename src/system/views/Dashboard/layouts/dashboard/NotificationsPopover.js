@@ -151,7 +151,8 @@ export default function NotificationsPopover({ account }) {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const { unReadNotifications } = useSelector((state) => state.notifications);
-  const [notifications, setNotifications] = useState([]);
+  const [isMounted, SetIsMounted] = useState(false);
+  const [notifications, setNotifications] = useState(undefined);
   const [totalUnRead, setTotalUnRead] = useState(undefined);
   const handleOpen = () => {
     setOpen(true);
@@ -178,22 +179,27 @@ export default function NotificationsPopover({ account }) {
     // update notification database isUnRead false
     updateIsReadedNotifications(readedNotifications);
     setTotalUnRead(0);
-    setNotifications([]);
   };
 
   useEffect(() => {
-    if (totalUnRead === undefined) {
-      console.log(unReadNotifications);
-      if (unReadNotifications !== undefined && unReadNotifications !== null) {
-        setNotifications(Object.values(unReadNotifications));
-        if (notifications.length !== 0) {
-          setTotalUnRead(
-            notifications.filter((item) => item.isUnRead === true).length
-          );
-        }
+    // console.log("notification object", unReadNotifications);
+    // console.log("notification array", notifications);
+    // console.log("total unread", totalUnRead);
+    // console.log("---------------------------------------");
+
+    if (!isMounted && unReadNotifications !== null) {
+      console.log("trigger set notifications");
+      setNotifications(Object.values(unReadNotifications));
+      if (notifications !== undefined) {
+        console.log("trigger set total unread");
+        setTotalUnRead(
+          notifications.filter((item) => item.isUnRead === true).length
+        );
+        SetIsMounted(false)
       }
     }
-  }, [unReadNotifications, notifications]);
+
+  }, [unReadNotifications, isMounted,totalUnRead]);
 
   function updateIsReadedNotifications(payloadData) {
     axios.post(`notifications/setread/${account._id}`, payloadData, {
@@ -238,20 +244,19 @@ export default function NotificationsPopover({ account }) {
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="subtitle1">Notifikasi</Typography>
             <Typography variant="body2" sx={{ color: "text.secondary" }}>
-              Adna memiliki {totalUnRead} notifikasi yang belum dibaca
+              Anda memiliki {totalUnRead === undefined ? "0" : totalUnRead}{" "}
+              notifikasi yang belum dibaca
             </Typography>
           </Box>
 
           {totalUnRead > 0 && (
-            <Tooltip title=" Mark all as read">
+            <Tooltip title="Tandai sudah dibaca">
               <IconButton color="primary" onClick={handleMarkAllAsRead}>
                 <Icon icon={doneAllFill} width={20} height={20} />
               </IconButton>
             </Tooltip>
           )}
         </Box>
-
-        <Divider />
 
         <Scrollbar sx={{ height: { xs: 340, sm: "auto" } }}>
           {notifications === undefined ? (
@@ -270,13 +275,13 @@ export default function NotificationsPopover({ account }) {
           )}
         </Scrollbar>
 
-        <Divider />
+        {/* <Divider />
 
         <Box sx={{ p: 1 }}>
           <Button fullWidth disableRipple component={RouterLink} to="#">
             Lihat Semua
           </Button>
-        </Box>
+        </Box> */}
       </MenuPopover>
     </>
   );

@@ -43,9 +43,9 @@ export default function DashboardLayout(props) {
   const [account, setAccount] = React.useState(personalData);
 
   React.useEffect(() => {
+    getUnReadNotifications();
     if (personalData._id === undefined) {
       getUserPersonalData();
-      getUnReadNotifications();
     }
     if (isRefreshed) {
       setAccount(personalData);
@@ -86,6 +86,7 @@ export default function DashboardLayout(props) {
       })
       .then((respond) => {
         // set notification redux state
+        console.log("dispatch notifications")
         dispatch(setUnReadNotifications(respond.data.notifications));
       })
       .catch((error) => {

@@ -1,4 +1,4 @@
-import {jwtDecodeUtil} from "./jwt"
+import { jwtDecodeUtil } from "./jwt";
 
 const accessLevel0 = [
   "System Administrator",
@@ -40,8 +40,8 @@ function checkAccessLevel3(role) {
 }
 
 export function checkAccessLevel() {
-  const encodedPersonalData = localStorage.getItem("personalData")
-  const decodedPersonalData = jwtDecodeUtil(encodedPersonalData)
+  const encodedPersonalData = localStorage.getItem("personalData");
+  const decodedPersonalData = jwtDecodeUtil(encodedPersonalData);
   const role = decodedPersonalData.role;
 
   let accessLevel = {

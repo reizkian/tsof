@@ -1,7 +1,7 @@
 const { firebaseDatabase, firebaseAuthentication } = require("../utils/admin");
 
-const { getCurrentTime } = require("../utils/method");
 const { logActivity } = require("./log");
+const { pushNotification } = require("./notification");
 const { sendEmailWelcome } = require("../utils/smtp/mailer");
 const { useEmulators } = require("../utils/admin");
 const { getAddressGeoLocation } = require("../utils/geolocation");
@@ -211,6 +211,11 @@ exports.signup = function(req, res) {
                   "signup",
                   "success",
                   `signup request ${user.email}`
+                );
+                pushNotification(
+                  user._id,
+                  "Registrasi Akun",
+                  `berhasil, jangan lupa untuk update foto profil ya!`
                 );
                 return res.status(201).json({
                   message: `user signed up successfully`,
