@@ -15,7 +15,6 @@ export const authSlice = createSlice({
       state.personalData = action.payload;
     },
     refreshPersonalData: (state, action) => {
-      console.log(state.personalData);
       const encodedPersonalData = localStorage.getItem("personalData");
       const decodedPersonalData = jwtDecodeUtil(encodedPersonalData);
 

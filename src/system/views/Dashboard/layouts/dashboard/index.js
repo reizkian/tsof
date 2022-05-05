@@ -9,7 +9,7 @@ import { styled } from "@mui/material/styles";
 import DashboardNavbar from "./DashboardNavbar";
 import DashboardSidebar from "./DashboardSidebar";
 
-import { jwtDecodeUtil } from "system/util/jwt";
+import { jwtDecodeUtil, jwtEncodeUtil } from "system/util/jwt";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
@@ -47,10 +47,8 @@ export default function DashboardLayout(props) {
     if (personalData._id === undefined) {
       getUserPersonalData();
     }
-    if (isRefreshed) {
-      setAccount(personalData);
-    }
-  }, [personalData, isRefreshed]);
+    setAccount(personalData);
+  }, [personalData]);
 
   function getUserPersonalData() {
     // * GET DATA FROM LOCAL STORAGE
@@ -68,9 +66,11 @@ export default function DashboardLayout(props) {
       })
       .then((respond) => {
         const personalData = jwtDecodeUtil(respond.data.token);
+        console.log(personalData.imageURL);
         dispatch(setPersonalData(personalData));
         setAccount(personalData);
         setIsRefreshed(true);
+        localStorage.setItem("personalData", jwtEncodeUtil(personalData));
       })
       .catch((err) => {
         console.log(err.respond.data);
@@ -86,7 +86,6 @@ export default function DashboardLayout(props) {
       })
       .then((respond) => {
         // set notification redux state
-        console.log("dispatch notifications")
         dispatch(setUnReadNotifications(respond.data.notifications));
       })
       .catch((error) => {

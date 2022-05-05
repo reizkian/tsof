@@ -1,14 +1,24 @@
 import React from "react";
 import axios from "axios";
-import { useOutletContext } from "react-router-dom";
-import { Box, Container, Snackbar, Alert, LinearProgress } from "@mui/material";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import {
+  Box,
+  Container,
+  Snackbar,
+  Alert,
+  Button,
+  Link,
+  LinearProgress,
+  Typography,
+} from "@mui/material";
 
 import Page from "../../components/Page";
 import PageTitle from "../../components/PageTitle";
-
+import pallete from "system/views/Dashboard/theme/palette";
 import DaftarKelas from "./DaftarKelas";
 
 export default function Beranda() {
+  const navigateRoute = useNavigate();
   const [account, setAccount] = useOutletContext();
   const [firstName, setFirstName] = React.useState();
   const [openSnackbarInfo, setOpenSnackbarInfo] = React.useState(false);
@@ -64,7 +74,22 @@ export default function Beranda() {
           <PageTitle>Welcome to The School of Fire!</PageTitle>
         </Box>
         {classes ? (
-          <DaftarKelas classes={classes} group={group} account={account}/>
+          <>
+            <DaftarKelas classes={classes} group={group} account={account} />
+            <Box sx={{ ml: 4, display: "inline-flex" }}>
+              <Typography variant="body2" color={pallete.grey[500]}>
+                donasi untuk pengembangan website
+              </Typography>
+              <Link
+                sx={{ ml: 0.5 }}
+                variant="body2"
+                underline="none"
+                onClick={()=>{navigateRoute("/dashboard/donate")}}
+              >
+                klik disini
+              </Link>
+            </Box>
+          </>
         ) : (
           <LinearProgress />
         )}

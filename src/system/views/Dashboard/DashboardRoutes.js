@@ -20,6 +20,7 @@ import {
   ResourceMonitor,
   ServerLog,
   Profile,
+  Donate,
   NotFound,
 } from "./pages";
 
@@ -122,6 +123,7 @@ export default function DashboardRoutes() {
           ),
         },
         { path: "profile", element: <Profile /> },
+        { path: "donate", element: <Donate /> },
         { path: "*", element: <Navigate to="/404" /> },
       ],
     },

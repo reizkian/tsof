@@ -280,7 +280,7 @@ export default function DaftarKelas({ classes, group, account }) {
           component="img"
           height="250"
           image={require("assets/img/final-mk-2.png").default}
-          alt="green iguana"
+          alt="MuridKristus.png"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
@@ -352,7 +352,7 @@ export default function DaftarKelas({ classes, group, account }) {
           component="img"
           height="250"
           image={require("assets/img/final-pk.png").default}
-          alt="green iguana"
+          alt="PekerjaKristus.png"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
@@ -425,7 +425,7 @@ export default function DaftarKelas({ classes, group, account }) {
           component="img"
           height="250"
           image={require("assets/img/final-hk.png").default}
-          alt="green iguana"
+          alt="HambaKristus.png"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

@@ -123,7 +123,6 @@ export default function MetaData({ personalData }) {
       (croppedImageDataURL) => {
         setCroppedImageDataURL(croppedImageDataURL);
         const croppedImageBlob = dataURLtoBlob(croppedImageDataURL);
-        console.log(croppedImageBlob);
 
         // Firebase Storage
         const imageRef = ref(
@@ -172,7 +171,6 @@ export default function MetaData({ personalData }) {
   }
 
   React.useEffect(() => {
-    console.log(profileState);
     if (isImageUploaded) {
       updateUserPersonalData(profileState);
     }

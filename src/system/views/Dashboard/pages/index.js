@@ -20,6 +20,8 @@ import ServerLog from "./manage_server/ServerLog";
 
 import Profile from "./profile/Profile";
 
+import Donate from "./donate/Donate.js";
+
 import NotFound from "./Page404";
 
 export {
@@ -37,5 +39,6 @@ export {
   ResourceMonitor,
   ServerLog,
   Profile,
+  Donate,
   NotFound,
 };

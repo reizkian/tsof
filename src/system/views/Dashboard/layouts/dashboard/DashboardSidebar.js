@@ -11,7 +11,7 @@ import LogoText from "../../components/LogoText";
 import Scrollbar from "../../components/Scrollbar";
 import NavSection from "../../components/NavSection";
 // hooks
-import useResponsive from '../../hooks/useResponsive';
+import useResponsive from "../../hooks/useResponsive";
 //
 import sidebarConfigUser from "./SidebarConfigUser";
 import sidebarConfigAdmin from "./SidebarConfigAdmin";
@@ -36,7 +36,7 @@ export default function DashboardSidebar({
   onCloseSidebar,
 }) {
   const { pathname } = useLocation();
-  const isDesktop = useResponsive('up', 'lg');
+  const isDesktop = useResponsive("up", "lg");
 
   const AccountStyle = styled("div")(({ theme }) => ({
     display: "flex",
@@ -103,7 +103,7 @@ export default function DashboardSidebar({
           open={isOpenSidebar}
           onClose={onCloseSidebar}
           PaperProps={{
-            sx: { width: DRAWER_WIDTH }
+            sx: { width: DRAWER_WIDTH },
           }}
         >
           {renderContent}
@@ -117,9 +117,9 @@ export default function DashboardSidebar({
           PaperProps={{
             sx: {
               width: DRAWER_WIDTH,
-              bgcolor: 'background.default',
-              borderRightStyle: 'dashed'
-            }
+              bgcolor: "background.default",
+              borderRightStyle: "dashed",
+            },
           }}
         >
           {renderContent}
