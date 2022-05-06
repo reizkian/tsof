@@ -22,6 +22,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Grid from "@mui/material/Grid";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,7 +46,7 @@ export default function SignIn(props) {
   const navigateRoute = useNavigate();
 
   // REACT HOOK STATE
-  
+
   const classes = useStyles();
   const [formState, setFormState] = React.useState({
     email: "",
@@ -83,7 +84,7 @@ export default function SignIn(props) {
   function handleOpenErrorSnackBar() {
     setOpenErrorSnackBar(true);
   }
-  
+
   function handleCloseErrorSnackBar(event, reason) {
     if (reason === "clickaway") {
       return;
@@ -110,7 +111,7 @@ export default function SignIn(props) {
 
     // encode payload data before send to server
     const encodedPayloadData = {
-      token: jwtEncodeUtil(payloadData)
+      token: jwtEncodeUtil(payloadData),
     };
 
     // set loading TRUE
@@ -124,13 +125,14 @@ export default function SignIn(props) {
         },
       })
       .then((result) => {
-
         // set local storage variable
         localStorage.setItem("firebaseUserCredential", `${result.data.token}`);
         localStorage.setItem("authenticationStatus", true);
         const decodedUserCredential = jwtDecodeUtil(result.data.token);
-        const encodedPersonalData = jwtEncodeUtil(decodedUserCredential.personalData)
-        localStorage.setItem("personalData", encodedPersonalData)
+        const encodedPersonalData = jwtEncodeUtil(
+          decodedUserCredential.personalData
+        );
+        localStorage.setItem("personalData", encodedPersonalData);
 
         // set redux state
         dispatch(setFirebaseAuth(decodedUserCredential));
@@ -187,50 +189,63 @@ export default function SignIn(props) {
                 <h1 className={style.brandText}>The School of Fire</h1>
               </div>
               <div className={style.form}>
-                <FormControl
-                  className={clsx(classes.margin, classes.textField)}
-                  variant="outlined"
+                <Grid
+                  container
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justifyContent="center"
                 >
-                  <TextField
-                    id="outlined-basic"
-                    name="email"
-                    onChange={handleFormChange}
-                    label="Email"
-                    variant="outlined"
-                  />
-                </FormControl>
-                <FormControl
-                  className={clsx(classes.margin, classes.textField)}
-                  variant="outlined"
-                >
-                  <InputLabel htmlFor="outlined-adornment-password">
-                    Password
-                  </InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-password"
-                    name="password"
-                    type={formState.showPassword ? "text" : "password"}
-                    value={formState.password}
-                    onChange={handleFormChange}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {formState.showPassword ? (
-                            <Visibility />
-                          ) : (
-                            <VisibilityOff />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    labelWidth={70}
-                  />
-                </FormControl>
+                  <Grid item>
+                    <FormControl
+                      className={clsx(classes.margin, classes.textField)}
+                      variant="outlined"
+                    >
+                      <TextField
+                        id="outlined-basic"
+                        name="email"
+                        onChange={handleFormChange}
+                        label="Email"
+                        variant="outlined"
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item>
+                    <FormControl
+                      className={clsx(classes.margin, classes.textField)}
+                      variant="outlined"
+                    >
+                      <InputLabel htmlFor="outlined-adornment-password">
+                        Password
+                      </InputLabel>
+                      <OutlinedInput
+                        id="outlined-adornment-password"
+                        name="password"
+                        type={formState.showPassword ? "text" : "password"}
+                        value={formState.password}
+                        onChange={handleFormChange}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {formState.showPassword ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+                        labelWidth={70}
+                      />
+                    </FormControl>
+                  </Grid>
+                </Grid>
+
                 <div>
                   <button type="submit" className={style.buttonSignIn}>
                     Sign In
