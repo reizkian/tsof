@@ -1,6 +1,6 @@
 # **The School of Fire - Web App**
 
-**About The App:** A Dashboard to manage Bible Online Course
+**About The Web App:** A Dashboard to manage Bible Online Course ([click here to open](https://the-school-of-fire.web.app/))
 
 **About The Fire Community:**  A Youth Ministry Church [Kemah Daud Yogyakarta](https://www.instagram.com/fire_community/), Indonesia.
 
@@ -34,4 +34,4 @@ $ npm install
 # start react-app
 $ npm start
 ```
-_Note: there are several environment variable that is not available for firebase local server emulation. _
+_Note: there are several environment variable that is not available for firebase local server emulation._
