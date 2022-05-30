@@ -281,65 +281,6 @@ export default function SignIn(props) {
             </form>
           </div>
         </div>
-        <div className={style.footer}>
-          <ul className={style.ul}>
-            <motion.li
-              initial={animateFrom}
-              animate={animateTo}
-              transition={{ delay: 0.05 }}
-              className={style.docsNav}
-            >
-              <a
-                className={style.docsLink}
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Konseling
-              </a>
-            </motion.li>
-            <motion.li
-              initial={animateFrom}
-              animate={animateTo}
-              transition={{ delay: 0.15 }}
-              className={style.docsNav}
-            >
-              <a
-                className={style.docsLink}
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Kelas Pengajaran
-              </a>
-            </motion.li>
-            <motion.li
-              initial={animateFrom}
-              animate={animateTo}
-              transition={{ delay: 0.25 }}
-              className={style.docsNav}
-            >
-              <a
-                className={style.docsLink}
-                href="/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Pertumbuhan Rohani
-              </a>
-            </motion.li>
-            <motion.li
-              initial={animateFrom}
-              animate={animateTo}
-              transition={{ delay: 0.35 }}
-              className={style.docsNav}
-            >
-              <a className={style.docsLink} href="/" rel="noopener noreferrer">
-                Home
-              </a>
-            </motion.li>
-          </ul>
-        </div>
       </div>
     </>
   );
