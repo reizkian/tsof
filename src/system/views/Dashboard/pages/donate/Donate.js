@@ -113,8 +113,7 @@ function QrCode() {
                     </Grid>
                     <Grid item>
                       <img
-                        width="250"
-                        height="250"
+                        width="100%"
                         src={require("assets/img/qr_ovo.png").default}
                       />
                     </Grid>
@@ -163,8 +162,7 @@ function QrCode() {
                     </Grid>
                     <Grid item>
                       <img
-                        width="250"
-                        height="250"
+                        width="100%"
                         src={require("assets/img/qr_bca.png").default}
                       />
                     </Grid>
