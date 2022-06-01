@@ -5,6 +5,13 @@ const { checkAccessLevel1 } = require("./authorization");
 const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
 const { pushNotification } = require("./notification");
 
+/** getActiveClass List
+ * 
+ * get "db/class" where "db/class/isActive" = True
+ * @param null
+ * @return {object} {activeClasses: [objects]}
+ */
+
 exports.getActiveClassList = function(req, res) {
   firebaseDatabase
     .ref("class")
@@ -17,10 +24,23 @@ exports.getActiveClassList = function(req, res) {
     });
 };
 
+
+/** registerClass
+ * 
+ * post enrolled user at "db/class/enrolled"
+ * update enrolled user at "db/user/userID/isMarried"
+ * update enrolled user at "db/user/userID/group"
+ * @param userID
+ * @param {object} payload.classID
+ * @param {string} payload.group
+ * @param {boolean} payload.isMarried 
+ */
+
 exports.registerClass = function(req, res) {
   try {
     const userID = req.params._id;
     const payloadData = req.body;
+    console.log(payloadData)
 
     // USER: update classID
     firebaseDatabase
