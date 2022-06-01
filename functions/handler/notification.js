@@ -1,6 +1,14 @@
 const { firebaseDatabase } = require("../utils/admin");
 const { logActivity } = require("./log");
 
+/** pushNotification
+ * 
+ * post "db/notifications/userID/pushID/payloadData"
+ * @param {string} userID
+ * @param {string} title notification title
+ * @param {string} description notification description
+ */
+
 exports.pushNotification = function(userID, title, description) {
   const payloadData = {
     timeStamp: Date.now().toString(),
@@ -24,6 +32,13 @@ exports.pushNotification = function(userID, title, description) {
     });
 };
 
+/** getUnReadNotifications
+ * 
+ * get "db/notifications/userID" where isUnRead = true
+ * @param null
+ * @return {object} {notifications: [objects]}
+ */
+
 exports.getUnReadNotifications = function(req, res) {
   const userID = req.params._id;
   firebaseDatabase
@@ -45,9 +60,13 @@ exports.getUnReadNotifications = function(req, res) {
     });
 };
 
+/** setReadedNotifications
+ * 
+ * update multiple child nodes pushIDs "db/notifications/userID/pushIDs"
+ * @param userID
+ */
+
 exports.setReadedNotifications = function(req, res) {
-  console.log(req.body);
-  console.log(req.params._id)
   const userID = req.params._id;
   firebaseDatabase
     .ref(`notifications/${userID}/`)

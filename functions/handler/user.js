@@ -4,6 +4,13 @@ const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
 const { checkAccessLevel2, checkAccessLevel3 } = require("./authorization");
 const { logActivity } = require("./log");
 
+/** getUserPersonalData
+ * 
+ * get "db/users/id/"
+ * @param userID
+ * @return {object} {token: jwt_encoded_data}
+ */
+
 exports.getUserPersonalData = function(req, res) {
   //  get user ID from parametric route
   const userID = req.params._id;
@@ -21,6 +28,12 @@ exports.getUserPersonalData = function(req, res) {
       return res.status(500).json({ error: err });
     });
 };
+
+/** updateUsersPersonalData
+ * 
+ * update "db/users/id/"
+ * @param {object} {token: jwt_encoded_data}
+ */
 
 exports.updateUserPersonalData = function(req, res) {
   // decode data
@@ -51,6 +64,14 @@ exports.updateUserPersonalData = function(req, res) {
       return res.status(500).json({ message: "Internal server error" });
     });
 };
+
+/** deleteUser
+ * 
+ * delete "db/users/id/"
+ * delete account userID from firebaseAuth
+ * @param {string} deletedUserID userID to be deleted
+ * @param {encoded object} firebaseUserCredential
+ */
 
 exports.deleteUser = function(req, res) {
   // parsing role from request
@@ -108,6 +129,13 @@ exports.deleteUser = function(req, res) {
     return res.status(500).json({ message: "Unathorized access" });
   }
 };
+
+/** getUserPList
+ * 
+ * get "db/users/"
+ * @param {encoded object} firebaseUserCredential
+ * @return {encoded object} {users:[object]}
+ */
 
 exports.getUserList = function(req, res) {
   // parse firebase user credential

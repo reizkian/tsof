@@ -2,6 +2,14 @@ const { firebaseDatabase } = require("../utils/admin");
 const { checkAccessLevel3 } = require("./authorization");
 const { jwtDecodeUtil } = require("../utils/jwt");
 
+/** logActivity
+ * 
+ * post "db/logs/pushID/payloadData"
+ * @param {string} userID
+ * @param {string} method handler method to be logged
+ * @param {string} severity success/warning/error
+ */
+
 exports.logActivity = function(userID, method, severity, message) {
   const payloadData = {
     userID: userID,
@@ -19,6 +27,13 @@ exports.logActivity = function(userID, method, severity, message) {
       console.log(err);
     });
 };
+
+/** getLogActivity
+ * 
+ * get "db/logs"
+ * @param null
+ * @return {object} {logs: [objects]}
+ */
 
 exports.getLogActivity = function(req, res) {
   const { headers } = req;

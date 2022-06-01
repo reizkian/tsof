@@ -5,9 +5,9 @@ const { checkAccessLevel1 } = require("./authorization");
 const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
 const { pushNotification } = require("./notification");
 
-/** getActiveClass List
+/** getActiveClassList
  * 
- * get "db/class" where "db/class/isActive" = True
+ * get "db/class" where "db/class/isActive" = true
  * @param null
  * @return {object} {activeClasses: [objects]}
  */
