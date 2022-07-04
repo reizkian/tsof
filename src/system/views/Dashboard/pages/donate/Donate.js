@@ -71,6 +71,7 @@ function HeadMaster({ firstName }) {
           <Typography
             variant="body1"
             sx={{
+              width: "80%",
               mt: 1,
               mx: "auto",
               flexGrow: 1,

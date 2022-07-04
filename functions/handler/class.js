@@ -6,7 +6,7 @@ const { jwtEncodeUtil, jwtDecodeUtil } = require("../utils/jwt");
 const { pushNotification } = require("./notification");
 
 /** getActiveClassList
- * 
+ *
  * get "db/class" where "db/class/isActive" = true
  * @param null
  * @return {object} {activeClasses: [objects]}
@@ -24,23 +24,39 @@ exports.getActiveClassList = function(req, res) {
     });
 };
 
+/** getActiveClassList
+ *
+ * get "db/class"
+ * @param null
+ * @return {object} {classes: [objects]}
+ */
+
+exports.getClassList = function(req, res) {
+  firebaseDatabase
+    .ref("class")
+    .get()
+    .then((respond) => {
+      const respondArray = Object.values(respond.val());
+      return res.status(200).json({ classes: respondArray });
+    });
+};
 
 /** registerClass
- * 
+ *
  * post enrolled user at "db/class/enrolled"
  * update enrolled user at "db/user/userID/isMarried"
  * update enrolled user at "db/user/userID/group"
  * @param userID
  * @param {object} payload.classID
  * @param {string} payload.group
- * @param {boolean} payload.isMarried 
+ * @param {boolean} payload.isMarried
  */
 
 exports.registerClass = function(req, res) {
   try {
     const userID = req.params._id;
     const payloadData = req.body;
-    console.log(payloadData)
+    console.log(payloadData);
 
     // USER: update classID
     firebaseDatabase

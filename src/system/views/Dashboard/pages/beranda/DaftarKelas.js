@@ -100,6 +100,7 @@ export default function DaftarKelas({ classes, group, account }) {
     setFormState({ role: "", group: "", isMarried: "" });
     setFormStateError({ role: false, group: false, isMarried: false });
     setOpenRegistrationDialog(false);
+    setIsUploading(false)
   }
   function handleChangeRole(event) {
     setFormState((prevState) => ({ ...prevState, role: event.target.value }));
